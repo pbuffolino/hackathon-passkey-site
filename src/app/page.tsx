@@ -198,9 +198,6 @@ export default function Home() {
       {/* MFA Leaderboard Comparison */}
       <MFALeaderboard />
 
-      {/* FAQ Section */}
-      <FAQ />
-
       {/* Key Terms Glossary */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
         <div className="max-w-4xl mx-auto">
@@ -225,6 +222,13 @@ export default function Home() {
                   <h3 className="text-white font-semibold mb-2">Phishing</h3>
                   <p className="text-gray-300 text-sm">When scammers create fake websites that look real to trick you into entering your password. Passkeys protect you from this because they won't work on fake sites.</p>
                 </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-2">Knowledge vs Inherence</h3>
+                  <p className="text-gray-300 text-sm">
+                    <span className="text-red-400">Knowledge</span> (something you know, like passwords) is the weakest because it can be guessed, stolen, or forgotten.{' '}
+                    <span className="text-[#00D9FF]">Inherence</span> (something you are, like your fingerprint or face) is the strongest because it's unique to you and can't be stolen or guessed.
+                  </p>
+                </div>
               </div>
               <div className="space-y-4">
                 <div>
@@ -239,18 +243,104 @@ export default function Home() {
                   <h3 className="text-white font-semibold mb-2">WebAuthn</h3>
                   <p className="text-gray-300 text-sm">The technical standard that makes passkeys work. You don't need to know this. It's just the behind-the-scenes technology that powers passkeys on websites.</p>
                 </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-2">NIST Authentication Assurance Levels (AAL)</h3>
+                  <p className="text-gray-300 text-sm">
+                    Standards used by government and security experts to rate security methods.{' '}
+                    <span className="font-semibold text-white">AAL2</span> means the method uses multiple factors (like password + text code) and protects against fake websites. Text message codes and email links are <span className="text-red-400">not</span> safe from fake websites—scammers can trick you into giving them the code.{' '}
+                    <span className="font-semibold text-white">AAL3</span> is the highest level. It requires protection from fake websites and ensures your secret key can't be copied or stolen. The exact security level depends on how it's set up. These ratings are based on industry standards.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <FAQ />
+
+      {/* Still Have Questions Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900/30">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-block bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <p className="text-gray-300 text-lg mb-4">
+              Still have questions?{' '}
+              <span className="text-[#00D9FF]">Passkeys are still new, so it's normal to have questions!</span> The best way to learn is to try creating one yourself using the interactive demo above.
+            </p>
+            <p className="text-gray-400 text-base">
+              For more information, check out{' '}
+              <a
+                href="https://passkeys.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors"
+              >
+                passkeys.dev
+              </a>
+              {' '}or the{' '}
+              <a
+                href="https://fidoalliance.org/passkeys/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors"
+              >
+                FIDO Alliance
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto text-center">
+        <div className="max-w-7xl mx-auto text-center space-y-4">
           <p className="text-gray-400">
             The Passkey Pilot - Learn how passkeys work
           </p>
+          <div className="text-gray-500 text-sm space-y-2">
+            <p>
+              Built with{' '}
+              <a
+                href="https://www.w3.org/TR/webauthn-2/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors"
+              >
+                WebAuthn API
+              </a>
+              {' '}and resources from{' '}
+              <a
+                href="https://passkeys.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors"
+              >
+                passkeys.dev
+              </a>
+              {' '}and the{' '}
+              <a
+                href="https://fidoalliance.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors"
+              >
+                FIDO Alliance
+              </a>
+            </p>
+            <p className="text-gray-600">
+              Created with{' '}
+              <a
+                href="https://cursor.sh/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors"
+              >
+                Cursor
+              </a>
+            </p>
+          </div>
         </div>
       </footer>
     </div>

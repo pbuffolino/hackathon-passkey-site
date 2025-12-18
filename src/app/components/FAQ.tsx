@@ -77,7 +77,9 @@ export default function FAQ() {
             >
               <button
                 onClick={() => toggleQuestion(index)}
-                className="w-full px-6 py-5 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-[#00D9FF]/50 rounded-xl"
+                className={`w-full px-6 py-5 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-[#00D9FF]/50 transition-all ${
+                  openIndex === index ? 'rounded-t-xl' : 'rounded-xl'
+                }`}
                 aria-expanded={openIndex === index}
               >
                 <span className="text-lg font-semibold text-white pr-4">
@@ -100,23 +102,14 @@ export default function FAQ() {
                 </svg>
               </button>
               {openIndex === index && (
-                <div className="px-6 pb-5">
-                  <p className="text-gray-300 leading-relaxed text-lg">
+                <div className="px-6 pt-0 pb-5 border-t border-gray-800/50">
+                  <p className="text-gray-300 leading-relaxed text-lg pt-5">
                     {faq.answer}
                   </p>
                 </div>
               )}
             </div>
           ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <div className="inline-block bg-gray-900 rounded-xl p-6 border border-gray-800">
-            <p className="text-gray-300 text-lg">
-              Still have questions?{' '}
-              <span className="text-[#00D9FF]">Passkeys are still new, so it's normal to have questions!</span> The best way to learn is to try creating one yourself using the interactive demo above.
-            </p>
-          </div>
         </div>
       </div>
     </section>

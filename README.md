@@ -61,7 +61,6 @@ A visual comparison of authentication methods:
 - Highlights phishing resistance and device-binding properties
 - Shows factor types (Knowledge, Possession, Inherence)
 - Includes user-friendly descriptions written for average users
-- Features collapsible NIST AAL notes explaining AAL2 and AAL3 requirements
 - Emphasizes passkeys as the most secure option with visual highlighting
 
 #### `FAQ.tsx`
@@ -70,8 +69,9 @@ A beginner-friendly FAQ component:
 
 - 10 common questions about passkeys answered in plain language
 - Covers topics like device requirements, security, multi-device usage, and compatibility
-- Expandable accordion interface for easy navigation
+- Expandable accordion interface with clean visual separation between questions and answers
 - Written for non-technical users with relatable examples
+- Includes links to authoritative sources (passkeys.dev and FIDO Alliance) for additional information
 
 ## Getting Started
 
@@ -144,9 +144,10 @@ npm run lint
 ### Educational Content
 
 - "Passkeys 101" introductory section explaining concepts simply
-- FAQ section with 10 common questions
-- Key terms glossary for technical vocabulary
+- Key Terms Explained section with definitions including Knowledge vs Inherence and NIST AAL levels
+- FAQ section with 10 common questions and links to authoritative sources
 - MFA comparison table with simplified headers and tooltips
+- "Still Have Questions" section at the bottom with links to passkeys.dev and FIDO Alliance resources
 
 ### Responsive Design
 
@@ -249,8 +250,18 @@ For other deployment options, see the [Next.js deployment documentation](https:/
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [WebAuthn API Specification](https://www.w3.org/TR/webauthn-2/)
-- [Passkeys.dev](https://passkeys.dev) - Comprehensive passkey resources
+- [Passkeys.dev](https://passkeys.dev) - Comprehensive passkey resources from W3C WebAuthn Community Adoption Group and FIDO Alliance
+- [FIDO Alliance](https://fidoalliance.org/passkeys/) - Official FIDO Alliance passkey information
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+
+## Attribution
+
+This project uses resources and information from:
+- [WebAuthn API](https://www.w3.org/TR/webauthn-2/) - W3C Web Authentication specification
+- [Passkeys.dev](https://passkeys.dev) - W3C WebAuthn Community Adoption Group and FIDO Alliance
+- [FIDO Alliance](https://fidoalliance.org/) - FIDO Alliance standards and specifications
+
+Created with [Cursor](https://cursor.sh/).
 
 ## License
 
