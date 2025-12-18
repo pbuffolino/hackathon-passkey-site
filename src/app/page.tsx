@@ -1,5 +1,5 @@
 import PasskeyWalkthrough from './components/PasskeyWalkthrough';
-import MigrationRoadmap from './components/MigrationRoadmap';
+import MFALeaderboard from './components/MFALeaderboard';
 
 export default function Home() {
   return (
@@ -112,8 +112,8 @@ export default function Home() {
       {/* Interactive Passkey Walkthrough */}
       <PasskeyWalkthrough />
 
-      {/* Migration Roadmap */}
-      <MigrationRoadmap />
+      {/* MFA Leaderboard Comparison */}
+      <MFALeaderboard />
 
       {/* Footer */}
       <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
