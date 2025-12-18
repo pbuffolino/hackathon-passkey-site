@@ -20,6 +20,21 @@ type TechnicalMetadata = {
   userVerification: string;
   authenticatorAttachment: string;
   attestationConveyancePreference: string;
+  // Additional WebAuthn specification properties
+  signCount: number;
+  aaguid: string;
+  backupEligible: boolean;
+  backupState: boolean;
+  rpIdHash: string;
+  origin: string;
+};
+
+type ValidationMetadata = {
+  credentialIdMatch: boolean;
+  signCount: number;
+  userVerification: string;
+  origin: string;
+  signatureLength: number;
 };
 
 type WebAuthnState = {
@@ -32,6 +47,7 @@ type WebAuthnState = {
 type ValidationState = {
   status: 'idle' | 'verifying' | 'authenticated' | 'failed';
   errorMessage?: string;
+  validationMetadata?: ValidationMetadata;
 };
 
 const steps: Step[] = [
@@ -78,6 +94,7 @@ export default function PasskeyWalkthrough() {
   const [webauthnState, setWebauthnState] = useState<WebAuthnState>({ status: 'idle' });
   const [validationState, setValidationState] = useState<ValidationState>({ status: 'idle' });
   const [showSimpleExplanation, setShowSimpleExplanation] = useState(true); // Default to simple mode for beginners
+  const [showValidationSimpleExplanation, setShowValidationSimpleExplanation] = useState(true); // For validation section
   const step = steps[currentStep];
 
   // Hard-coded challenge and user ID for demo
@@ -145,6 +162,13 @@ export default function PasskeyWalkthrough() {
         let userVerification = 'Unknown';
         let authenticatorAttachment = 'Unknown';
         let attestationConveyancePreference = publicKeyCredentialCreationOptions.attestation || 'none';
+        // Additional WebAuthn specification properties
+        let signCount = 0;
+        let aaguid = '';
+        let backupEligible = false;
+        let backupState = false;
+        let rpIdHash = '';
+        let origin = '';
 
         // Get authenticator attachment from the credential
         if (credential.authenticatorAttachment) {
@@ -174,16 +198,35 @@ export default function PasskeyWalkthrough() {
               attestationFormat = attestationObj.fmt as string;
             }
             
-            // Parse authenticator data (authData) to get flags
+            // Parse authenticator data (authData) to get flags and additional properties
             if (attestationObj.authData) {
               const authData = attestationObj.authData as Uint8Array;
               
+              // authData structure:
+              // - rpIdHash (32 bytes) - bytes 0-31
+              // - flags (1 byte) - byte 32
+              // - signCount (4 bytes, big-endian) - bytes 33-36
+              // - attestedCredentialData (variable) - starting at byte 37 if AT flag set
+              //   - AAGUID (16 bytes) - bytes 37-52
+              //   - credentialIdLength (2 bytes, big-endian) - bytes 53-54
+              //   - credentialId (credentialIdLength bytes)
+              //   - credentialPublicKey (CBOR encoded)
+              
+              // Extract rpIdHash (first 32 bytes)
+              if (authData.length >= 32) {
+                const rpIdHashBytes = authData.slice(0, 32);
+                rpIdHash = Array.from(rpIdHashBytes)
+                  .map(b => b.toString(16).padStart(2, '0'))
+                  .join('');
+              }
+              
               // Read flags byte (byte 32 in authData, 0-indexed)
-              // authData structure: rpIdHash (32 bytes) + flags (1 byte) + counter (4 bytes) + ...
               if (authData.length >= 33) {
                 const flags = authData[32];
-                const uv = (flags & 0x04) !== 0; // User Verification flag (bit 2)
                 const up = (flags & 0x01) !== 0; // User Presence flag (bit 0)
+                const uv = (flags & 0x04) !== 0; // User Verification flag (bit 2)
+                backupEligible = (flags & 0x08) !== 0; // Backup Eligible flag (bit 3) - WebAuthn Level 3
+                backupState = (flags & 0x10) !== 0; // Backup State flag (bit 4) - WebAuthn Level 3
                 
                 if (uv) {
                   userVerification = 'verified (biometric/PIN required)';
@@ -192,6 +235,21 @@ export default function PasskeyWalkthrough() {
                 } else {
                   userVerification = 'none';
                 }
+              }
+              
+              // Extract signCount (bytes 33-36, 4 bytes big-endian)
+              if (authData.length >= 37) {
+                signCount = (authData[33] << 24) | (authData[34] << 16) | (authData[35] << 8) | authData[36];
+              }
+              
+              // Extract AAGUID (bytes 37-52, 16 bytes) - only present if AT flag is set
+              if (authData.length >= 53) {
+                const aaguidBytes = authData.slice(37, 53);
+                // Format as UUID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                const hex = Array.from(aaguidBytes)
+                  .map(b => b.toString(16).padStart(2, '0'))
+                  .join('');
+                aaguid = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
               }
               
               // Extract algorithm from COSE key in attestedCredentialData
@@ -285,6 +343,19 @@ export default function PasskeyWalkthrough() {
         } catch (error) {
           console.warn('Failed to get transports:', error);
         }
+
+        // Parse clientDataJSON to extract origin
+        try {
+          if (response.clientDataJSON) {
+            const clientDataText = new TextDecoder().decode(response.clientDataJSON);
+            const clientData = JSON.parse(clientDataText);
+            if (clientData.origin) {
+              origin = clientData.origin;
+            }
+          }
+        } catch (error) {
+          console.warn('Failed to parse clientDataJSON:', error);
+        }
         
         setWebauthnState({
           status: 'success',
@@ -299,6 +370,13 @@ export default function PasskeyWalkthrough() {
             userVerification,
             authenticatorAttachment,
             attestationConveyancePreference,
+            // Additional WebAuthn specification properties
+            signCount,
+            aaguid,
+            backupEligible,
+            backupState,
+            rpIdHash,
+            origin,
           },
         });
       }
@@ -329,6 +407,7 @@ export default function PasskeyWalkthrough() {
     setWebauthnState({ status: 'idle' });
     setValidationState({ status: 'idle' });
     setShowSimpleExplanation(true);
+    setShowValidationSimpleExplanation(true);
   };
 
   // Helper function to convert base64url to Uint8Array
@@ -393,8 +472,82 @@ export default function PasskeyWalkthrough() {
 
       if (assertion && assertion.id) {
         // Compare the returned credential ID with the stored one
-        if (assertion.id === storedCredentialId) {
-          setValidationState({ status: 'authenticated' });
+        const credentialIdMatch = assertion.id === storedCredentialId;
+        
+        if (credentialIdMatch) {
+          // Extract technical metadata from the assertion response
+          const assertionResponse = assertion.response as AuthenticatorAssertionResponse;
+          let validationSignCount = 0;
+          let validationUserVerification = 'Unknown';
+          let validationOrigin = '';
+          let signatureLength = 0;
+
+          // Parse authenticatorData to get signCount and user verification
+          try {
+            if (assertionResponse.authenticatorData) {
+              const authData = new Uint8Array(assertionResponse.authenticatorData);
+              
+              // authData structure for assertion:
+              // - rpIdHash (32 bytes) - bytes 0-31
+              // - flags (1 byte) - byte 32
+              // - signCount (4 bytes, big-endian) - bytes 33-36
+              
+              // Extract flags
+              if (authData.length >= 33) {
+                const flags = authData[32];
+                const up = (flags & 0x01) !== 0; // User Presence flag (bit 0)
+                const uv = (flags & 0x04) !== 0; // User Verification flag (bit 2)
+                
+                if (uv) {
+                  validationUserVerification = 'verified (biometric/PIN required)';
+                } else if (up) {
+                  validationUserVerification = 'presence only (click to confirm)';
+                } else {
+                  validationUserVerification = 'none';
+                }
+              }
+              
+              // Extract signCount (bytes 33-36, 4 bytes big-endian)
+              if (authData.length >= 37) {
+                validationSignCount = (authData[33] << 24) | (authData[34] << 16) | (authData[35] << 8) | authData[36];
+              }
+            }
+          } catch (error) {
+            console.warn('Failed to parse assertion authenticatorData:', error);
+          }
+
+          // Parse clientDataJSON to extract origin
+          try {
+            if (assertionResponse.clientDataJSON) {
+              const clientDataText = new TextDecoder().decode(assertionResponse.clientDataJSON);
+              const clientData = JSON.parse(clientDataText);
+              if (clientData.origin) {
+                validationOrigin = clientData.origin;
+              }
+            }
+          } catch (error) {
+            console.warn('Failed to parse assertion clientDataJSON:', error);
+          }
+
+          // Get signature length
+          try {
+            if (assertionResponse.signature) {
+              signatureLength = assertionResponse.signature.byteLength;
+            }
+          } catch (error) {
+            console.warn('Failed to get signature length:', error);
+          }
+
+          setValidationState({
+            status: 'authenticated',
+            validationMetadata: {
+              credentialIdMatch,
+              signCount: validationSignCount,
+              userVerification: validationUserVerification,
+              origin: validationOrigin,
+              signatureLength,
+            },
+          });
         } else {
           setValidationState({
             status: 'failed',
@@ -580,7 +733,33 @@ export default function PasskeyWalkthrough() {
                             {webauthnState.technicalMetadata.attestationFormat}
                           </p>
                           <p className="text-gray-300 text-sm leading-relaxed">
-                            This is the technical format your device uses to prove it\'s legitimate. Different device makers (Apple, Google, Microsoft, etc.) use different formats, but they all provide the same level of security.
+                            This is the technical format your device uses to prove it&apos;s legitimate. Different device makers (Apple, Google, Microsoft, etc.) use different formats, but they all provide the same level of security.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Backup Status</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.backupEligible 
+                              ? (webauthnState.technicalMetadata.backupState ? 'Synced to Cloud' : 'Can Sync (Not Yet Synced)')
+                              : 'Device-Only (Not Syncable)'}
+                          </p>
+                          <p className="text-gray-300 text-sm leading-relaxed">
+                            {webauthnState.technicalMetadata.backupEligible 
+                              ? (webauthnState.technicalMetadata.backupState 
+                                ? 'Your passkey is synced to your cloud account (like iCloud Keychain or Google Password Manager). If you lose this device, you can still access your passkey from another device signed into the same account.'
+                                : 'Your passkey can be synced to your cloud account but hasn\'t been yet. Once synced, you\'ll be able to use it on other devices.')
+                              : 'Your passkey is stored only on this device and cannot be synced. This is the most secure option but means you\'ll need to create a new passkey if you lose this device.'}
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Origin</p>
+                          <p className="text-[#00D9FF] font-mono text-base mb-3 break-all">
+                            {webauthnState.technicalMetadata.origin || 'Not available'}
+                          </p>
+                          <p className="text-gray-300 text-sm leading-relaxed">
+                            This is the website address where your passkey was created. Your passkey will only work on this exact website, protecting you from fake lookalike sites (phishing).
                           </p>
                         </div>
                       </div>
@@ -663,7 +842,74 @@ export default function PasskeyWalkthrough() {
                             {webauthnState.technicalMetadata.attestationConveyancePreference}
                           </p>
                           <p className="text-gray-400 text-sm leading-relaxed">
-                            "Direct" means the full attestation statement is included, providing maximum information about the authenticator.
+                            &quot;Direct&quot; means the full attestation statement is included, providing maximum information about the authenticator.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Sign Count</p>
+                          <p className="text-white font-mono text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.signCount}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            A counter that increments each time the authenticator is used. Helps detect cloned authenticators - if the count goes backwards, it may indicate a security issue.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">AAGUID</p>
+                          <p className="text-white font-mono text-base mb-3 font-medium break-all">
+                            {webauthnState.technicalMetadata.aaguid || 'Not available'}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            {webauthnState.technicalMetadata.aaguid === '00000000-0000-0000-0000-000000000000'
+                              ? 'All zeros indicates a privacy-preserving authenticator that doesn\'t reveal its make/model. This is common for platform authenticators.'
+                              : 'Authenticator Attestation Globally Unique Identifier - identifies the make and model of the authenticator. Can be used to look up device capabilities.'}
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Backup Eligible (BE Flag)</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.backupEligible ? 'Yes' : 'No'}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            WebAuthn Level 3 flag indicating whether this credential can be backed up or synced to a cloud provider.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Backup State (BS Flag)</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.backupState ? 'Backed Up' : 'Not Backed Up'}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            WebAuthn Level 3 flag indicating whether this credential is currently backed up to a cloud provider.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">RP ID Hash</p>
+                          <details>
+                            <summary className="text-gray-400 text-sm cursor-pointer hover:text-gray-300 font-medium">
+                              Show hash (SHA-256)
+                            </summary>
+                            <p className="text-[#00D9FF] font-mono text-sm break-all mt-3 p-3 bg-gray-800 rounded">
+                              {webauthnState.technicalMetadata.rpIdHash || 'Not available'}
+                            </p>
+                          </details>
+                          <p className="text-gray-400 text-sm leading-relaxed mt-3">
+                            SHA-256 hash of the Relying Party ID (the website&apos;s domain). This binds the credential to this specific origin, preventing phishing attacks.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Origin</p>
+                          <p className="text-[#00D9FF] font-mono text-base mb-3 break-all">
+                            {webauthnState.technicalMetadata.origin || 'Not available'}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            The origin from clientDataJSON - confirms the credential was created for this exact origin.
                           </p>
                         </div>
                       </div>
@@ -876,33 +1122,160 @@ export default function PasskeyWalkthrough() {
             )}
 
             {validationState.status === 'authenticated' && (
-              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-green-500/50">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="relative">
-                    <div className="w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center animate-pulse-slow">
-                      <svg
-                        className="w-16 h-16 text-green-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                        />
-                      </svg>
+              <div className="flex flex-col items-center space-y-4 w-full">
+                <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-green-500/50 w-full">
+                  <div className="flex flex-col items-center space-y-4">
+                    <div className="relative">
+                      <div className="w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center animate-pulse-slow">
+                        <svg
+                          className="w-16 h-16 text-green-500"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                          />
+                        </svg>
+                      </div>
+                      <div className="absolute inset-0 rounded-full bg-green-500/30 animate-ping"></div>
                     </div>
-                    <div className="absolute inset-0 rounded-full bg-green-500/30 animate-ping"></div>
+                    <div className="px-6 py-3 bg-green-500/20 border border-green-500/50 rounded-lg">
+                      <p className="text-green-400 font-semibold text-xl">Security Authenticated</p>
+                    </div>
                   </div>
-                  <div className="px-6 py-3 bg-green-500/20 border border-green-500/50 rounded-lg">
-                    <p className="text-green-400 font-semibold text-xl">Security Authenticated</p>
-                  </div>
-                  <p className="text-gray-300 text-sm text-center max-w-md">
-                    Your passkey has been successfully verified. The credential ID matches!
-                  </p>
                 </div>
+                
+                {validationState.validationMetadata && (
+                  <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700 w-full">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-white font-semibold text-xl">What Just Happened?</h3>
+                      <button
+                        onClick={() => setShowValidationSimpleExplanation(!showValidationSimpleExplanation)}
+                        className="px-4 py-2 text-sm bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors border border-gray-600 font-medium"
+                      >
+                        {showValidationSimpleExplanation ? 'Show Technical Details' : 'Show Simple Explanation'}
+                      </button>
+                    </div>
+                    
+                    {showValidationSimpleExplanation ? (
+                      <div className="space-y-5">
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Credential Matched</p>
+                          <div className="flex items-center space-x-2 mb-3">
+                            <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                              <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                            </div>
+                            <p className="text-green-400 font-medium">Yes, it&apos;s your passkey!</p>
+                          </div>
+                          <p className="text-gray-300 text-sm leading-relaxed">
+                            The website checked that the passkey you used matches the one you registered earlier. This confirms you&apos;re the legitimate owner.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Biometric Verified</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {validationState.validationMetadata.userVerification.includes('verified')
+                              ? 'Yes - Your identity was confirmed'
+                              : validationState.validationMetadata.userVerification.includes('presence')
+                              ? 'Click confirmation only'
+                              : 'Not specified'}
+                          </p>
+                          <p className="text-gray-300 text-sm leading-relaxed">
+                            {validationState.validationMetadata.userVerification.includes('verified')
+                              ? 'Your device confirmed it was really you using your fingerprint, face, or PIN. This prevents anyone else from using your passkey.'
+                              : 'Your presence was confirmed, but no biometric was required for this login.'}
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Login Origin</p>
+                          <p className="text-[#00D9FF] font-mono text-base mb-3 break-all">
+                            {validationState.validationMetadata.origin || 'Not available'}
+                          </p>
+                          <p className="text-gray-300 text-sm leading-relaxed">
+                            Your passkey confirmed you&apos;re on the real website, not a fake lookalike. This is one of the main ways passkeys protect you from phishing scams.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Digital Signature</p>
+                          <div className="flex items-center space-x-2 mb-3">
+                            <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                              <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                            </div>
+                            <p className="text-green-400 font-medium">Signature created</p>
+                          </div>
+                          <p className="text-gray-300 text-sm leading-relaxed">
+                            Your device created a unique digital signature using your secret key. This proves you have the real passkey without ever revealing your secret.
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-5">
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Credential ID Match</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {validationState.validationMetadata.credentialIdMatch ? 'Yes - Matched' : 'No - Mismatch'}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            The assertion.id returned by the authenticator was compared against the stored credential ID from registration.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Sign Count</p>
+                          <p className="text-white font-mono text-base mb-3 font-medium">
+                            {validationState.validationMetadata.signCount}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            The authenticator&apos;s signature counter from the assertion authenticatorData. Should increment with each use. A server would compare this against the stored value to detect cloned authenticators.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">User Verification (UV Flag)</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {validationState.validationMetadata.userVerification}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            {validationState.validationMetadata.userVerification.includes('verified')
+                              ? 'The UV flag (bit 2) was set in authenticatorData.flags, indicating biometric or PIN verification was performed.'
+                              : 'The UV flag was not set - only user presence (UP) was verified.'}
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Origin</p>
+                          <p className="text-[#00D9FF] font-mono text-base mb-3 break-all">
+                            {validationState.validationMetadata.origin || 'Not available'}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            The origin from the assertion&apos;s clientDataJSON. A server would verify this matches the expected origin to prevent relay attacks.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Signature Length</p>
+                          <p className="text-white font-mono text-base mb-3 font-medium">
+                            {validationState.validationMetadata.signatureLength} bytes
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            The assertion includes a cryptographic signature over the authenticatorData and clientDataHash. For ES256 (P-256), signatures are typically 64-72 bytes in DER format. A real server would verify this signature against the stored public key.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
