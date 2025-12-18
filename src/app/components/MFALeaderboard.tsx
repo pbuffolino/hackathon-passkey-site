@@ -287,47 +287,6 @@ export default function MFALeaderboard() {
           </div>
         </div>
 
-        {/* Footer Legend */}
-        <div className="mt-12 space-y-6">
-          <div className="text-center">
-            <div className="inline-block backdrop-blur-xl bg-gray-900/40 rounded-xl border border-gray-800/50 px-8 py-6 max-w-3xl">
-              <p className="text-gray-300 text-base leading-relaxed">
-                <span className="font-semibold text-white">Understanding the Types:</span>{' '}
-                <span className="text-red-400">Knowledge</span> (something you know, like passwords) is the weakest because it can be guessed, stolen, or forgotten.{' '}
-                <span className="text-[#00D9FF]">Inherence</span> (something you are, like your fingerprint or face) is the strongest because it's unique to you and can't be stolen or guessed.
-              </p>
-            </div>
-          </div>
-          
-          <div className="text-center">
-            <div className="inline-block backdrop-blur-xl bg-gray-900/40 rounded-xl border border-gray-800/50 px-8 py-6 max-w-4xl">
-              <details className="text-left">
-                <summary className="text-gray-300 text-base leading-relaxed cursor-pointer hover:text-white font-semibold mb-3">
-                  <span className="font-semibold text-white">Technical Details (for curious minds)</span>
-                </summary>
-                <div className="space-y-3 mt-4">
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    The security ratings are based on <span className="font-semibold text-white">NIST Authentication Assurance Levels (AAL)</span>, which are standards used by government and security experts:
-                  </p>
-                  <ul className="list-disc list-inside space-y-1.5 text-gray-300 text-sm leading-relaxed ml-4">
-                    <li>
-                      <span className="font-semibold text-white">AAL2</span> means the method uses multiple factors (like password + text code) and protects against fake websites.
-                    </li>
-                    <li>
-                      Text message codes and email links are <span className="text-red-400">not</span> safe from fake websites. Scammers can trick you into giving them the code.
-                    </li>
-                    <li>
-                      <span className="font-semibold text-white">AAL3</span> is the highest level. It requires protection from fake websites and ensures your secret key can't be copied or stolen.
-                    </li>
-                  </ul>
-                  <p className="text-gray-400 text-xs italic mt-3">
-                    * = The exact security level depends on how it's set up. These ratings are based on industry standards.
-                  </p>
-                </div>
-              </details>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
