@@ -30,8 +30,7 @@ passkey-pilot/
 │       ├── components/
 │       │   ├── PasskeyWalkthrough.tsx    # Interactive passkey demo component
 │       │   ├── MFALeaderboard.tsx        # MFA methods comparison component
-│       │   ├── FAQ.tsx                    # Frequently asked questions component
-│       │   └── MigrationRoadmap.tsx      # Migration steps component (not used on main page)
+│       │   └── FAQ.tsx                    # Frequently asked questions component
 │       ├── page.tsx                      # Main landing page
 │       ├── layout.tsx                    # Root layout with metadata
 │       └── globals.css                   # Global styles and Tailwind config
@@ -73,16 +72,6 @@ A beginner-friendly FAQ component:
 - Covers topics like device requirements, security, multi-device usage, and compatibility
 - Expandable accordion interface for easy navigation
 - Written for non-technical users with relatable examples
-
-#### `MigrationRoadmap.tsx`
-
-A 5-step guide for organizations migrating to passkeys (component exists but is not displayed on the main page):
-
-1. Assess Current MFA Infrastructure
-2. Plan Passkey Rollout Strategy
-3. Beta Testing with Select Users
-4. Gradual Rollout by Department
-5. Full Enterprise Deployment
 
 ## Getting Started
 
