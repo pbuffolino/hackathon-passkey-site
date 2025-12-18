@@ -6,197 +6,120 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
+      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            Stop Remembering Passwords.
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8 leading-tight tracking-tight">
+            One tap to sign in.
             <br />
-            <span className="text-gradient-electric">Start Using Your Face or Fingerprint.</span>
+            <span className="text-gradient-electric">No password to steal.</span>
           </h1>
-          <p className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-            Passkeys are like passwords, but instead of typing them, you use your fingerprint, face, or device PIN. They're faster, easier, and much more secure.
+          
+          <p className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10">
+            Passkeys use the same unlock you already trust on your phone or laptop, but for websites and apps.
           </p>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-12">
-            Already used Face ID or Touch ID to unlock your phone? That's the same idea, but for logging into websites and apps.
-          </p>
-        </div>
-      </section>
-
-      {/* Passkeys 101 - Simple Introduction */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900/30">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-gray-900 rounded-2xl p-8 md:p-12 border border-gray-800">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                What is a Passkey?
-              </h2>
-              <p className="text-xl text-gray-300">
-                Think of it like a house key, but it's your fingerprint
-              </p>
-            </div>
-
-            <div className="space-y-6 text-lg text-gray-300 leading-relaxed">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00D9FF]/20 flex items-center justify-center mt-1">
-                  <span className="text-[#00D9FF] font-bold">1</span>
-                </div>
-                <div>
-                  <p className="font-semibold text-white mb-2">A passkey is like a password, but better</p>
-                  <p>Instead of creating and remembering a password, your device creates a special key that only works with your fingerprint, face, or PIN. You never have to type anything.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00D9FF]/20 flex items-center justify-center mt-1">
-                  <span className="text-[#00D9FF] font-bold">2</span>
-                </div>
-                <div>
-                  <p className="font-semibold text-white mb-2">It only works on the real website</p>
-                  <p>Your passkey is like a key that only fits one lock. Even if someone tricks you into visiting a fake website, your passkey won't work there. This protects you from phishing scams.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00D9FF]/20 flex items-center justify-center mt-1">
-                  <span className="text-[#00D9FF] font-bold">3</span>
-                </div>
-                <div>
-                  <p className="font-semibold text-white mb-2">It stays on your device</p>
-                  <p>The secret part of your passkey never leaves your phone or computer. It's stored safely in your device's secure chip, the same place that protects your Face ID or Touch ID.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-10 pt-8 border-t border-gray-800">
-              <h3 className="text-xl font-semibold text-white mb-4">Where can I use passkeys?</h3>
-              <div className="grid sm:grid-cols-2 gap-4 text-gray-300">
-                <div className="flex items-center space-x-3">
-                  <svg className="w-5 h-5 text-[#00D9FF] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>Banking apps</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <svg className="w-5 h-5 text-[#00D9FF] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>Email accounts</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <svg className="w-5 h-5 text-[#00D9FF] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>Social media</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <svg className="w-5 h-5 text-[#00D9FF] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>Shopping sites</span>
-                </div>
-              </div>
-              <p className="mt-4 text-gray-400 text-sm">More websites are adding passkey support every day!</p>
-            </div>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <a 
+              href="#demo"
+              className="w-full sm:w-auto px-8 py-4 bg-[#00D9FF] text-black font-bold text-lg rounded-full hover:bg-[#00B8D4] hover:scale-105 transition-all shadow-[0_0_20px_rgba(0,217,255,0.3)]"
+            >
+              Try the Live Demo
+            </a>
+            <a 
+              href="#leaderboard"
+              className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-gray-700 text-white font-semibold text-lg rounded-full hover:border-[#00D9FF] hover:text-[#00D9FF] transition-all"
+            >
+              Compare Security
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Why Section - Feature Grid */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
+      {/* Passkeys in 30 seconds - Consolidated Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/30 border-y border-gray-800/50">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              Why Use Passkeys?
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              Passkeys, in 30 seconds
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Three simple reasons to make the switch
-            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Phishing Proof */}
-            <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 hover:border-[#00D9FF]/50 transition-all group">
-              <div className="w-16 h-16 rounded-xl bg-[#00D9FF]/20 flex items-center justify-center mb-6 group-hover:bg-[#00D9FF]/30 transition-colors">
-                <svg
-                  className="w-8 h-8 text-[#00D9FF]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {/* Block A: What it is */}
+            <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 flex flex-col h-full">
+              <div className="w-12 h-12 rounded-lg bg-[#00D9FF]/20 flex items-center justify-center mb-6">
+                <span className="text-[#00D9FF] font-bold text-xl">1</span>
               </div>
-              <h3 className="text-2xl font-semibold mb-4 text-white">
-                Can't Be Tricked by Fake Websites
-              </h3>
-              <p className="text-gray-300 text-lg leading-relaxed">
-                Your passkey only works with the real website it was created for. Even if someone tricks you into visiting a fake login page, your passkey won't work there. No more falling for phishing scams.
-              </p>
+              <h3 className="text-xl font-bold text-white mb-4">What it is</h3>
+              <div className="space-y-4 text-gray-300 flex-grow">
+                <p>A passkey is a sign-in key your device creates for a specific site or app.</p>
+                <p>You unlock it with Face ID, Touch ID, fingerprint, or device PIN.</p>
+              </div>
             </div>
 
-            {/* Zero Friction */}
-            <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 hover:border-[#00D9FF]/50 transition-all group">
-              <div className="w-16 h-16 rounded-xl bg-[#00D9FF]/20 flex items-center justify-center mb-6 group-hover:bg-[#00D9FF]/30 transition-colors">
-                <svg
-                  className="w-8 h-8 text-[#00D9FF]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
+            {/* Block B: Why it matters */}
+            <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 flex flex-col h-full">
+              <div className="w-12 h-12 rounded-lg bg-[#00D9FF]/20 flex items-center justify-center mb-6">
+                <span className="text-[#00D9FF] font-bold text-xl">2</span>
               </div>
-              <h3 className="text-2xl font-semibold mb-4 text-white">
-                Super Fast and Easy
-              </h3>
-              <p className="text-gray-300 text-lg leading-relaxed">
-                No more typing long passwords or waiting for text message codes. Just use your fingerprint, face, or device PIN, the same way you unlock your phone. It's faster, easier, and more secure.
-              </p>
+              <h3 className="text-xl font-bold text-white mb-4">Why it matters</h3>
+              <ul className="space-y-3 text-gray-300 flex-grow">
+                <li className="flex items-start space-x-2">
+                  <span className="text-[#00D9FF] mt-1">✓</span>
+                  <span>Stops fake login pages (phishing)</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <span className="text-[#00D9FF] mt-1">✓</span>
+                  <span>Faster than passwords and codes</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <span className="text-[#00D9FF] mt-1">✓</span>
+                  <span>No reusable secret to steal</span>
+                </li>
+              </ul>
             </div>
 
-            {/* Secure by Design */}
-            <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 hover:border-[#00D9FF]/50 transition-all group">
-              <div className="w-16 h-16 rounded-xl bg-[#00D9FF]/20 flex items-center justify-center mb-6 group-hover:bg-[#00D9FF]/30 transition-colors">
-                <svg
-                  className="w-8 h-8 text-[#00D9FF]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
+            {/* Block C: Where you'll see it */}
+            <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 flex flex-col h-full">
+               <div className="w-12 h-12 rounded-lg bg-[#00D9FF]/20 flex items-center justify-center mb-6">
+                <span className="text-[#00D9FF] font-bold text-xl">3</span>
               </div>
-              <h3 className="text-2xl font-semibold mb-4 text-white">
-                Your Secret Stays on Your Device
-              </h3>
-              <p className="text-gray-300 text-lg leading-relaxed">
-                The secret part of your passkey never leaves your phone or computer. It's stored safely in your device's secure chip, the same technology that protects your Face ID or Touch ID. Even if a website gets hacked, your passkey stays safe.
+              <h3 className="text-xl font-bold text-white mb-4">Where you'll see it</h3>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {['Email', 'Banking', 'Shopping', 'Social', 'Work apps', 'Developer tools'].map((tag) => (
+                  <span key={tag} className="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-full border border-gray-700">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <p className="text-gray-400 text-sm italic mt-auto">
+                Support varies by site and device, but adoption is growing.
               </p>
             </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm font-medium">
+            <a href="#demo" className="text-[#00D9FF] hover:text-[#00B8D4] flex items-center space-x-2 hover:underline">
+              <span>Jump to the demo</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+            </a>
+            <a href="#leaderboard" className="text-gray-400 hover:text-white flex items-center space-x-2 transition-colors">
+              <span>See the comparison</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+            </a>
           </div>
         </div>
       </section>
 
       {/* Interactive Passkey Walkthrough */}
-      <PasskeyWalkthrough />
+      <div id="demo" className="scroll-mt-24">
+        <PasskeyWalkthrough />
+      </div>
 
       {/* MFA Leaderboard Comparison */}
-      <MFALeaderboard />
+      <div id="leaderboard" className="scroll-mt-24">
+        <MFALeaderboard />
+      </div>
 
       {/* Key Terms Glossary */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900/50">

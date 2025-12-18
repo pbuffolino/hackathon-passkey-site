@@ -215,9 +215,9 @@ export default function MFALeaderboard() {
                       </td>
                       <td className="px-6 py-4 text-center">
                         {method.phishResistant ? (
-                          <div className="flex items-center justify-center">
+                          <div className="flex items-center justify-center group/tooltip relative">
                             <svg
-                              className="w-6 h-6 text-green-500"
+                              className="w-6 h-6 text-green-500 cursor-help"
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -227,11 +227,14 @@ export default function MFALeaderboard() {
                                 clipRule="evenodd"
                               />
                             </svg>
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                              Resistant to phishing attacks
+                            </div>
                           </div>
                         ) : (
-                          <div className="flex items-center justify-center">
+                          <div className="flex items-center justify-center group/tooltip relative">
                             <svg
-                              className="w-6 h-6 text-red-500"
+                              className="w-6 h-6 text-red-500 cursor-help"
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -241,14 +244,17 @@ export default function MFALeaderboard() {
                                 clipRule="evenodd"
                               />
                             </svg>
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                              Vulnerable to phishing attacks
+                            </div>
                           </div>
                         )}
                       </td>
                       <td className="px-6 py-4 text-center">
                         {method.deviceBound === true ? (
-                          <div className="flex items-center justify-center">
+                          <div className="flex items-center justify-center group/tooltip relative">
                             <svg
-                              className="w-6 h-6 text-green-500"
+                              className="w-6 h-6 text-green-500 cursor-help"
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -258,15 +264,33 @@ export default function MFALeaderboard() {
                                 clipRule="evenodd"
                               />
                             </svg>
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                              Tied to your specific device
+                            </div>
                           </div>
                         ) : method.deviceBound === 'Partial' ? (
-                          <span className="text-yellow-400 text-sm font-medium">Partial</span>
+                          <span className="text-yellow-400 text-sm font-medium cursor-help" title="Partially tied to device">Partial</span>
                         ) : method.deviceBound === 'Depends' ? (
-                          <span className="text-gray-400 text-sm font-medium">Depends</span>
-                        ) : (
-                          <div className="flex items-center justify-center">
+                          <div className="flex items-center justify-center group/tooltip relative">
                             <svg
-                              className="w-6 h-6 text-red-500"
+                              className="w-6 h-6 text-yellow-500 cursor-help"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                              Depends on implementation
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-center group/tooltip relative">
+                            <svg
+                              className="w-6 h-6 text-red-500 cursor-help"
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -276,6 +300,9 @@ export default function MFALeaderboard() {
                                 clipRule="evenodd"
                               />
                             </svg>
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                              Not tied to your device
+                            </div>
                           </div>
                         )}
                       </td>

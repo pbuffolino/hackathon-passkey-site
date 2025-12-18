@@ -42,6 +42,12 @@ passkey-pilot/
 
 ### Key Components
 
+#### `page.tsx` (Main Landing Page)
+- **Hero Section**: High-impact "One tap to sign in" messaging with "Try the Live Demo" and "Compare Security" CTAs.
+- **Passkeys in 30 Seconds**: Consolidated "What / Why / Where" section for quick understanding.
+- **Micro-Benefits**: Quick benefits row (Instant Login, Phishing-Proof, Stays on Device).
+- **Smooth Scrolling**: Implemented smooth scroll to anchor sections (`#demo`, `#leaderboard`).
+
 #### `PasskeyWalkthrough.tsx`
 
 The core interactive component that demonstrates the passkey lifecycle:
@@ -55,13 +61,10 @@ The core interactive component that demonstrates the passkey lifecycle:
 
 A visual comparison of authentication methods:
 
-- Compares 8 common authentication methods in a vendor-agnostic format
-- Ranks methods by security strength (Very Weak → Maximum) with visual strength bars
-- Displays NIST Authentication Assurance Level (AAL) for each method
-- Highlights phishing resistance and device-binding properties
-- Shows factor types (Knowledge, Possession, Inherence)
-- Includes user-friendly descriptions written for average users
-- Emphasizes passkeys as the most secure option with visual highlighting
+- **Leaderboard UI**: Compares 8 common authentication methods in a vendor-agnostic format.
+- **Tooltips**: Hover-over explanations for icons (Phishing Resistance, Device Binding) to clarify "Depends", "Yes", "No", etc.
+- **Visuals**: Uses color-coded icons (Green/Red/Yellow) to indicate status clearly.
+- **Rankings**: Ranks methods by security strength (Very Weak → Maximum).
 
 #### `FAQ.tsx`
 
