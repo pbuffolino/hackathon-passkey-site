@@ -184,8 +184,8 @@ export default function MFALeaderboard() {
                           {method.name}
                         </div>
                       </td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-800/50 text-gray-300">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-800/50 text-gray-300 text-center">
                           {method.factorType}
                         </span>
                       </td>

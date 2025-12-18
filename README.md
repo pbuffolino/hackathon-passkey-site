@@ -320,6 +320,10 @@ This project uses resources and information from:
 
 Created with [Cursor](https://cursor.sh/).
 
+## Recent Changes
+
+- **UI Improvements**: Fixed padding and layout for the "Possession, Inherence, etc..." boxes in the MFA Leaderboard, specifically improving the FIDO2 Hardware Security Key display.
+
 ## License
 
 This project is private and not licensed for public use.
