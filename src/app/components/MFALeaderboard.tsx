@@ -81,8 +81,7 @@ const methods: MFAMethod[] = [
     strength: 'Maximum',
     aalLevel: 'AAL2/AAL3',
     phishResistant: true,
-    deviceBound: false,
-    highlighted: true,
+    deviceBound: true,
   },
 ];
 
@@ -124,13 +123,18 @@ export default function MFALeaderboard() {
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            MFA Method Comparison
+            How Do Passkeys Compare?
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            See how different authentication methods stack up
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            There are lots of ways to secure your accounts. Here's how passkeys stack up against other methods you might be familiar with.
           </p>
+          <div className="max-w-4xl mx-auto bg-gray-900/50 rounded-xl p-6 border border-gray-800 mb-8">
+            <p className="text-gray-300 text-lg leading-relaxed">
+              <span className="font-semibold text-white">Quick answer:</span> Passkeys are the most secure and easiest to use. They can't be tricked by fake websites, and you don't have to remember anything or wait for text messages.
+            </p>
+          </div>
         </div>
 
         {/* Glassmorphism Table Container */}
@@ -142,22 +146,26 @@ export default function MFALeaderboard() {
                 <thead>
                   <tr className="border-b border-gray-800/50">
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      MFA / Auth Method
+                      Method
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      Factor Type
+                      Type
+                      <span className="block text-xs font-normal normal-case text-gray-400 mt-1">What you use to prove it's you</span>
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      Description
+                      How It Works
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      Strength (NIST AAL)
+                      How Secure?
+                      <span className="block text-xs font-normal normal-case text-gray-400 mt-1">Based on security standards</span>
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      Phish Resistant
+                      Safe from Fake Websites?
+                      <span className="block text-xs font-normal normal-case text-gray-400 mt-1">Phishing protection</span>
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      Device-bound
+                      Tied to Your Device?
+                      <span className="block text-xs font-normal normal-case text-gray-400 mt-1">Device-bound</span>
                     </th>
                   </tr>
                 </thead>
@@ -284,34 +292,39 @@ export default function MFALeaderboard() {
           <div className="text-center">
             <div className="inline-block backdrop-blur-xl bg-gray-900/40 rounded-xl border border-gray-800/50 px-8 py-6 max-w-3xl">
               <p className="text-gray-300 text-base leading-relaxed">
-                <span className="font-semibold text-white">Understanding Factor Types:</span>{' '}
-                <span className="text-red-400">"Something you Know"</span> (Knowledge) is the weakest link and easily compromised.{' '}
-                <span className="text-[#00D9FF]">"Something you Are"</span> (Inherence/Biometrics) is the strongest, as it's unique to you and cannot be stolen or guessed.
+                <span className="font-semibold text-white">Understanding the Types:</span>{' '}
+                <span className="text-red-400">Knowledge</span> (something you know, like passwords) is the weakest because it can be guessed, stolen, or forgotten.{' '}
+                <span className="text-[#00D9FF]">Inherence</span> (something you are, like your fingerprint or face) is the strongest because it's unique to you and can't be stolen or guessed.
               </p>
             </div>
           </div>
           
           <div className="text-center">
             <div className="inline-block backdrop-blur-xl bg-gray-900/40 rounded-xl border border-gray-800/50 px-8 py-6 max-w-4xl">
-              <div className="space-y-3 text-left">
-                <p className="text-gray-300 text-base leading-relaxed">
-                  <span className="font-semibold text-white">NIST Authentication Assurance Level (AAL) Notes:</span>
-                </p>
-                <ul className="list-disc list-inside space-y-1.5 text-gray-300 text-sm leading-relaxed ml-4">
-                  <li>
-                    <span className="font-semibold text-white">AAL2</span> requires MFA and at least one phishing-resistant option.
-                  </li>
-                  <li>
-                    Out-of-band and OTP methods are not phishing-resistant. NIST calls out fatigue issues with "approve-only" push patterns.
-                  </li>
-                  <li>
-                    <span className="font-semibold text-white">AAL3</span> requires phishing resistance and a non-exportable key. Syncable authenticators are not allowed at AAL3.
-                  </li>
-                </ul>
-                <p className="text-gray-400 text-xs italic mt-3">
-                  * = depends on implementation. AAL is a property of the full authentication transaction; exact flow (challenge/intent, channel binding, key protection) matters.
-                </p>
-              </div>
+              <details className="text-left">
+                <summary className="text-gray-300 text-base leading-relaxed cursor-pointer hover:text-white font-semibold mb-3">
+                  <span className="font-semibold text-white">Technical Details (for curious minds)</span>
+                </summary>
+                <div className="space-y-3 mt-4">
+                  <p className="text-gray-300 text-sm leading-relaxed">
+                    The security ratings are based on <span className="font-semibold text-white">NIST Authentication Assurance Levels (AAL)</span>, which are standards used by government and security experts:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1.5 text-gray-300 text-sm leading-relaxed ml-4">
+                    <li>
+                      <span className="font-semibold text-white">AAL2</span> means the method uses multiple factors (like password + text code) and protects against fake websites.
+                    </li>
+                    <li>
+                      Text message codes and email links are <span className="text-red-400">not</span> safe from fake websites. Scammers can trick you into giving them the code.
+                    </li>
+                    <li>
+                      <span className="font-semibold text-white">AAL3</span> is the highest level. It requires protection from fake websites and ensures your secret key can't be copied or stolen.
+                    </li>
+                  </ul>
+                  <p className="text-gray-400 text-xs italic mt-3">
+                    * = The exact security level depends on how it's set up. These ratings are based on industry standards.
+                  </p>
+                </div>
+              </details>
             </div>
           </div>
         </div>

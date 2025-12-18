@@ -37,38 +37,38 @@ type ValidationState = {
 const steps: Step[] = [
   {
     id: 1,
-    title: 'Initiate Registration',
-    explanation: 'When you click this button, your browser starts creating a unique digital key pair - one public (shared with the website) and one private (stays on your device).',
+    title: 'Click to Get Started',
+    explanation: 'When you click this button, your device starts creating a special passkey just for this website. Think of it like getting a new house key made, but this one is digital and unique to you.',
     visual: 'button',
   },
   {
     id: 2,
-    title: 'Biometric Authentication',
-    explanation: 'Your device asks you to verify your identity using your fingerprint, face, or device PIN. This ensures only you can create this passkey.',
+    title: 'Verify It\'s Really You',
+    explanation: 'Your device will ask you to use your fingerprint, face, or device PIN, just like when you unlock your phone. This makes sure only you can create this passkey, even if someone else has your device.',
     visual: 'biometric',
   },
   {
     id: 3,
-    title: 'Key Generation',
-    explanation: 'Your device generates a unique cryptographic key pair. The private key never leaves your device - it\'s stored securely in your device\'s secure chip.',
+    title: 'Your Device Creates Your Secret Key',
+    explanation: 'Your device creates a special secret key that stays on your device forever. It\'s stored in your device\'s secure chip, the same place that protects your Face ID or Touch ID. This secret never leaves your device.',
     visual: 'keygen',
   },
   {
     id: 4,
-    title: 'Public Key Registration',
-    explanation: 'Only the public key is sent to the website. Think of it like a lock - anyone can see it, but only your private key can unlock it.',
+    title: 'The Website Gets a "Lock" (Not Your Key)',
+    explanation: 'Your device sends the website something like a lock, but keeps the key to yourself. Anyone can see the lock, but only your device has the key that fits it. This way, the website can verify it\'s you without ever seeing your secret.',
     visual: 'publickey',
   },
   {
     id: 5,
-    title: 'Success & Future Logins',
-    explanation: 'You\'re all set! Next time you log in, you\'ll just use your fingerprint or face - no password needed. The website uses your public key to verify your identity.',
+    title: 'You\'re All Set!',
+    explanation: 'That\'s it! Next time you want to log in, just use your fingerprint or face. No password needed. The website will recognize you using the "lock" it has, and your device will prove it\'s really you with your secret key.',
     visual: 'success',
   },
   {
     id: 6,
-    title: 'Login Validation',
-    explanation: 'Verify your passkey works by authenticating again. The system will check that the credential ID matches the one stored during registration.',
+    title: 'Try Logging In',
+    explanation: 'Let\'s test it! Click the button below to log in with your new passkey. You\'ll use your fingerprint or face again, and the system will make sure everything matches up correctly.',
     visual: 'validation',
   },
 ];
@@ -77,7 +77,7 @@ export default function PasskeyWalkthrough() {
   const [currentStep, setCurrentStep] = useState(0);
   const [webauthnState, setWebauthnState] = useState<WebAuthnState>({ status: 'idle' });
   const [validationState, setValidationState] = useState<ValidationState>({ status: 'idle' });
-  const [showSimpleExplanation, setShowSimpleExplanation] = useState(true);
+  const [showSimpleExplanation, setShowSimpleExplanation] = useState(true); // Default to simple mode for beginners
   const step = steps[currentStep];
 
   // Hard-coded challenge and user ID for demo
@@ -457,7 +457,7 @@ export default function PasskeyWalkthrough() {
                       />
                     </svg>
                   </div>
-                  <p className="text-white text-lg font-medium mb-4">Ready to create passkey</p>
+                  <p className="text-white text-lg font-medium mb-4">Ready to create your passkey</p>
                   <button
                     onClick={handleCreatePasskey}
                     className="px-6 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
@@ -519,12 +519,12 @@ export default function PasskeyWalkthrough() {
                 {webauthnState.technicalMetadata && (
                   <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700 w-full">
                     <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-white font-semibold text-xl">Technical Metadata</h3>
+                      <h3 className="text-white font-semibold text-xl">What Just Happened?</h3>
                       <button
                         onClick={() => setShowSimpleExplanation(!showSimpleExplanation)}
                         className="px-4 py-2 text-sm bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors border border-gray-600 font-medium"
                       >
-                        {showSimpleExplanation ? 'Show Technical' : 'Show Simple'}
+                        {showSimpleExplanation ? 'Show Technical Details' : 'Show Simple Explanation'}
                       </button>
                     </div>
                     
@@ -535,8 +535,8 @@ export default function PasskeyWalkthrough() {
                           <p className="text-[#00D9FF] font-mono text-base break-all mb-3">
                             {webauthnState.technicalMetadata.credentialId}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
-                            A unique identifier for this passkey. Like a serial number, it helps the website recognize your specific credential.
+                          <p className="text-gray-300 text-sm leading-relaxed">
+                            A unique ID for this passkey. Think of it like a serial number. The website uses this to remember which passkey belongs to you.
                           </p>
                         </div>
                         
@@ -545,14 +545,14 @@ export default function PasskeyWalkthrough() {
                           <p className="text-white text-base mb-3 font-medium">
                             {webauthnState.technicalMetadata.hardwareType}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-sm leading-relaxed">
                             {webauthnState.technicalMetadata.hardwareType === 'Platform Biometrics' 
-                              ? 'Your passkey is stored in your device\'s secure chip (like Touch ID or Face ID). It can only be used on this device.'
+                              ? 'Your passkey is stored in your device\'s secure chip, the same technology that powers Touch ID or Face ID. It can only be used on this device, which makes it extra secure.'
                               : webauthnState.technicalMetadata.hardwareType === 'USB Security Key'
-                              ? 'Your passkey is stored on a physical USB security key. You can use it on any device by plugging it in.'
+                              ? 'Your passkey is stored on a physical USB security key. You can plug it into any device to use your passkey, great for people who use multiple computers.'
                               : webauthnState.technicalMetadata.hardwareType === 'Multi-Transport Authenticator'
-                              ? 'Your passkey supports multiple connection methods (USB, NFC, Bluetooth), making it versatile across devices.'
-                              : 'The method your device uses to communicate with the authenticator storing your passkey.'}
+                              ? 'Your passkey can connect in multiple ways (USB, NFC tap, or Bluetooth), so you can use it with lots of different devices.'
+                              : 'This shows how your device stores and uses your passkey.'}
                           </p>
                         </div>
                         
@@ -565,12 +565,12 @@ export default function PasskeyWalkthrough() {
                               ? 'Click to Confirm'
                               : 'Not Specified'}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-sm leading-relaxed">
                             {webauthnState.technicalMetadata.userVerification.includes('verified')
-                              ? 'This passkey requires biometric authentication (fingerprint, face) or your device PIN. This provides the highest level of security.'
+                              ? 'This passkey requires your fingerprint, face, or device PIN every time you use it. This is the most secure option. Even if someone steals your device, they can\'t use your passkey without your biometric.'
                               : webauthnState.technicalMetadata.userVerification.includes('presence')
-                              ? 'This passkey only requires you to click a button to confirm. No biometric authentication is needed.'
-                              : 'The level of user verification required for this passkey.'}
+                              ? 'This passkey only requires you to click a button to confirm. No fingerprint or face needed. This is less secure but might be used for some older devices.'
+                              : 'This shows how your device verifies it\'s really you when using the passkey.'}
                           </p>
                         </div>
                         
@@ -579,8 +579,8 @@ export default function PasskeyWalkthrough() {
                           <p className="text-white font-mono text-base mb-3 font-medium">
                             {webauthnState.technicalMetadata.attestationFormat}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
-                            The cryptographic proof format used to verify your authenticator. Different manufacturers use different formats, but they all provide the same security guarantees.
+                          <p className="text-gray-300 text-sm leading-relaxed">
+                            This is the technical format your device uses to prove it\'s legitimate. Different device makers (Apple, Google, Microsoft, etc.) use different formats, but they all provide the same level of security.
                           </p>
                         </div>
                       </div>
@@ -731,10 +731,10 @@ export default function PasskeyWalkthrough() {
               </div>
             </div>
             <div className="text-center space-y-2">
-              <p className="text-gray-300 text-sm">Private Key</p>
+              <p className="text-gray-300 text-sm">Your Secret Key</p>
               <div className="flex items-center space-x-2 justify-center">
                 <div className="w-2 h-2 bg-[#00D9FF] rounded-full"></div>
-                <p className="text-[#00D9FF] text-xs font-mono">Stays on your device</p>
+                <p className="text-[#00D9FF] text-xs">Stays on your device forever</p>
               </div>
             </div>
           </div>
@@ -797,7 +797,7 @@ export default function PasskeyWalkthrough() {
                 <p className="text-gray-400 text-xs">Website Server</p>
               </div>
             </div>
-            <p className="text-gray-400 text-sm text-center">Only the public key is shared</p>
+            <p className="text-gray-300 text-sm text-center">Only the "lock" (public key) is shared with the website. Your "key" (private key) stays on your device.</p>
           </div>
         );
       case 'success':
@@ -840,7 +840,7 @@ export default function PasskeyWalkthrough() {
                       />
                     </svg>
                   </div>
-                  <p className="text-white text-lg font-medium mb-4">Ready to verify passkey</p>
+                  <p className="text-white text-lg font-medium mb-4">Ready to verify your passkey</p>
                   <button
                     onClick={handleVerifyPasskey}
                     className="px-6 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
@@ -951,10 +951,10 @@ export default function PasskeyWalkthrough() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            The Passkey Experience
+            Try It Yourself
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            See how passkey enrollment works, step by step
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            See how easy it is to create a passkey. Follow along step by step. It only takes a minute!
           </p>
         </div>
 
