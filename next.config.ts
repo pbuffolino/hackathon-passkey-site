@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export',
+  basePath: '/hackathon-passkey-site',
+  assetPrefix: '/hackathon-passkey-site/',
   reactCompiler: true,
 };
 
