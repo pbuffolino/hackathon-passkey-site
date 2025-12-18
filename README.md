@@ -1,14 +1,15 @@
 # The Passkey Pilot
 
-An interactive educational website that demonstrates how passkeys work, compares them to traditional MFA methods, and provides guidance for migrating to passkey-based authentication.
+An interactive educational website that demonstrates how passkeys work and compares them to traditional MFA methods, designed for everyday users to understand and adopt passkey authentication.
 
 ## Purpose
 
-The Passkey Pilot is designed to educate users and developers about passkeys—a modern, phishing-resistant authentication method that replaces passwords with biometric authentication (fingerprint, face recognition, or device PIN). The site provides:
+The Passkey Pilot is designed to educate everyday users about passkeys—a modern, phishing-resistant authentication method that replaces passwords with biometric authentication (fingerprint, face recognition, or device PIN). The site provides:
 
 - **Interactive Walkthrough**: A hands-on demonstration of the passkey registration and authentication process using the WebAuthn API
 - **MFA Comparison**: A visual leaderboard comparing passkeys to other multi-factor authentication methods
-- **Migration Guidance**: A roadmap for organizations looking to migrate from traditional MFA to passkeys
+- **FAQ Section**: Common questions answered in plain, beginner-friendly language
+- **Key Terms Glossary**: Simple explanations of technical terms
 
 ## Technology Stack
 
@@ -29,7 +30,8 @@ passkey-pilot/
 │       ├── components/
 │       │   ├── PasskeyWalkthrough.tsx    # Interactive passkey demo component
 │       │   ├── MFALeaderboard.tsx        # MFA methods comparison component
-│       │   └── MigrationRoadmap.tsx      # Migration steps component
+│       │   ├── FAQ.tsx                    # Frequently asked questions component
+│       │   └── MigrationRoadmap.tsx      # Migration steps component (not used on main page)
 │       ├── page.tsx                      # Main landing page
 │       ├── layout.tsx                    # Root layout with metadata
 │       └── globals.css                   # Global styles and Tailwind config
@@ -60,12 +62,21 @@ A visual comparison of authentication methods:
 - Highlights phishing resistance and device-binding properties
 - Shows factor types (Knowledge, Possession, Inherence)
 - Includes user-friendly descriptions written for average users
-- Features NIST AAL notes explaining AAL2 and AAL3 requirements
-- Emphasizes passkeys as the most secure option
+- Features collapsible NIST AAL notes explaining AAL2 and AAL3 requirements
+- Emphasizes passkeys as the most secure option with visual highlighting
+
+#### `FAQ.tsx`
+
+A beginner-friendly FAQ component:
+
+- 10 common questions about passkeys answered in plain language
+- Covers topics like device requirements, security, multi-device usage, and compatibility
+- Expandable accordion interface for easy navigation
+- Written for non-technical users with relatable examples
 
 #### `MigrationRoadmap.tsx`
 
-A 5-step guide for organizations migrating to passkeys:
+A 5-step guide for organizations migrating to passkeys (component exists but is not displayed on the main page):
 
 1. Assess Current MFA Infrastructure
 2. Plan Passkey Rollout Strategy
@@ -125,12 +136,28 @@ npm run lint
 
 ## Features
 
+### Beginner-Friendly Design
+
+- Simple, conversational language throughout
+- Real-world analogies (e.g., "like a house key, but it's your fingerprint")
+- Technical details are optional and hidden by default
+- Progressive disclosure: show basics first, advanced info on demand
+- No technical jargon in primary content
+
 ### Interactive Passkey Demo
 
 - Real WebAuthn API integration for actual passkey creation and authentication
-- Step-by-step visual walkthrough of the passkey registration process
-- Technical metadata display showing credential details
+- Step-by-step visual walkthrough with beginner-friendly explanations
+- Toggle between simple and technical explanations
+- Technical metadata display available for curious users
 - Error handling for unsupported browsers or failed operations
+
+### Educational Content
+
+- "Passkeys 101" introductory section explaining concepts simply
+- FAQ section with 10 common questions
+- Key terms glossary for technical vocabulary
+- MFA comparison table with simplified headers and tooltips
 
 ### Responsive Design
 
