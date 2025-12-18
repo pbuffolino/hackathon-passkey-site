@@ -132,7 +132,7 @@ export default function MFALeaderboard() {
           </p>
           <div className="max-w-4xl mx-auto bg-gray-900/50 rounded-xl p-6 border border-gray-800 mb-8">
             <p className="text-gray-300 text-lg leading-relaxed">
-              <span className="font-semibold text-white">Quick answer:</span> Passkeys are the most secure and easiest to use. They can't be tricked by fake websites, and you don't have to remember anything or wait for text messages.
+              <span className="font-semibold text-white">Quick answer:</span> Passkeys are one of the most secure and easiest to use. They can't be tricked by fake websites, and you don't have to remember anything or wait for text messages.
             </p>
           </div>
         </div>

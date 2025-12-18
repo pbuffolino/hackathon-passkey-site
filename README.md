@@ -322,6 +322,7 @@ Created with [Cursor](https://cursor.sh/).
 
 ## Recent Changes
 
+- **Content Update**: Updated "Quick Answer" text in MFA Leaderboard to be more accurate ("one of the most secure").
 - **UI Improvements**: Fixed padding and layout for the "Possession, Inherence, etc..." boxes in the MFA Leaderboard, specifically improving the FIDO2 Hardware Security Key display.
 
 ## License
