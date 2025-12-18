@@ -9,6 +9,12 @@ type Step = {
   visual: 'button' | 'biometric' | 'keygen' | 'publickey' | 'success';
 };
 
+type WebAuthnState = {
+  status: 'idle' | 'creating' | 'success' | 'error';
+  credentialId?: string;
+  errorMessage?: string;
+};
+
 const steps: Step[] = [
   {
     id: 1,
@@ -44,7 +50,82 @@ const steps: Step[] = [
 
 export default function PasskeyWalkthrough() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [webauthnState, setWebauthnState] = useState<WebAuthnState>({ status: 'idle' });
   const step = steps[currentStep];
+
+  // Hard-coded challenge and user ID for demo
+  const challenge = new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10]);
+  const userId = new Uint8Array([0x70, 0x61, 0x72, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x70, 0x69, 0x6c, 0x6f, 0x74, 0x2d, 0x75, 0x73, 0x65, 0x72]);
+
+  const handleCreatePasskey = async () => {
+    // Check if WebAuthn is supported
+    if (!window.PublicKeyCredential) {
+      setWebauthnState({
+        status: 'error',
+        errorMessage: 'WebAuthn is not supported in this browser. Please use a modern browser that supports passkeys.',
+      });
+      return;
+    }
+
+    setWebauthnState({ status: 'creating' });
+
+    try {
+      const publicKeyCredentialCreationOptions: PublicKeyCredentialCreationOptions = {
+        challenge: challenge,
+        rp: {
+          name: 'Passkey Pilot',
+          id: window.location.hostname,
+        },
+        user: {
+          id: userId,
+          name: 'Paramount Pilot User',
+          displayName: 'Paramount Pilot User',
+        },
+        pubKeyCredParams: [
+          {
+            alg: -7, // ES256
+            type: 'public-key',
+          },
+        ],
+        authenticatorSelection: {
+          authenticatorAttachment: 'platform',
+          userVerification: 'required',
+        },
+        timeout: 60000,
+        attestation: 'direct',
+      };
+
+      const credential = (await navigator.credentials.create({
+        publicKey: publicKeyCredentialCreationOptions,
+      })) as PublicKeyCredential;
+
+      if (credential && credential.id) {
+        // Shorten the credential ID for display (it's already base64url encoded)
+        const fullId = credential.id;
+        const shortenedId = fullId.length > 24 
+          ? fullId.substring(0, 16) + '...' + fullId.slice(-8)
+          : fullId;
+        
+        setWebauthnState({
+          status: 'success',
+          credentialId: shortenedId,
+        });
+      }
+    } catch (error: any) {
+      // Handle user cancellation
+      if (error.name === 'NotAllowedError' || error.name === 'AbortError') {
+        setWebauthnState({
+          status: 'error',
+          errorMessage: 'Registration Cancelled - This is why Passkeys are secure; the user is always in control.',
+        });
+      } else {
+        setWebauthnState({
+          status: 'error',
+          errorMessage: error.message || 'An error occurred during passkey creation.',
+        });
+      }
+    }
+  };
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -54,6 +135,7 @@ export default function PasskeyWalkthrough() {
 
   const handleStartOver = () => {
     setCurrentStep(0);
+    setWebauthnState({ status: 'idle' });
   };
 
   const renderVisual = () => {
@@ -72,26 +154,122 @@ export default function PasskeyWalkthrough() {
       case 'biometric':
         return (
           <div className="flex flex-col items-center justify-center h-full min-h-[300px] space-y-4">
-            <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700">
-              <div className="flex flex-col items-center space-y-4">
-                <div className="w-20 h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center animate-pulse-slow">
-                  <svg
-                    className="w-12 h-12 text-[#00D9FF]"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+            {webauthnState.status === 'idle' && (
+              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-20 h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center">
+                    <svg
+                      className="w-12 h-12 text-[#00D9FF]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.78c.017-.23.032-.46.032-.701 0-4.97-4.03-9-9-9s-9 4.03-9 9c0 .241.015.471.032.701M12 11c0-3.517 1.009-6.799 2.753-9.571m3.44 2.78c-.017.23-.032.46-.032.701 0 4.97 4.03 9 9 9s9-4.03 9-9c0-.241-.015-.471-.032-.701M12 11a9 9 0 01-9 9m9-9a9 9 0 019 9m-9-9v.01M3 20v.01M21 20v.01"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-white text-lg font-medium mb-4">Ready to create passkey</p>
+                  <button
+                    onClick={handleCreatePasskey}
+                    className="px-6 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.78c.017-.23.032-.46.032-.701 0-4.97-4.03-9-9-9s-9 4.03-9 9c0 .241.015.471.032.701M12 11c0-3.517 1.009-6.799 2.753-9.571m3.44 2.78c-.017.23-.032.46-.032.701 0 4.97 4.03 9 9 9s9-4.03 9-9c0-.241-.015-.471-.032-.701M12 11a9 9 0 01-9 9m9-9a9 9 0 019 9m-9-9v.01M3 20v.01M21 20v.01"
-                    />
-                  </svg>
+                    Create Real Passkey
+                  </button>
                 </div>
-                <p className="text-white text-lg font-medium">Identifying...</p>
               </div>
-            </div>
+            )}
+
+            {webauthnState.status === 'creating' && (
+              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-20 h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center animate-pulse-slow">
+                    <svg
+                      className="w-12 h-12 text-[#00D9FF]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.78c.017-.23.032-.46.032-.701 0-4.97-4.03-9-9-9s-9 4.03-9 9c0 .241.015.471.032.701M12 11c0-3.517 1.009-6.799 2.753-9.571m3.44 2.78c-.017.23-.032.46-.032.701 0 4.97 4.03 9 9 9s9-4.03 9-9c0-.241-.015-.471-.032-.701M12 11a9 9 0 01-9 9m9-9a9 9 0 019 9m-9-9v.01M3 20v.01M21 20v.01"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-white text-lg font-medium">Identifying...</p>
+                  <p className="text-gray-400 text-sm">Check your device for biometric prompt</p>
+                </div>
+              </div>
+            )}
+
+            {webauthnState.status === 'success' && (
+              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-green-500/50">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center">
+                    <svg
+                      className="w-12 h-12 text-green-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                  <div className="px-4 py-2 bg-green-500/20 border border-green-500/50 rounded-lg">
+                    <p className="text-green-400 font-semibold text-lg">Real Passkey Created!</p>
+                  </div>
+                  {webauthnState.credentialId && (
+                    <div className="mt-4 p-4 bg-gray-900/50 rounded-lg border border-gray-700">
+                      <p className="text-gray-400 text-xs mb-1">Credential ID:</p>
+                      <p className="text-[#00D9FF] font-mono text-sm break-all">
+                        {webauthnState.credentialId}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {webauthnState.status === 'error' && (
+              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-red-500/50">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-20 h-20 rounded-full bg-red-500/20 flex items-center justify-center">
+                    <svg
+                      className="w-12 h-12 text-red-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-red-400 font-medium text-center max-w-md">
+                    {webauthnState.errorMessage}
+                  </p>
+                  <button
+                    onClick={handleCreatePasskey}
+                    className="px-6 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         );
       case 'keygen':
