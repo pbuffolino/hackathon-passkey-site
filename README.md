@@ -118,7 +118,9 @@ Run the development server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+Open [http://localhost:3000/hackathon-passkey-site](http://localhost:3000/hackathon-passkey-site) in your browser to see the application.
+
+> **Note**: The `/hackathon-passkey-site` path is required due to the `basePath` configuration for GitHub Pages deployment. To develop at the root path, temporarily comment out `basePath` and `assetPrefix` in `next.config.ts`.
 
 The page will automatically reload when you make changes to the code.
 
@@ -262,17 +264,44 @@ If you need to make changes to this project, here are important details to keep 
 - **next/font**: Optimized font loading (Geist Sans and Geist Mono)
 - All other dependencies are standard Next.js/React packages
 
+## Live Demo
+
+**🚀 Try it now:** [https://pbuffolino.github.io/hackathon-passkey-site/](https://pbuffolino.github.io/hackathon-passkey-site/)
+
 ## Deployment
 
-The easiest way to deploy this Next.js application is using [Vercel](https://vercel.com), the platform from the creators of Next.js:
+This project is deployed to **GitHub Pages** as a static site.
+
+### Deploy to GitHub Pages
+
+1. Build and deploy with a single command:
+
+```bash
+npm run deploy
+```
+
+This runs `next build` with static export and pushes to the `gh-pages` branch.
+
+2. Configure GitHub Pages in your repository settings:
+   - Go to Settings → Pages
+   - Source: Deploy from a branch
+   - Branch: `gh-pages` / `/ (root)`
+
+### Configuration Notes
+
+- **Static Export**: The site uses `output: 'export'` in `next.config.ts` for static HTML generation
+- **Base Path**: Configured as `/hackathon-passkey-site` for GitHub Pages subdirectory hosting
+- **Jekyll Bypass**: A `.nojekyll` file is included to prevent GitHub Pages from ignoring the `_next` folder
+
+### Alternative Deployment
+
+For server-side rendering features, deploy to [Vercel](https://vercel.com):
 
 1. Push your code to a Git repository
 2. Import the project in Vercel
 3. Vercel will automatically detect Next.js and configure the build
 
-For other deployment options, see the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying).
-
-**Note**: WebAuthn API requires HTTPS in production environments. Ensure your deployment uses HTTPS.
+**Note**: WebAuthn API requires HTTPS in production environments. GitHub Pages and Vercel both provide HTTPS by default.
 
 ## Learn More
 
