@@ -54,9 +54,13 @@ The core interactive component that demonstrates the passkey lifecycle:
 
 A visual comparison of authentication methods:
 
-- Ranks methods by security strength (Very Weak → Maximum)
-- Highlights phishing resistance
+- Compares 8 common authentication methods in a vendor-agnostic format
+- Ranks methods by security strength (Very Weak → Maximum) with visual strength bars
+- Displays NIST Authentication Assurance Level (AAL) for each method
+- Highlights phishing resistance and device-binding properties
 - Shows factor types (Knowledge, Possession, Inherence)
+- Includes user-friendly descriptions written for average users
+- Features NIST AAL notes explaining AAL2 and AAL3 requirements
 - Emphasizes passkeys as the most secure option
 
 #### `MigrationRoadmap.tsx`
