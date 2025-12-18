@@ -54,8 +54,28 @@ The core interactive component that demonstrates the passkey lifecycle:
 
 - **Registration Flow**: Shows the 5-step process of creating a passkey (initiation → biometric → key generation → public key registration → success)
 - **Authentication Flow**: Demonstrates passkey validation during login
-- **Technical Details**: Displays credential metadata including credential ID, attestation format, hardware type, and cryptographic algorithms
+- **Technical Details (Registration)**: Displays comprehensive credential metadata including:
+  - Credential ID (shortened and full)
+  - Attestation format (from attestationObject)
+  - Hardware type (derived from transports)
+  - Cryptographic algorithm (extracted from COSE key)
+  - User verification status (from authData flags)
+  - Authenticator attachment (platform vs cross-platform)
+  - Attestation conveyance preference
+  - Sign count (counter for clone detection)
+  - AAGUID (Authenticator Attestation Globally Unique Identifier)
+  - Backup eligible and backup state flags (WebAuthn Level 3)
+  - RP ID hash (SHA-256 hash binding credential to origin)
+  - Origin (from clientDataJSON)
+- **Technical Details (Validation)**: Shows authentication metadata including:
+  - Credential ID match verification
+  - Sign count from assertion
+  - User verification status
+  - Origin verification
+  - Signature presence and length
+- **Dual View Modes**: Toggle between simple explanations and technical details for both registration and validation flows
 - Uses the WebAuthn API (`navigator.credentials.create()` and `navigator.credentials.get()`) for real passkey operations
+- Parses CBOR-encoded attestation objects and authenticator data to extract WebAuthn specification properties
 
 #### `MFALeaderboard.tsx`
 
@@ -140,8 +160,11 @@ npm run lint
 
 - Real WebAuthn API integration for actual passkey creation and authentication
 - Step-by-step visual walkthrough with beginner-friendly explanations
-- Toggle between simple and technical explanations
-- Technical metadata display available for curious users
+- Toggle between simple and technical explanations for both registration and validation
+- Comprehensive technical metadata display aligned with WebAuthn specification:
+  - Registration: Credential ID, attestation format, hardware type, algorithm, user verification, sign count, AAGUID, backup flags, RP ID hash, and origin
+  - Validation: Credential match, sign count, user verification, origin verification, and signature details
+- "What Just Happened?" panels for both enrollment and authentication flows
 - Error handling for unsupported browsers or failed operations
 
 ### Educational Content
@@ -199,6 +222,11 @@ If you need to make changes to this project, here are important details to keep 
 - The `PasskeyWalkthrough` component uses real WebAuthn API calls
 - Challenges and user IDs are hard-coded for demo purposes (not production-ready)
 - Credential data is decoded using `cbor-x` library
+- Comprehensive parsing of WebAuthn specification properties:
+  - Attestation object (CBOR) decoding for format and authData
+  - Authenticator data (authData) parsing for flags, sign count, AAGUID, and COSE key
+  - Client data JSON parsing for origin verification
+  - Transport mechanism extraction for hardware type identification
 - Error handling should account for browser compatibility and user cancellation
 
 ### Styling Guidelines
