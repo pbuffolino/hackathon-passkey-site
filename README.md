@@ -9,7 +9,6 @@ The Passkey Pilot is designed to educate everyday users about passkeys—a moder
 - **Interactive Walkthrough**: A hands-on demonstration of the passkey registration and authentication process using the WebAuthn API
 - **MFA Comparison**: A visual leaderboard comparing passkeys to other multi-factor authentication methods
 - **FAQ Section**: Common questions answered in plain, beginner-friendly language
-- **Key Terms Glossary**: Simple explanations of technical terms
 
 ## Technology Stack
 
@@ -45,7 +44,6 @@ passkey-pilot/
 #### `page.tsx` (Main Landing Page)
 - **Hero Section**: High-impact "One tap to sign in" messaging with "Try the Live Demo" and "Compare Security" CTAs.
 - **Passkeys in 30 Seconds**: Consolidated "What / Why / Where" section for quick understanding.
-- **Micro-Benefits**: Quick benefits row (Instant Login, Phishing-Proof, Stays on Device).
 - **Smooth Scrolling**: Implemented smooth scroll to anchor sections (`#demo`, `#leaderboard`).
 
 #### `PasskeyWalkthrough.tsx`
@@ -170,7 +168,6 @@ npm run lint
 ### Educational Content
 
 - "Passkeys 101" introductory section explaining concepts simply
-- Key Terms Explained section with definitions including Knowledge vs Inherence and NIST AAL levels
 - FAQ section with 10 common questions and links to authoritative sources
 - MFA comparison table with simplified headers and tooltips
 - "Still Have Questions" section at the bottom with links to passkeys.dev and FIDO Alliance resources

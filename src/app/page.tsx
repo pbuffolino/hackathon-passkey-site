@@ -39,7 +39,7 @@ export default function Home() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/30 border-y border-gray-800/50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
               Passkeys, in 30 seconds
             </h2>
           </div>
@@ -121,64 +121,6 @@ export default function Home() {
         <MFALeaderboard />
       </div>
 
-      {/* Key Terms Glossary */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800">
-            <h2 className="text-3xl font-bold mb-6 text-center">
-              Key Terms Explained
-            </h2>
-            <p className="text-gray-400 text-center mb-8">
-              A quick reference for terms you might come across
-            </p>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-white font-semibold mb-2">Passkey</h3>
-                  <p className="text-gray-300 text-sm">A digital key that uses your fingerprint, face, or PIN instead of a password. It's stored on your device and only works with the website it was created for.</p>
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-2">Biometric</h3>
-                  <p className="text-gray-300 text-sm">A way to identify you using something unique about your body, like your fingerprint or face. Face ID and Touch ID are examples of biometrics.</p>
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-2">Phishing</h3>
-                  <p className="text-gray-300 text-sm">When scammers create fake websites that look real to trick you into entering your password. Passkeys protect you from this because they won't work on fake sites.</p>
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-2">Knowledge vs Inherence</h3>
-                  <p className="text-gray-300 text-sm">
-                    <span className="text-red-400">Knowledge</span> (something you know, like passwords) is the weakest because it can be guessed, stolen, or forgotten.{' '}
-                    <span className="text-[#00D9FF]">Inherence</span> (something you are, like your fingerprint or face) is the strongest because it's unique to you and can't be stolen or guessed.
-                  </p>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-white font-semibold mb-2">Device-bound</h3>
-                  <p className="text-gray-300 text-sm">Means your passkey is tied to your specific device. Some passkeys can sync across your devices (like your iPhone and iPad), while others only work on one device.</p>
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-2">MFA / Multi-Factor Authentication</h3>
-                  <p className="text-gray-300 text-sm">Using more than one way to prove it's you, like a password plus a text code. Passkeys are a type of MFA that's more secure and easier to use.</p>
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-2">WebAuthn</h3>
-                  <p className="text-gray-300 text-sm">The technical standard that makes passkeys work. You don't need to know this. It's just the behind-the-scenes technology that powers passkeys on websites.</p>
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-2">NIST Authentication Assurance Levels (AAL)</h3>
-                  <p className="text-gray-300 text-sm">
-                    Standards used by government and security experts to rate security methods.{' '}
-                    <span className="font-semibold text-white">AAL2</span> means the method uses multiple factors (like password + text code) and protects against fake websites. Text message codes and email links are <span className="text-red-400">not</span> safe from fake websites—scammers can trick you into giving them the code.{' '}
-                    <span className="font-semibold text-white">AAL3</span> is the highest level. It requires protection from fake websites and ensures your secret key can't be copied or stolen. The exact security level depends on how it's set up. These ratings are based on industry standards.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ Section */}
       <FAQ />
