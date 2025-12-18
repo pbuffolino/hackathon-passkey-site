@@ -6,12 +6,17 @@ type Step = {
   id: number;
   title: string;
   explanation: string;
-  visual: 'button' | 'biometric' | 'keygen' | 'publickey' | 'success';
+  visual: 'button' | 'biometric' | 'keygen' | 'publickey' | 'success' | 'validation';
 };
 
 type WebAuthnState = {
   status: 'idle' | 'creating' | 'success' | 'error';
   credentialId?: string;
+  errorMessage?: string;
+};
+
+type ValidationState = {
+  status: 'idle' | 'verifying' | 'authenticated' | 'failed';
   errorMessage?: string;
 };
 
@@ -46,11 +51,18 @@ const steps: Step[] = [
     explanation: 'You\'re all set! Next time you log in, you\'ll just use your fingerprint or face - no password needed. The website uses your public key to verify your identity.',
     visual: 'success',
   },
+  {
+    id: 6,
+    title: 'Login Validation',
+    explanation: 'Verify your passkey works by authenticating again. The system will check that the credential ID matches the one stored during registration.',
+    visual: 'validation',
+  },
 ];
 
 export default function PasskeyWalkthrough() {
   const [currentStep, setCurrentStep] = useState(0);
   const [webauthnState, setWebauthnState] = useState<WebAuthnState>({ status: 'idle' });
+  const [validationState, setValidationState] = useState<ValidationState>({ status: 'idle' });
   const step = steps[currentStep];
 
   // Hard-coded challenge and user ID for demo
@@ -100,6 +112,9 @@ export default function PasskeyWalkthrough() {
       })) as PublicKeyCredential;
 
       if (credential && credential.id) {
+        // Save the full credential ID to localStorage
+        localStorage.setItem('passkeyCredentialId', credential.id);
+        
         // Shorten the credential ID for display (it's already base64url encoded)
         const fullId = credential.id;
         const shortenedId = fullId.length > 24 
@@ -136,6 +151,99 @@ export default function PasskeyWalkthrough() {
   const handleStartOver = () => {
     setCurrentStep(0);
     setWebauthnState({ status: 'idle' });
+    setValidationState({ status: 'idle' });
+  };
+
+  // Helper function to convert base64url to Uint8Array
+  const base64UrlToUint8Array = (base64Url: string): BufferSource => {
+    // Convert base64url to base64
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    
+    // Add padding if needed
+    while (base64.length % 4) {
+      base64 += '=';
+    }
+    
+    // Decode base64 to binary string, then convert to Uint8Array
+    const binaryString = atob(base64);
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes;
+  };
+
+  const handleVerifyPasskey = async () => {
+    // Check if WebAuthn is supported
+    if (!window.PublicKeyCredential) {
+      setValidationState({
+        status: 'failed',
+        errorMessage: 'WebAuthn is not supported in this browser.',
+      });
+      return;
+    }
+
+    // Check if credential ID exists in localStorage
+    const storedCredentialId = localStorage.getItem('passkeyCredentialId');
+    if (!storedCredentialId) {
+      setValidationState({
+        status: 'failed',
+        errorMessage: 'No passkey found. Please register a passkey first.',
+      });
+      return;
+    }
+
+    setValidationState({ status: 'verifying' });
+
+    try {
+      const credentialIdBytes = base64UrlToUint8Array(storedCredentialId);
+      
+      const publicKeyCredentialRequestOptions: PublicKeyCredentialRequestOptions = {
+        challenge: challenge,
+        timeout: 60000,
+        userVerification: 'required',
+        allowCredentials: [
+          {
+            id: credentialIdBytes,
+            type: 'public-key',
+          },
+        ],
+      };
+
+      const assertion = (await navigator.credentials.get({
+        publicKey: publicKeyCredentialRequestOptions,
+      })) as PublicKeyCredential;
+
+      if (assertion && assertion.id) {
+        // Compare the returned credential ID with the stored one
+        if (assertion.id === storedCredentialId) {
+          setValidationState({ status: 'authenticated' });
+        } else {
+          setValidationState({
+            status: 'failed',
+            errorMessage: 'Credential ID mismatch. Validation failed.',
+          });
+        }
+      } else {
+        setValidationState({
+          status: 'failed',
+          errorMessage: 'No credential returned. Validation failed.',
+        });
+      }
+    } catch (error: any) {
+      // Handle user cancellation or errors
+      if (error.name === 'NotAllowedError' || error.name === 'AbortError') {
+        setValidationState({
+          status: 'failed',
+          errorMessage: 'Validation cancelled by user.',
+        });
+      } else {
+        setValidationState({
+          status: 'failed',
+          errorMessage: error.message || 'Validation failed. Please try again.',
+        });
+      }
+    }
   };
 
   const renderVisual = () => {
@@ -384,6 +492,128 @@ export default function PasskeyWalkthrough() {
               <p className="text-white text-2xl font-semibold">Passkey Created!</p>
               <p className="text-gray-400">You're ready to use biometric login</p>
             </div>
+          </div>
+        );
+      case 'validation':
+        return (
+          <div className="flex flex-col items-center justify-center h-full min-h-[300px] space-y-4">
+            {validationState.status === 'idle' && (
+              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-20 h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center">
+                    <svg
+                      className="w-12 h-12 text-[#00D9FF]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-white text-lg font-medium mb-4">Ready to verify passkey</p>
+                  <button
+                    onClick={handleVerifyPasskey}
+                    className="px-6 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
+                  >
+                    Verify Passkey
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {validationState.status === 'verifying' && (
+              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-20 h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center animate-pulse-slow">
+                    <svg
+                      className="w-12 h-12 text-[#00D9FF]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-white text-lg font-medium">Verifying...</p>
+                  <p className="text-gray-400 text-sm">Check your device for biometric prompt</p>
+                </div>
+              </div>
+            )}
+
+            {validationState.status === 'authenticated' && (
+              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-green-500/50">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="relative">
+                    <div className="w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center animate-pulse-slow">
+                      <svg
+                        className="w-16 h-16 text-green-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="absolute inset-0 rounded-full bg-green-500/30 animate-ping"></div>
+                  </div>
+                  <div className="px-6 py-3 bg-green-500/20 border border-green-500/50 rounded-lg">
+                    <p className="text-green-400 font-semibold text-xl">Security Authenticated</p>
+                  </div>
+                  <p className="text-gray-300 text-sm text-center max-w-md">
+                    Your passkey has been successfully verified. The credential ID matches!
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {validationState.status === 'failed' && (
+              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-red-500/50">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-20 h-20 rounded-full bg-red-500/20 flex items-center justify-center">
+                    <svg
+                      className="w-12 h-12 text-red-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
+                    </svg>
+                  </div>
+                  <div className="px-6 py-3 bg-red-500/20 border border-red-500/50 rounded-lg">
+                    <p className="text-red-400 font-semibold text-lg">Validation Failed</p>
+                  </div>
+                  <p className="text-red-400 font-medium text-center max-w-md">
+                    {validationState.errorMessage || 'Validation failed. Please try again.'}
+                  </p>
+                  <button
+                    onClick={handleVerifyPasskey}
+                    className="px-6 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         );
       default:
