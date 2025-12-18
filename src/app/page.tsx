@@ -1,20 +1,103 @@
 import PasskeyWalkthrough from './components/PasskeyWalkthrough';
 import MFALeaderboard from './components/MFALeaderboard';
+import FAQ from './components/FAQ';
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            Stop Remembering.
+            Stop Remembering Passwords.
             <br />
-            <span className="text-gradient-electric">Start Recognizing.</span>
+            <span className="text-gradient-electric">Start Using Your Face or Fingerprint.</span>
           </h1>
-          <p className="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-12">
-            Replace passwords with biometrics. Passkeys use your fingerprint, face, or device PIN to keep your accounts secure—no typing required.
+          <p className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+            Passkeys are like passwords, but instead of typing them, you use your fingerprint, face, or device PIN. They're faster, easier, and much more secure.
           </p>
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-12">
+            Already used Face ID or Touch ID to unlock your phone? That's the same idea, but for logging into websites and apps.
+          </p>
+        </div>
+      </section>
+
+      {/* Passkeys 101 - Simple Introduction */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900/30">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gray-900 rounded-2xl p-8 md:p-12 border border-gray-800">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+                What is a Passkey?
+              </h2>
+              <p className="text-xl text-gray-300">
+                Think of it like a house key, but it's your fingerprint
+              </p>
+            </div>
+
+            <div className="space-y-6 text-lg text-gray-300 leading-relaxed">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00D9FF]/20 flex items-center justify-center mt-1">
+                  <span className="text-[#00D9FF] font-bold">1</span>
+                </div>
+                <div>
+                  <p className="font-semibold text-white mb-2">A passkey is like a password, but better</p>
+                  <p>Instead of creating and remembering a password, your device creates a special key that only works with your fingerprint, face, or PIN. You never have to type anything.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00D9FF]/20 flex items-center justify-center mt-1">
+                  <span className="text-[#00D9FF] font-bold">2</span>
+                </div>
+                <div>
+                  <p className="font-semibold text-white mb-2">It only works on the real website</p>
+                  <p>Your passkey is like a key that only fits one lock. Even if someone tricks you into visiting a fake website, your passkey won't work there. This protects you from phishing scams.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00D9FF]/20 flex items-center justify-center mt-1">
+                  <span className="text-[#00D9FF] font-bold">3</span>
+                </div>
+                <div>
+                  <p className="font-semibold text-white mb-2">It stays on your device</p>
+                  <p>The secret part of your passkey never leaves your phone or computer. It's stored safely in your device's secure chip, the same place that protects your Face ID or Touch ID.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-10 pt-8 border-t border-gray-800">
+              <h3 className="text-xl font-semibold text-white mb-4">Where can I use passkeys?</h3>
+              <div className="grid sm:grid-cols-2 gap-4 text-gray-300">
+                <div className="flex items-center space-x-3">
+                  <svg className="w-5 h-5 text-[#00D9FF] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Banking apps</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <svg className="w-5 h-5 text-[#00D9FF] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Email accounts</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <svg className="w-5 h-5 text-[#00D9FF] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Social media</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <svg className="w-5 h-5 text-[#00D9FF] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Shopping sites</span>
+                </div>
+              </div>
+              <p className="mt-4 text-gray-400 text-sm">More websites are adding passkey support every day!</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -23,10 +106,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              Why Passkeys?
+              Why Use Passkeys?
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Three powerful reasons to make the switch
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Three simple reasons to make the switch
             </p>
           </div>
 
@@ -49,10 +132,10 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-2xl font-semibold mb-4 text-white">
-                Phishing Proof
+                Can't Be Tricked by Fake Websites
               </h3>
-              <p className="text-gray-400 text-lg leading-relaxed">
-                Cryptographic binding ensures your passkey only works with the exact website it was created for. No more falling for fake login pages.
+              <p className="text-gray-300 text-lg leading-relaxed">
+                Your passkey only works with the real website it was created for. Even if someone tricks you into visiting a fake login page, your passkey won't work there. No more falling for phishing scams.
               </p>
             </div>
 
@@ -74,10 +157,10 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-2xl font-semibold mb-4 text-white">
-                Zero Friction
+                Super Fast and Easy
               </h3>
-              <p className="text-gray-400 text-lg leading-relaxed">
-                No more typing passwords. Just use your fingerprint, face, or device PIN. It's faster, easier, and more secure.
+              <p className="text-gray-300 text-lg leading-relaxed">
+                No more typing long passwords or waiting for text message codes. Just use your fingerprint, face, or device PIN, the same way you unlock your phone. It's faster, easier, and more secure.
               </p>
             </div>
 
@@ -99,10 +182,10 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-2xl font-semibold mb-4 text-white">
-                Secure by Design
+                Your Secret Stays on Your Device
               </h3>
-              <p className="text-gray-400 text-lg leading-relaxed">
-                Your private keys never leave your device. They're stored securely in your device's secure chip, protected from hackers and breaches.
+              <p className="text-gray-300 text-lg leading-relaxed">
+                The secret part of your passkey never leaves your phone or computer. It's stored safely in your device's secure chip, the same technology that protects your Face ID or Touch ID. Even if a website gets hacked, your passkey stays safe.
               </p>
             </div>
           </div>
@@ -115,11 +198,58 @@ export default function Home() {
       {/* MFA Leaderboard Comparison */}
       <MFALeaderboard />
 
+      {/* FAQ Section */}
+      <FAQ />
+
+      {/* Key Terms Glossary */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800">
+            <h2 className="text-3xl font-bold mb-6 text-center">
+              Key Terms Explained
+            </h2>
+            <p className="text-gray-400 text-center mb-8">
+              A quick reference for terms you might come across
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-white font-semibold mb-2">Passkey</h3>
+                  <p className="text-gray-300 text-sm">A digital key that uses your fingerprint, face, or PIN instead of a password. It's stored on your device and only works with the website it was created for.</p>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-2">Biometric</h3>
+                  <p className="text-gray-300 text-sm">A way to identify you using something unique about your body, like your fingerprint or face. Face ID and Touch ID are examples of biometrics.</p>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-2">Phishing</h3>
+                  <p className="text-gray-300 text-sm">When scammers create fake websites that look real to trick you into entering your password. Passkeys protect you from this because they won't work on fake sites.</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-white font-semibold mb-2">Device-bound</h3>
+                  <p className="text-gray-300 text-sm">Means your passkey is tied to your specific device. Some passkeys can sync across your devices (like your iPhone and iPad), while others only work on one device.</p>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-2">MFA / Multi-Factor Authentication</h3>
+                  <p className="text-gray-300 text-sm">Using more than one way to prove it's you, like a password plus a text code. Passkeys are a type of MFA that's more secure and easier to use.</p>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-2">WebAuthn</h3>
+                  <p className="text-gray-300 text-sm">The technical standard that makes passkeys work. You don't need to know this. It's just the behind-the-scenes technology that powers passkeys on websites.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-gray-400">
-            The Passkey Pilot — Learn how passkeys work
+            The Passkey Pilot - Learn how passkeys work
           </p>
         </div>
       </footer>

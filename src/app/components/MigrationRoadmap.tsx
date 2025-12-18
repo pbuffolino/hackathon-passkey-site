@@ -8,27 +8,27 @@ const steps: RoadmapStep[] = [
   {
     number: 1,
     title: 'Assess Current MFA Infrastructure',
-    description: 'Evaluate your existing multi-factor authentication setup and identify integration points for passkeys.',
+    description: 'Take stock of your current security setup (passwords, text codes, authenticator apps) and figure out where passkeys can fit in.',
   },
   {
     number: 2,
     title: 'Plan Passkey Rollout Strategy',
-    description: 'Design a phased approach that aligns with your organization\'s security policies and user needs.',
+    description: 'Create a step-by-step plan that works with your company\'s security rules and makes sense for your team.',
   },
   {
     number: 3,
     title: 'Beta Testing with Select Users',
-    description: 'Start with a small group of users to test passkey enrollment, authentication flows, and gather feedback.',
+    description: 'Start with a small group of people to test creating and using passkeys, and see what questions or issues come up.',
   },
   {
     number: 4,
     title: 'Gradual Rollout by Department',
-    description: 'Expand passkey adoption department by department, ensuring support and training are in place.',
+    description: 'Roll out passkeys to one team or department at a time, making sure everyone has help and knows how to use them.',
   },
   {
     number: 5,
-    title: 'Full Enterprise Deployment',
-    description: 'Complete the migration with organization-wide passkey support, replacing traditional MFA methods.',
+    title: 'Full Company-Wide Deployment',
+    description: 'Once everything is working smoothly, roll out passkeys to everyone in your organization, replacing old password methods.',
   },
 ];
 
@@ -37,11 +37,17 @@ export default function MigrationRoadmap() {
     <section className="py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
+          <div className="inline-block px-4 py-2 bg-[#00D9FF]/20 border border-[#00D9FF]/50 rounded-full mb-4">
+            <span className="text-[#00D9FF] text-sm font-semibold uppercase tracking-wide">For Organizations & IT Teams</span>
+          </div>
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
             Migration Roadmap
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Your journey from MFA to Passkeys
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-4">
+            A step-by-step guide for organizations moving from traditional passwords to passkeys
+          </p>
+          <p className="text-gray-400 max-w-xl mx-auto text-sm">
+            <span className="font-semibold text-white">For personal use?</span> You can start using passkeys right away on any website that supports them. No migration needed!
           </p>
         </div>
 
