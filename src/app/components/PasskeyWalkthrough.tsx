@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { decode } from 'cbor-x';
 
 type Step = {
   id: number;
@@ -9,10 +10,23 @@ type Step = {
   visual: 'button' | 'biometric' | 'keygen' | 'publickey' | 'success' | 'validation';
 };
 
+type TechnicalMetadata = {
+  credentialId: string;
+  fullCredentialId: string;
+  attestationFormat: string;
+  hardwareType: string;
+  transports: string[];
+  algorithm: string;
+  userVerification: string;
+  authenticatorAttachment: string;
+  attestationConveyancePreference: string;
+};
+
 type WebAuthnState = {
   status: 'idle' | 'creating' | 'success' | 'error';
   credentialId?: string;
   errorMessage?: string;
+  technicalMetadata?: TechnicalMetadata;
 };
 
 type ValidationState = {
@@ -63,6 +77,7 @@ export default function PasskeyWalkthrough() {
   const [currentStep, setCurrentStep] = useState(0);
   const [webauthnState, setWebauthnState] = useState<WebAuthnState>({ status: 'idle' });
   const [validationState, setValidationState] = useState<ValidationState>({ status: 'idle' });
+  const [showSimpleExplanation, setShowSimpleExplanation] = useState(true);
   const step = steps[currentStep];
 
   // Hard-coded challenge and user ID for demo
@@ -121,9 +136,170 @@ export default function PasskeyWalkthrough() {
           ? fullId.substring(0, 16) + '...' + fullId.slice(-8)
           : fullId;
         
+        // Parse technical metadata from the response
+        const response = credential.response as AuthenticatorAttestationResponse;
+        let attestationFormat = 'Unknown';
+        let hardwareType = 'Unknown';
+        let transports: string[] = [];
+        let algorithm = 'ES256 (-7)'; // Default to requested algorithm
+        let userVerification = 'Unknown';
+        let authenticatorAttachment = 'Unknown';
+        let attestationConveyancePreference = publicKeyCredentialCreationOptions.attestation || 'none';
+
+        // Get authenticator attachment from the credential
+        if (credential.authenticatorAttachment) {
+          authenticatorAttachment = credential.authenticatorAttachment;
+        } else {
+          // Fallback: try to infer from transports
+          try {
+            const transportsArray = response.getTransports();
+            if (transportsArray && transportsArray.includes('internal')) {
+              authenticatorAttachment = 'platform';
+            } else {
+              authenticatorAttachment = 'cross-platform';
+            }
+          } catch (error) {
+            authenticatorAttachment = 'Unknown';
+          }
+        }
+
+        try {
+          // Parse attestation format and authenticator data from attestationObject
+          if (response.attestationObject) {
+            const attestationObj = decode(
+              new Uint8Array(response.attestationObject)
+            );
+            
+            if (attestationObj && attestationObj.fmt) {
+              attestationFormat = attestationObj.fmt as string;
+            }
+            
+            // Parse authenticator data (authData) to get flags
+            if (attestationObj.authData) {
+              const authData = attestationObj.authData as Uint8Array;
+              
+              // Read flags byte (byte 32 in authData, 0-indexed)
+              // authData structure: rpIdHash (32 bytes) + flags (1 byte) + counter (4 bytes) + ...
+              if (authData.length >= 33) {
+                const flags = authData[32];
+                const uv = (flags & 0x04) !== 0; // User Verification flag (bit 2)
+                const up = (flags & 0x01) !== 0; // User Presence flag (bit 0)
+                
+                if (uv) {
+                  userVerification = 'verified (biometric/PIN required)';
+                } else if (up) {
+                  userVerification = 'presence only (click to confirm)';
+                } else {
+                  userVerification = 'none';
+                }
+              }
+              
+              // Extract algorithm from COSE key in attestedCredentialData
+              // The COSE key is in the credentialPublicKey field
+              // Structure: credentialIdLength (2 bytes) + credentialId + credentialPublicKey (CBOR)
+              try {
+                // Skip rpIdHash (32) + flags (1) + signCount (4) = 37 bytes
+                // Then credentialId length (2 bytes) + credentialId
+                let offset = 37;
+                if (authData.length > offset + 2) {
+                  // Read credentialId length (big-endian)
+                  const credIdLen = (authData[offset] << 8) | authData[offset + 1];
+                  offset += 2 + credIdLen;
+                  
+                  // Now we should be at the credentialPublicKey (CBOR-encoded COSE key)
+                  if (authData.length > offset) {
+                    const coseKeyBytes = authData.slice(offset);
+                    try {
+                      const coseKey = decode(coseKeyBytes);
+                      // COSE key structure: map with algorithm at key 3
+                      if (coseKey && typeof coseKey === 'object' && 3 in coseKey) {
+                        const alg = coseKey[3];
+                        // Map common algorithm values (using number keys since COSE uses integers)
+                        const algMap: { [key: number]: string } = {
+                          [-7]: 'ES256',
+                          [-35]: 'ES384',
+                          [-36]: 'ES512',
+                          [-257]: 'RS256',
+                          [-37]: 'PS256',
+                        };
+                        if (typeof alg === 'number') {
+                          algorithm = algMap[alg] ? `${algMap[alg]} (${alg})` : `Algorithm ${alg}`;
+                        }
+                      } else {
+                        // If COSE key doesn't have algorithm, use requested algorithm
+                        algorithm = 'ES256 (-7)';
+                      }
+                    } catch (error) {
+                      // If COSE key parsing fails, use requested algorithm
+                      algorithm = 'ES256 (-7)';
+                    }
+                  } else {
+                    // Not enough data, use requested algorithm
+                    algorithm = 'ES256 (-7)';
+                  }
+                } else {
+                  // Not enough data, use requested algorithm
+                  algorithm = 'ES256 (-7)';
+                }
+              } catch (error) {
+                // Fallback to requested algorithm
+                algorithm = 'ES256 (-7)';
+              }
+            }
+          }
+        } catch (error) {
+          console.warn('Failed to parse attestation object:', error);
+        }
+
+        try {
+          // Get hardware type from transports
+          const transportsArray = response.getTransports();
+          if (transportsArray && transportsArray.length > 0) {
+            transports = transportsArray;
+            if (transportsArray.length === 1) {
+              switch (transportsArray[0]) {
+                case 'internal':
+                  hardwareType = 'Platform Biometrics';
+                  break;
+                case 'usb':
+                  hardwareType = 'USB Security Key';
+                  break;
+                case 'nfc':
+                  hardwareType = 'NFC Security Key';
+                  break;
+                case 'ble':
+                  hardwareType = 'Bluetooth Security Key';
+                  break;
+                case 'hybrid':
+                  hardwareType = 'Hybrid Authenticator';
+                  break;
+                default:
+                  hardwareType = 'Unknown';
+              }
+            } else {
+              hardwareType = 'Multi-Transport Authenticator';
+            }
+          } else {
+            hardwareType = 'Unknown';
+          }
+        } catch (error) {
+          console.warn('Failed to get transports:', error);
+        }
+        
         setWebauthnState({
           status: 'success',
           credentialId: shortenedId,
+          technicalMetadata: {
+            credentialId: shortenedId,
+            fullCredentialId: fullId,
+            attestationFormat,
+            hardwareType,
+            transports: transports.length > 0 ? transports : ['Not specified'],
+            algorithm,
+            userVerification,
+            authenticatorAttachment,
+            attestationConveyancePreference,
+          },
         });
       }
     } catch (error: any) {
@@ -152,6 +328,7 @@ export default function PasskeyWalkthrough() {
     setCurrentStep(0);
     setWebauthnState({ status: 'idle' });
     setValidationState({ status: 'idle' });
+    setShowSimpleExplanation(true);
   };
 
   // Helper function to convert base64url to Uint8Array
@@ -316,35 +493,183 @@ export default function PasskeyWalkthrough() {
             )}
 
             {webauthnState.status === 'success' && (
-              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-green-500/50">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center">
-                    <svg
-                      className="w-12 h-12 text-green-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <div className="px-4 py-2 bg-green-500/20 border border-green-500/50 rounded-lg">
-                    <p className="text-green-400 font-semibold text-lg">Real Passkey Created!</p>
-                  </div>
-                  {webauthnState.credentialId && (
-                    <div className="mt-4 p-4 bg-gray-900/50 rounded-lg border border-gray-700">
-                      <p className="text-gray-400 text-xs mb-1">Credential ID:</p>
-                      <p className="text-[#00D9FF] font-mono text-sm break-all">
-                        {webauthnState.credentialId}
-                      </p>
+              <div className="flex flex-col items-center space-y-4 w-full">
+                <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-green-500/50 w-full">
+                  <div className="flex flex-col items-center space-y-4">
+                    <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <svg
+                        className="w-12 h-12 text-green-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
                     </div>
-                  )}
+                    <div className="px-4 py-2 bg-green-500/20 border border-green-500/50 rounded-lg">
+                      <p className="text-green-400 font-semibold text-lg">Real Passkey Created!</p>
+                    </div>
+                  </div>
                 </div>
+                {webauthnState.technicalMetadata && (
+                  <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700 w-full">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-white font-semibold text-xl">Technical Metadata</h3>
+                      <button
+                        onClick={() => setShowSimpleExplanation(!showSimpleExplanation)}
+                        className="px-4 py-2 text-sm bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors border border-gray-600 font-medium"
+                      >
+                        {showSimpleExplanation ? 'Show Technical' : 'Show Simple'}
+                      </button>
+                    </div>
+                    
+                    {showSimpleExplanation ? (
+                      <div className="space-y-5">
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Credential ID</p>
+                          <p className="text-[#00D9FF] font-mono text-base break-all mb-3">
+                            {webauthnState.technicalMetadata.credentialId}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            A unique identifier for this passkey. Like a serial number, it helps the website recognize your specific credential.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Hardware Type</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.hardwareType}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            {webauthnState.technicalMetadata.hardwareType === 'Platform Biometrics' 
+                              ? 'Your passkey is stored in your device\'s secure chip (like Touch ID or Face ID). It can only be used on this device.'
+                              : webauthnState.technicalMetadata.hardwareType === 'USB Security Key'
+                              ? 'Your passkey is stored on a physical USB security key. You can use it on any device by plugging it in.'
+                              : webauthnState.technicalMetadata.hardwareType === 'Multi-Transport Authenticator'
+                              ? 'Your passkey supports multiple connection methods (USB, NFC, Bluetooth), making it versatile across devices.'
+                              : 'The method your device uses to communicate with the authenticator storing your passkey.'}
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">User Verification</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.userVerification.includes('verified')
+                              ? 'Biometric Required'
+                              : webauthnState.technicalMetadata.userVerification.includes('presence')
+                              ? 'Click to Confirm'
+                              : 'Not Specified'}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            {webauthnState.technicalMetadata.userVerification.includes('verified')
+                              ? 'This passkey requires biometric authentication (fingerprint, face) or your device PIN. This provides the highest level of security.'
+                              : webauthnState.technicalMetadata.userVerification.includes('presence')
+                              ? 'This passkey only requires you to click a button to confirm. No biometric authentication is needed.'
+                              : 'The level of user verification required for this passkey.'}
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Attestation Format</p>
+                          <p className="text-white font-mono text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.attestationFormat}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            The cryptographic proof format used to verify your authenticator. Different manufacturers use different formats, but they all provide the same security guarantees.
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-5">
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Credential ID</p>
+                          <p className="text-[#00D9FF] font-mono text-base break-all mb-3">
+                            {webauthnState.technicalMetadata.credentialId}
+                          </p>
+                          <details className="mt-3">
+                            <summary className="text-gray-400 text-sm cursor-pointer hover:text-gray-300 font-medium">
+                              Show full ID
+                            </summary>
+                            <p className="text-[#00D9FF] font-mono text-sm break-all mt-3 p-3 bg-gray-800 rounded">
+                              {webauthnState.technicalMetadata.fullCredentialId}
+                            </p>
+                          </details>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Attestation Format</p>
+                          <p className="text-white font-mono text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.attestationFormat}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            The format identifier from the CBOR-encoded attestationObject. Common values: "packed", "tpm", "android-key", "apple", "none".
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Hardware Type</p>
+                          <p className="text-white text-base mb-2 font-medium">
+                            {webauthnState.technicalMetadata.hardwareType}
+                          </p>
+                          <p className="text-gray-400 text-sm mb-3">
+                            Derived from transport mechanisms: {webauthnState.technicalMetadata.transports.join(', ')}
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Cryptographic Algorithm</p>
+                          <p className="text-white font-mono text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.algorithm}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            {webauthnState.technicalMetadata.algorithm.includes('ES256')
+                              ? 'ES256 (Elliptic Curve Digital Signature Algorithm with P-256 and SHA-256). This is the standard algorithm used for WebAuthn credentials.'
+                              : 'The cryptographic algorithm used for signing. Extracted from the COSE key in the attestation object.'}
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">User Verification</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.userVerification}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            {webauthnState.technicalMetadata.userVerification.includes('verified') 
+                              ? 'Biometric authentication (fingerprint, face) or device PIN was required and verified during credential creation.'
+                              : webauthnState.technicalMetadata.userVerification.includes('presence')
+                              ? 'Only user presence (click/button press) was required - no biometric verification needed.'
+                              : 'Indicates the level of user verification performed during credential creation.'}
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Authenticator Attachment</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.authenticatorAttachment}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            Platform authenticator means the passkey is bound to this device. Cross-platform would allow syncing across devices.
+                          </p>
+                        </div>
+                        
+                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Attestation Conveyance</p>
+                          <p className="text-white text-base mb-3 font-medium">
+                            {webauthnState.technicalMetadata.attestationConveyancePreference}
+                          </p>
+                          <p className="text-gray-400 text-sm leading-relaxed">
+                            "Direct" means the full attestation statement is included, providing maximum information about the authenticator.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
