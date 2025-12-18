@@ -17,7 +17,7 @@ const steps: RoadmapStep[] = [
   },
   {
     number: 3,
-    title: 'Pilot Program with Select Users',
+    title: 'Beta Testing with Select Users',
     description: 'Start with a small group of users to test passkey enrollment, authentication flows, and gather feedback.',
   },
   {
