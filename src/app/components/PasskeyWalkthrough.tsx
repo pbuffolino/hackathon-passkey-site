@@ -101,7 +101,15 @@ export default function PasskeyWalkthrough() {
   const challenge = new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10]);
   const userId = new Uint8Array([0x70, 0x61, 0x73, 0x73, 0x6b, 0x65, 0x79, 0x2d, 0x64, 0x65, 0x6d, 0x6f, 0x2d, 0x75, 0x73, 0x65, 0x72]);
 
+  const scrollToDemo = () => {
+    const demoElement = document.getElementById('demo');
+    if (demoElement) {
+      demoElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const handleCreatePasskey = async () => {
+    scrollToDemo();
     // Check if WebAuthn is supported
     if (!window.PublicKeyCredential) {
       setWebauthnState({
@@ -397,12 +405,14 @@ export default function PasskeyWalkthrough() {
   };
 
   const handleNext = () => {
+    scrollToDemo();
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
 
   const handleStartOver = () => {
+    scrollToDemo();
     setCurrentStep(0);
     setWebauthnState({ status: 'idle' });
     setValidationState({ status: 'idle' });
@@ -430,6 +440,7 @@ export default function PasskeyWalkthrough() {
   };
 
   const handleVerifyPasskey = async () => {
+    scrollToDemo();
     // Check if WebAuthn is supported
     if (!window.PublicKeyCredential) {
       setValidationState({
@@ -684,16 +695,6 @@ export default function PasskeyWalkthrough() {
                     {showSimpleExplanation ? (
                       <div className="space-y-3 sm:space-y-5">
                         <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Credential ID</p>
-                          <p className="text-[#00D9FF] font-mono text-sm sm:text-base break-all mb-2 sm:mb-3">
-                            {webauthnState.technicalMetadata.credentialId}
-                          </p>
-                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-                            A unique ID for this passkey. Think of it like a serial number. The website uses this to remember which passkey belongs to you.
-                          </p>
-                        </div>
-                        
-                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
                           <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Hardware Type</p>
                           <p className="text-white text-sm sm:text-base mb-2 sm:mb-3 font-medium">
                             {webauthnState.technicalMetadata.hardwareType}
@@ -728,16 +729,6 @@ export default function PasskeyWalkthrough() {
                         </div>
                         
                         <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Attestation Format</p>
-                          <p className="text-white font-mono text-sm sm:text-base mb-2 sm:mb-3 font-medium">
-                            {webauthnState.technicalMetadata.attestationFormat}
-                          </p>
-                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-                            This is the technical format your device uses to prove it&apos;s legitimate. Different device makers (Apple, Google, Microsoft, etc.) use different formats, but they all provide the same level of security.
-                          </p>
-                        </div>
-                        
-                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
                           <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Backup Status</p>
                           <p className="text-white text-sm sm:text-base mb-2 sm:mb-3 font-medium">
                             {webauthnState.technicalMetadata.backupEligible 
@@ -750,16 +741,6 @@ export default function PasskeyWalkthrough() {
                                 ? 'Your passkey is synced to your cloud account (like iCloud Keychain or Google Password Manager). If you lose this device, you can still access your passkey from another device signed into the same account.'
                                 : 'Your passkey can be synced to your cloud account but hasn\'t been yet. Once synced, you\'ll be able to use it on other devices.')
                               : 'Your passkey is stored only on this device and cannot be synced. This is the most secure option but means you\'ll need to create a new passkey if you lose this device.'}
-                          </p>
-                        </div>
-                        
-                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Origin</p>
-                          <p className="text-[#00D9FF] font-mono text-sm sm:text-base mb-2 sm:mb-3 break-all">
-                            {webauthnState.technicalMetadata.origin || 'Not available'}
-                          </p>
-                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-                            This is the website address where your passkey was created. Your passkey will only work on this exact website, protecting you from fake lookalike sites (phishing).
                           </p>
                         </div>
                       </div>
@@ -941,7 +922,10 @@ export default function PasskeyWalkthrough() {
                     {webauthnState.errorMessage}
                   </p>
                   <button
-                    onClick={handleCreatePasskey}
+                    onClick={() => {
+                      scrollToDemo();
+                      handleCreatePasskey();
+                    }}
                     className="px-6 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
                   >
                     Try Again
@@ -1219,31 +1203,6 @@ export default function PasskeyWalkthrough() {
                               : 'Your presence was confirmed, but no biometric was required for this login.'}
                           </p>
                         </div>
-                        
-                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Login Origin</p>
-                          <p className="text-[#00D9FF] font-mono text-sm sm:text-base mb-2 sm:mb-3 break-all">
-                            {validationState.validationMetadata.origin || 'Not available'}
-                          </p>
-                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-                            Your passkey confirmed you&apos;re on the real website, not a fake lookalike. This is one of the main ways passkeys protect you from phishing scams.
-                          </p>
-                        </div>
-                        
-                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Digital Signature</p>
-                          <div className="flex items-center space-x-2 mb-2 sm:mb-3">
-                            <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
-                              <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                              </svg>
-                            </div>
-                            <p className="text-green-400 font-medium text-sm sm:text-base">Signature created</p>
-                          </div>
-                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-                            Your device created a unique digital signature using your secret key. This proves you have the real passkey without ever revealing your secret.
-                          </p>
-                        </div>
                       </div>
                     ) : (
                       <div className="space-y-3 sm:space-y-5">
@@ -1330,7 +1289,10 @@ export default function PasskeyWalkthrough() {
                     {validationState.errorMessage || 'Validation failed. Please try again.'}
                   </p>
                   <button
-                    onClick={handleVerifyPasskey}
+                    onClick={() => {
+                      scrollToDemo();
+                      handleVerifyPasskey();
+                    }}
                     className="px-6 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
                   >
                     Try Again
@@ -1346,9 +1308,9 @@ export default function PasskeyWalkthrough() {
   };
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8">
+    <section className="py-12 md:py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
             Try It Yourself
           </h2>
@@ -1357,9 +1319,9 @@ export default function PasskeyWalkthrough() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Visual Simulation */}
-          <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 min-h-[400px] flex items-center justify-center">
+          <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 min-h-[300px] md:min-h-[400px] flex items-center justify-center">
             <div className="w-full animate-fade-in">
               {renderVisual()}
             </div>
