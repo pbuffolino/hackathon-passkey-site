@@ -67,7 +67,7 @@ export default function Home() {
               <ul className="space-y-3 text-gray-300 text-base sm:text-lg flex-grow leading-relaxed">
                 <li className="flex items-start space-x-2">
                   <span className="text-[#00D9FF] mt-1">✓</span>
-                  <span>Stops fake login pages (phishing)</span>
+                  <span>Helps stop fake login pages (phishing — fake sites or messages that try to steal your password)</span>
                 </li>
                 <li className="flex items-start space-x-2">
                   <span className="text-[#00D9FF] mt-1">✓</span>

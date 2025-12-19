@@ -60,13 +60,13 @@ const steps: Step[] = [
   {
     id: 2,
     title: 'Verify It\'s Really You',
-    explanation: 'Your device will ask you to use your fingerprint, face, or device PIN, just like when you unlock your phone. This makes sure only you can create this passkey, even if someone else has your device.',
+    explanation: 'Your device will ask you to use your fingerprint, face, or device PIN, just like when you unlock your phone. This helps confirm it is really you creating this passkey.',
     visual: 'biometric',
   },
   {
     id: 3,
     title: 'Your Device Creates a Secret Key',
-    explanation: 'Your device creates a secret key that stays on your device forever. It\'s stored in the same secure chip that protects Face ID or Touch ID.',
+    explanation: 'Your device creates a secret key that stays on your device and is kept in a secure area.',
     visual: 'keygen',
   },
   {
@@ -969,7 +969,7 @@ export default function PasskeyWalkthrough() {
               <p className="text-gray-200 text-sm sm:text-base md:text-lg font-bold">Your Secret Key</p>
               <div className="flex items-center space-x-1 md:space-x-2 justify-center">
                 <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#00D9FF] rounded-full"></div>
-                <p className="text-[#00D9FF] text-xs sm:text-sm md:text-base font-semibold">Stays on your device forever</p>
+                <p className="text-[#00D9FF] text-xs sm:text-sm md:text-base font-semibold">Stays on your device</p>
               </div>
             </div>
           </div>

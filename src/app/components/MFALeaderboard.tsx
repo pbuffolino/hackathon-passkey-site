@@ -7,6 +7,7 @@ type MFAMethod = {
   phishResistant: boolean;
   deviceBound: boolean | 'Partial' | 'Depends';
   highlighted?: boolean; // For electric blue glow
+  factorOptional?: boolean; // For factors where one component is optional
 };
 
 const methods: MFAMethod[] = [
@@ -20,7 +21,7 @@ const methods: MFAMethod[] = [
     deviceBound: false,
   },
   {
-    name: 'Security Questions (KBA)',
+    name: 'Security Questions',
     factorType: 'Knowledge',
     description: 'Personal questions like "What was your first pet?" that can often be guessed or found online.',
     strength: 'Very Weak',
@@ -75,13 +76,14 @@ const methods: MFAMethod[] = [
     highlighted: true,
   },
   {
-    name: 'FIDO2 Hardware Security Key',
-    factorType: 'Possession (+ Inherence optional)',
+    name: 'Hardware Security Key',
+    factorType: 'Possession + Inherence',
     description: 'A physical USB or NFC device you plug in or tap. May require a PIN or fingerprint.',
     strength: 'Maximum',
     aalLevel: 'AAL2/AAL3',
     phishResistant: true,
     deviceBound: true,
+    factorOptional: true,
   },
 ];
 
@@ -184,18 +186,44 @@ function MobileMethodCard({ method }: { method: MFAMethod }) {
       {/* Header: Name and Type */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
         <h3 className="text-white font-semibold text-xl">{method.name}</h3>
-        <span className="inline-flex items-center self-start px-3 py-1.5 rounded-full text-sm font-medium bg-gray-800/70 text-gray-300">
-          {method.factorType}
-        </span>
+        <div className="group/tooltip relative inline-block self-start">
+          <div className="inline-block px-2.5 py-1 rounded-md text-sm font-bold bg-gray-800/70 text-gray-200 text-center leading-tight border border-gray-700/50">
+            {method.factorType.split(' ').map((word, idx) => (
+              <div key={idx}>
+                {word}
+              </div>
+            ))}
+            {method.factorOptional && (
+              <div className="flex items-center justify-center mt-0.5">
+                <svg className="w-3.5 h-3.5 text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+              </div>
+            )}
+          </div>
+          {method.factorOptional && (
+            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+              Inherence factor (biometric or PIN) is optional
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Strength Bar */}
       <div className="mb-5">
         <div className="flex items-center justify-between mb-2">
           <span className="text-gray-400 text-base">Security Level</span>
-          <span className="text-gray-300 text-base font-medium">
-            {method.strength} <span className="text-gray-500">({method.aalLevel})</span>
-          </span>
+          <div className="flex items-center gap-1.5 group/tooltip relative">
+            <span className="text-gray-300 text-base font-medium">
+              {method.strength}
+            </span>
+            <svg className="w-4 h-4 text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+            <div className="absolute bottom-full mb-2 right-0 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+              Security level {method.aalLevel}
+            </div>
+          </div>
         </div>
         <div className="w-full bg-gray-800 rounded-full h-3 overflow-hidden">
           <div
@@ -229,7 +257,7 @@ export default function MFALeaderboard() {
           </p>
           <div className="max-w-4xl mx-auto bg-gray-900/50 rounded-xl p-6 border border-gray-800 mb-8">
             <p className="text-gray-300 text-lg leading-relaxed">
-              <span className="font-semibold text-white">Quick answer:</span> Passkeys are one of the most secure and easiest to use. They can't be tricked by fake websites, and you don't have to remember anything or wait for text messages.
+              <span className="font-semibold text-white">Quick answer:</span> Passkeys are one of the most secure and easiest to use. They are built to ignore fake websites, and you don't have to remember anything or wait for text messages.
             </p>
           </div>
         </div>
@@ -249,27 +277,29 @@ export default function MFALeaderboard() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-800/50">
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-base font-bold text-white uppercase tracking-wider">
                       Method
+                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">Sign in method</span>
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      Type
-                      <span className="block text-xs font-normal normal-case text-gray-400 mt-1">What you use to prove it's you</span>
+                    <th className="px-6 py-4 text-left text-base font-bold text-white uppercase tracking-wider">
+                      Factor
+                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">What it uses</span>
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      How It Works
+                    <th className="px-6 py-4 text-left text-base font-bold text-white uppercase tracking-wider">
+                      Action
+                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">What you do</span>
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      How Secure?
-                      <span className="block text-xs font-normal normal-case text-gray-400 mt-1">Based on security standards</span>
+                    <th className="px-6 py-4 text-left text-base font-bold text-white uppercase tracking-wider">
+                      Strength
+                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">How secure</span>
                     </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      Safe from Fake Websites?
-                      <span className="block text-xs font-normal normal-case text-gray-400 mt-1">Phishing protection</span>
+                    <th className="px-6 py-4 text-center text-base font-bold text-white uppercase tracking-wider">
+                      Fake Sites
+                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">Fake site protection</span>
                     </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                      Tied to Your Device?
-                      <span className="block text-xs font-normal normal-case text-gray-400 mt-1">Device-bound</span>
+                    <th className="px-6 py-4 text-center text-base font-bold text-white uppercase tracking-wider">
+                      Devices
+                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">Tied to device</span>
                     </th>
                   </tr>
                 </thead>
@@ -288,10 +318,28 @@ export default function MFALeaderboard() {
                           {method.name}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-800/50 text-gray-300 text-center">
-                          {method.factorType}
-                        </span>
+                      <td className="px-6 py-4">
+                        <div className="group/tooltip relative inline-block">
+                          <div className="inline-block px-2.5 py-1 rounded-md text-sm font-bold bg-gray-800/60 text-gray-200 text-center leading-tight border border-gray-700/50">
+                            {method.factorType.split(' ').map((word, idx) => (
+                              <div key={idx}>
+                                {word}
+                              </div>
+                            ))}
+                            {method.factorOptional && (
+                              <div className="flex items-center justify-center mt-0.5">
+                                <svg className="w-3.5 h-3.5 text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+                          {method.factorOptional && (
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                              Inherence factor (biometric or PIN) is optional
+                            </div>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-gray-400 text-base max-w-md">
@@ -311,9 +359,14 @@ export default function MFALeaderboard() {
                             <span className="text-gray-300 text-sm font-medium">
                               {method.strength}
                             </span>
-                            <span className="text-gray-400 text-xs">
-                              ({method.aalLevel})
-                            </span>
+                            <div className="group/tooltip relative inline-flex">
+                              <svg className="w-4 h-4 text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                              </svg>
+                              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                                Security level {method.aalLevel}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </td>

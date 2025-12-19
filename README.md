@@ -247,6 +247,14 @@ Created with [Cursor](https://cursor.sh/).
 
 ## Recent Changes
 
+- **Security Messaging Update**: Softened security claims throughout the app to be more accurate and less absolute (e.g., "can't be tricked" → "are built to ignore", "Stops" → "Helps stop", removed "forever" and "still safe!" claims)
+- **Phishing Definition**: Added inline definition of "phishing" at first mention for better clarity
+- **FAQ Improvements**: Simplified security answer from 4 numbered points to 3 concise statements; added practical advice for lost/stolen device scenarios; added note about unsynced passkeys
+- **Table Header Redesign**: Updated MFA Leaderboard column headers to be larger, bolder, and clearer (METHOD, FACTOR, ACTION, STRENGTH, FAKE SITES, DEVICES)
+- **AAL Code De-emphasis**: Moved security level codes (AAL1, AAL2, etc.) to hover tooltips with info icons, reducing visible clutter
+- **Factor Column Redesign**: Implemented compact rectangular badges with stacked text for multi-word factors; replaced asterisk with info icon for optional factors
+- **Platform-Agnostic Language**: Replaced Apple-specific hardware references with general "secure area" terminology
+- **Name Simplification**: Removed technical abbreviations - "Security Questions (KBA)" → "Security Questions", "FIDO2 Hardware Security Key" → "Hardware Security Key"
 - **Mobile UI Optimization**: Condensed vertical spacing in PasskeyWalkthrough component to prevent button overlap on iPhone 15 Pro Max and similar mobile devices
 
 ## License

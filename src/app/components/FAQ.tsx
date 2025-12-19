@@ -14,7 +14,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'What if I lose my device?',
-    answer: 'Good news! Many passkeys can sync across your devices (like your iPhone, iPad, and Mac, or your Android phone and tablet). So even if you lose one device, you can still access your accounts from your other devices. Some passkeys can also be backed up to your cloud account.',
+    answer: 'Good news! Many passkeys can sync across your devices (like your iPhone, iPad, and Mac, or your Android phone and tablet). So even if you lose one device, you can still access your accounts from your other devices. Some passkeys can also be backed up to your cloud account. If your passkeys do not sync or back up, you may need to create new passkeys on your new device.',
   },
   {
     question: 'Can I use passkeys on multiple devices?',
@@ -22,7 +22,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'Are passkeys really more secure than passwords?',
-    answer: 'Yes! Passkeys are much more secure because: (1) They can\'t be tricked by fake websites, (2) They can\'t be guessed or stolen like passwords, (3) The secret part never leaves your device, and (4) They require your fingerprint, face, or PIN, something only you have. Even if a website gets hacked, your passkey stays safe.',
+    answer: 'Yes. Passkeys are much more secure because they are built to ignore fake websites, they do not reuse passwords, and the secret part stays on your device.',
   },
   {
     question: 'What websites support passkeys?',
@@ -34,7 +34,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'What if someone steals my phone?',
-    answer: 'Your passkey is still safe! Even if someone has your phone, they can\'t use your passkey without your fingerprint, face, or PIN. That\'s the whole point. The passkey requires something only you have (your biometric) to work. Plus, you can usually disable or delete passkeys from your other devices if your phone is lost or stolen.',
+    answer: 'Even if someone has your phone, they still need your fingerprint, face, or PIN to use your passkeys. You should lock or erase the device if it is lost and remove passkeys from your account if you can.',
   },
   {
     question: 'Can I use passkeys on websites that don\'t support them yet?',
