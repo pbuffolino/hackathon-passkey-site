@@ -327,6 +327,7 @@ Created with [Cursor](https://cursor.sh/).
 - **Content Update**: Updated "Quick Answer" text in MFA Leaderboard to be more accurate ("one of the most secure").
 - **UI Improvements**: Fixed padding and layout for the "Possession, Inherence, etc..." boxes in the MFA Leaderboard, specifically improving the FIDO2 Hardware Security Key display.
 - **Demo Optimization**: Optimized "Try it Yourself" demo for mobile devices (reduced padding, simplified content) and added auto-scroll behavior for better navigation focus.
+- **Mobile UX Improvements**: Condensed vertical spacing in demo boxes, improved font weights and sizes for better readability, simplified step titles and descriptions to prevent layout issues on mobile devices.
 
 ## License
 

@@ -65,13 +65,13 @@ const steps: Step[] = [
   },
   {
     id: 3,
-    title: 'Your Device Creates Your Secret Key',
-    explanation: 'Your device creates a special secret key that stays on your device forever. It\'s stored in your device\'s secure chip, the same place that protects your Face ID or Touch ID. This secret never leaves your device.',
+    title: 'Your Device Creates a Secret Key',
+    explanation: 'Your device creates a secret key that stays on your device forever. It\'s stored in the same secure chip that protects Face ID or Touch ID.',
     visual: 'keygen',
   },
   {
     id: 4,
-    title: 'The Website Gets a "Lock" (Not Your Key)',
+    title: 'The Website Gets a "Lock"',
     explanation: 'Your device sends the website something like a lock, but keeps the key to yourself. Anyone can see the lock, but only your device has the key that fits it. This way, the website can verify it\'s you without ever seeing your secret.',
     visual: 'publickey',
   },
@@ -84,7 +84,7 @@ const steps: Step[] = [
   {
     id: 6,
     title: 'Try Logging In',
-    explanation: 'Let\'s test it! Click the button below to log in with your new passkey. You\'ll use your fingerprint or face again, and the system will make sure everything matches up correctly.',
+    explanation: 'Let\'s test it! Click the button to log in with your new passkey. You\'ll use your fingerprint or face again, and the system will make sure everything matches up correctly.',
     visual: 'validation',
   },
 ];
@@ -596,9 +596,9 @@ export default function PasskeyWalkthrough() {
     switch (step.visual) {
       case 'button':
         return (
-          <div className="flex items-center justify-center h-full min-h-[300px]">
+          <div className="flex items-center justify-center h-full min-h-[250px]">
             <button
-              className="px-8 py-4 min-h-[48px] bg-[#00D9FF] text-black font-semibold rounded-lg text-lg transition-all hover:bg-[#00B8D4] hover:scale-105 shadow-lg shadow-[#00D9FF]/30"
+              className="px-8 py-4 min-h-[48px] bg-[#00D9FF] text-black font-bold rounded-lg text-lg transition-all hover:bg-[#00B8D4] hover:scale-105 shadow-lg shadow-[#00D9FF]/30"
               onClick={handleNext}
             >
               Register Passkey
@@ -607,13 +607,13 @@ export default function PasskeyWalkthrough() {
         );
       case 'biometric':
         return (
-          <div className="flex flex-col items-center justify-center h-full min-h-[300px] space-y-4">
+          <div className="flex flex-col items-center justify-center h-full min-h-[200px] md:min-h-[250px] space-y-3 md:space-y-4">
             {webauthnState.status === 'idle' && (
-              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="w-20 h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center">
+              <div className="bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border border-gray-700">
+                <div className="flex flex-col items-center space-y-3 md:space-y-4">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center">
                     <svg
-                      className="w-12 h-12 text-[#00D9FF]"
+                      className="w-7 h-7 sm:w-8 sm:h-8 md:w-12 md:h-12 text-[#00D9FF]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -626,10 +626,10 @@ export default function PasskeyWalkthrough() {
                       />
                     </svg>
                   </div>
-                  <p className="text-white text-lg font-medium mb-4">Ready to create your passkey</p>
+                  <p className="text-white text-base sm:text-lg font-semibold mb-2 md:mb-4 text-center">Ready to create your passkey</p>
                   <button
                     onClick={handleCreatePasskey}
-                    className="px-6 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
+                    className="px-6 py-3 min-h-[44px] bg-[#00D9FF] text-black font-bold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
                   >
                     Create Real Passkey
                   </button>
@@ -638,11 +638,11 @@ export default function PasskeyWalkthrough() {
             )}
 
             {webauthnState.status === 'creating' && (
-              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="w-20 h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center animate-pulse-slow">
+              <div className="bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border border-gray-700">
+                <div className="flex flex-col items-center space-y-3 md:space-y-4">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center animate-pulse-slow">
                     <svg
-                      className="w-12 h-12 text-[#00D9FF]"
+                      className="w-7 h-7 sm:w-8 sm:h-8 md:w-12 md:h-12 text-[#00D9FF]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -655,19 +655,19 @@ export default function PasskeyWalkthrough() {
                       />
                     </svg>
                   </div>
-                  <p className="text-white text-lg font-medium">Identifying...</p>
-                  <p className="text-gray-400 text-sm">Check your device for biometric prompt</p>
+                  <p className="text-white text-base sm:text-lg font-semibold">Identifying...</p>
+                  <p className="text-gray-400 text-xs sm:text-sm font-medium">Check your device for biometric prompt</p>
                 </div>
               </div>
             )}
 
             {webauthnState.status === 'success' && (
-              <div className="flex flex-col items-center space-y-4 w-full">
-                <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-green-500/50 w-full">
-                  <div className="flex flex-col items-center space-y-4">
-                    <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center">
+              <div className="flex flex-col items-center space-y-3 md:space-y-4 w-full">
+                <div className="bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border border-green-500/50 w-full">
+                  <div className="flex flex-col items-center space-y-3 md:space-y-4">
+                    <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-green-500/20 flex items-center justify-center">
                       <svg
-                        className="w-12 h-12 text-green-500"
+                        className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 text-green-500"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -680,13 +680,13 @@ export default function PasskeyWalkthrough() {
                         />
                       </svg>
                     </div>
-                    <div className="px-4 py-2 bg-green-500/20 border border-green-500/50 rounded-lg">
-                      <p className="text-green-400 font-semibold text-lg">Real Passkey Created!</p>
+                    <div className="px-3 py-1.5 sm:px-4 sm:py-2 bg-green-500/20 border border-green-500/50 rounded-lg">
+                      <p className="text-green-400 font-semibold text-base sm:text-lg">Real Passkey Created!</p>
                     </div>
                   </div>
                 </div>
                 {webauthnState.technicalMetadata && (
-                  <div className="bg-gray-800 rounded-2xl p-4 sm:p-8 shadow-2xl border border-gray-700 w-full">
+                  <div className="bg-gray-800 rounded-2xl p-3 sm:p-4 md:p-8 shadow-2xl border border-gray-700 w-full">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
                       <h3 className="text-white font-semibold text-lg sm:text-xl">What Just Happened?</h3>
                       <button
@@ -906,11 +906,11 @@ export default function PasskeyWalkthrough() {
             )}
 
             {webauthnState.status === 'error' && (
-              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-red-500/50">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="w-20 h-20 rounded-full bg-red-500/20 flex items-center justify-center">
+              <div className="bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border border-red-500/50">
+                <div className="flex flex-col items-center space-y-3 md:space-y-4">
+                  <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-red-500/20 flex items-center justify-center">
                     <svg
-                      className="w-12 h-12 text-red-500"
+                      className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 text-red-500"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -923,7 +923,7 @@ export default function PasskeyWalkthrough() {
                       />
                     </svg>
                   </div>
-                  <p className="text-red-400 font-medium text-center max-w-md">
+                  <p className="text-red-400 font-medium text-sm sm:text-base text-center max-w-md">
                     {webauthnState.errorMessage}
                   </p>
                   <button
@@ -931,7 +931,7 @@ export default function PasskeyWalkthrough() {
                       scrollToDemo();
                       handleCreatePasskey();
                     }}
-                    className="px-6 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
+                    className="px-6 py-3 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
                   >
                     Try Again
                   </button>
@@ -942,11 +942,11 @@ export default function PasskeyWalkthrough() {
         );
       case 'keygen':
         return (
-          <div className="flex flex-col items-center justify-center h-full min-h-[300px] space-y-6">
+          <div className="flex flex-col items-center justify-center h-full min-h-[180px] md:min-h-[200px] space-y-4 md:space-y-6">
             <div className="relative">
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#00D9FF] to-[#00B8D4] flex items-center justify-center animate-pulse-slow shadow-lg shadow-[#00D9FF]/50">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-[#00D9FF] to-[#00B8D4] flex items-center justify-center animate-pulse-slow shadow-lg shadow-[#00D9FF]/50">
                 <svg
-                  className="w-16 h-16 text-black"
+                  className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-black"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -959,31 +959,31 @@ export default function PasskeyWalkthrough() {
                   />
                 </svg>
               </div>
-              <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-black">
-                <svg className="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 20 20">
+              <div className="absolute -top-2 -right-2 w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-black">
+                <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 text-black" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               </div>
             </div>
-            <div className="text-center space-y-2">
-              <p className="text-gray-300 text-sm">Your Secret Key</p>
+            <div className="text-center space-y-1.5 md:space-y-2">
+              <p className="text-gray-200 text-base sm:text-lg font-bold">Your Secret Key</p>
               <div className="flex items-center space-x-2 justify-center">
                 <div className="w-2 h-2 bg-[#00D9FF] rounded-full"></div>
-                <p className="text-[#00D9FF] text-xs">Stays on your device forever</p>
+                <p className="text-[#00D9FF] text-sm sm:text-base font-semibold">Stays on your device forever</p>
               </div>
             </div>
           </div>
         );
       case 'publickey':
         return (
-          <div className="flex flex-col items-center justify-center h-full min-h-[300px] space-y-6">
+          <div className="flex flex-col items-center justify-center h-full min-h-[180px] md:min-h-[200px] space-y-4 md:space-y-6">
             {/* Responsive layout: vertical on mobile, horizontal on larger screens */}
-            <div className="flex flex-col sm:flex-row items-center space-y-6 sm:space-y-0 sm:space-x-8">
+            <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 md:sm:space-x-8">
               {/* Your Device */}
-              <div className="flex flex-col items-center space-y-2">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-gray-800 border-2 border-[#00D9FF] flex items-center justify-center">
+              <div className="flex flex-col items-center space-y-1.5 md:space-y-2">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg bg-gray-800 border-2 border-[#00D9FF] flex items-center justify-center">
                   <svg
-                    className="w-10 h-10 sm:w-12 sm:h-12 text-[#00D9FF]"
+                    className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#00D9FF]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -996,15 +996,15 @@ export default function PasskeyWalkthrough() {
                     />
                   </svg>
                 </div>
-                <p className="text-gray-400 text-xs">Your Device</p>
+                <p className="text-gray-300 text-sm sm:text-base font-semibold">Your Device</p>
               </div>
 
               {/* Arrow connector - vertical on mobile, horizontal on desktop */}
               {/* Mobile: vertical arrow */}
-              <div className="flex sm:hidden flex-col items-center space-y-2">
-                <div className="w-0.5 h-8 bg-[#00D9FF]"></div>
+              <div className="flex sm:hidden flex-col items-center space-y-1.5">
+                <div className="w-0.5 h-6 bg-[#00D9FF]"></div>
                 <svg
-                  className="w-6 h-6 text-[#00D9FF] animate-pulse-slow"
+                  className="w-5 h-5 text-[#00D9FF] animate-pulse-slow"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1016,14 +1016,14 @@ export default function PasskeyWalkthrough() {
                     d="M19 14l-7 7m0 0l-7-7m7 7V3"
                   />
                 </svg>
-                <div className="w-0.5 h-8 bg-[#00D9FF]"></div>
+                <div className="w-0.5 h-6 bg-[#00D9FF]"></div>
               </div>
 
               {/* Desktop: horizontal arrow */}
               <div className="hidden sm:flex items-center space-x-2">
-                <div className="w-12 h-0.5 bg-[#00D9FF]"></div>
+                <div className="w-10 md:w-12 h-0.5 bg-[#00D9FF]"></div>
                 <svg
-                  className="w-6 h-6 text-[#00D9FF] animate-pulse-slow"
+                  className="w-5 md:w-6 h-5 md:h-6 text-[#00D9FF] animate-pulse-slow"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1035,14 +1035,14 @@ export default function PasskeyWalkthrough() {
                     d="M13 7l5 5m0 0l-5 5m5-5H6"
                   />
                 </svg>
-                <div className="w-12 h-0.5 bg-[#00D9FF]"></div>
+                <div className="w-10 md:w-12 h-0.5 bg-[#00D9FF]"></div>
               </div>
 
               {/* Website Server */}
-              <div className="flex flex-col items-center space-y-2">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-gray-800 border-2 border-gray-600 flex items-center justify-center">
+              <div className="flex flex-col items-center space-y-1.5 md:space-y-2">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg bg-gray-800 border-2 border-gray-600 flex items-center justify-center">
                   <svg
-                    className="w-10 h-10 sm:w-12 sm:h-12 text-gray-600"
+                    className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-gray-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1055,17 +1055,17 @@ export default function PasskeyWalkthrough() {
                     />
                   </svg>
                 </div>
-                <p className="text-gray-400 text-xs">Website Server</p>
+                <p className="text-gray-300 text-sm sm:text-base font-semibold">Website Server</p>
               </div>
             </div>
-            <p className="text-gray-300 text-sm text-center px-4">Only the "lock" (public key) is shared with the website. Your "key" (private key) stays on your device.</p>
+            <p className="text-gray-200 text-sm sm:text-base font-semibold text-center px-4">Only the "lock" (public key) is shared with the website. Your "key" (private key) stays on your device.</p>
           </div>
         );
       case 'success':
         return (
-          <div className="flex flex-col items-center justify-center h-full min-h-[300px] space-y-6">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/50">
-              <svg className="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex flex-col items-center justify-center h-full min-h-[180px] md:min-h-[200px] space-y-4 md:space-y-6">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/50">
+              <svg className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -1074,21 +1074,21 @@ export default function PasskeyWalkthrough() {
                 />
               </svg>
             </div>
-            <div className="text-center space-y-2">
-              <p className="text-white text-2xl font-semibold">Passkey Created!</p>
-              <p className="text-gray-400">You're ready to use biometric login</p>
+            <div className="text-center space-y-1.5 md:space-y-2">
+              <p className="text-white text-xl sm:text-2xl font-semibold">Passkey Created!</p>
+              <p className="text-gray-400 text-sm sm:text-base font-medium">You're ready to use biometric login</p>
             </div>
           </div>
         );
       case 'validation':
         return (
-          <div className="flex flex-col items-center justify-center h-full min-h-[300px] space-y-4">
+          <div className="flex flex-col items-center justify-center h-full min-h-[180px] md:min-h-[200px] space-y-3 md:space-y-4">
             {validationState.status === 'idle' && (
-              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="w-20 h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center">
+              <div className="bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border border-gray-700">
+                <div className="flex flex-col items-center space-y-3 md:space-y-4">
+                  <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center">
                     <svg
-                      className="w-12 h-12 text-[#00D9FF]"
+                      className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 text-[#00D9FF]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1101,10 +1101,10 @@ export default function PasskeyWalkthrough() {
                       />
                     </svg>
                   </div>
-                  <p className="text-white text-lg font-medium mb-4">Ready to verify your passkey</p>
+                  <p className="text-white text-base sm:text-lg font-medium mb-2 md:mb-4">Ready to verify your passkey</p>
                   <button
                     onClick={handleVerifyPasskey}
-                    className="px-6 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
+                    className="px-6 py-3 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
                   >
                     Verify Passkey
                   </button>
@@ -1113,11 +1113,11 @@ export default function PasskeyWalkthrough() {
             )}
 
             {validationState.status === 'verifying' && (
-              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="w-20 h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center animate-pulse-slow">
+              <div className="bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border border-gray-700">
+                <div className="flex flex-col items-center space-y-3 md:space-y-4">
+                  <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-[#00D9FF]/20 flex items-center justify-center animate-pulse-slow">
                     <svg
-                      className="w-12 h-12 text-[#00D9FF]"
+                      className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 text-[#00D9FF]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1130,20 +1130,20 @@ export default function PasskeyWalkthrough() {
                       />
                     </svg>
                   </div>
-                  <p className="text-white text-lg font-medium">Verifying...</p>
-                  <p className="text-gray-400 text-sm">Check your device for biometric prompt</p>
+                  <p className="text-white text-base sm:text-lg font-medium">Verifying...</p>
+                  <p className="text-gray-400 text-xs sm:text-sm font-medium">Check your device for biometric prompt</p>
                 </div>
               </div>
             )}
 
             {validationState.status === 'authenticated' && (
-              <div className="flex flex-col items-center space-y-4 w-full">
-                <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-green-500/50 w-full">
-                  <div className="flex flex-col items-center space-y-4">
+              <div className="flex flex-col items-center space-y-3 md:space-y-4 w-full">
+                <div className="bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border border-green-500/50 w-full">
+                  <div className="flex flex-col items-center space-y-3 md:space-y-4">
                     <div className="relative">
-                      <div className="w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center animate-pulse-slow">
+                      <div className="w-20 h-20 sm:w-22 sm:h-22 md:w-24 md:h-24 rounded-full bg-green-500/20 flex items-center justify-center animate-pulse-slow">
                         <svg
-                          className="w-16 h-16 text-green-500"
+                          className="w-14 h-14 sm:w-15 sm:h-15 md:w-16 md:h-16 text-green-500"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -1158,14 +1158,14 @@ export default function PasskeyWalkthrough() {
                       </div>
                       <div className="absolute inset-0 rounded-full bg-green-500/30 animate-ping"></div>
                     </div>
-                    <div className="px-6 py-3 bg-green-500/20 border border-green-500/50 rounded-lg">
-                      <p className="text-green-400 font-semibold text-xl">Security Authenticated</p>
+                    <div className="px-4 py-2 sm:px-6 sm:py-3 bg-green-500/20 border border-green-500/50 rounded-lg">
+                      <p className="text-green-400 font-semibold text-lg sm:text-xl">Security Authenticated</p>
                     </div>
                   </div>
                 </div>
                 
                 {validationState.validationMetadata && (
-                  <div className="bg-gray-800 rounded-2xl p-4 sm:p-8 shadow-2xl border border-gray-700 w-full">
+                  <div className="bg-gray-800 rounded-2xl p-3 sm:p-4 md:p-8 shadow-2xl border border-gray-700 w-full">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
                       <h3 className="text-white font-semibold text-lg sm:text-xl">What Just Happened?</h3>
                       <button
@@ -1270,11 +1270,11 @@ export default function PasskeyWalkthrough() {
             )}
 
             {validationState.status === 'failed' && (
-              <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-red-500/50">
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="w-20 h-20 rounded-full bg-red-500/20 flex items-center justify-center">
+              <div className="bg-gray-800 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border border-red-500/50">
+                <div className="flex flex-col items-center space-y-3 md:space-y-4">
+                  <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-red-500/20 flex items-center justify-center">
                     <svg
-                      className="w-12 h-12 text-red-500"
+                      className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 text-red-500"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1287,10 +1287,10 @@ export default function PasskeyWalkthrough() {
                       />
                     </svg>
                   </div>
-                  <div className="px-6 py-3 bg-red-500/20 border border-red-500/50 rounded-lg">
-                    <p className="text-red-400 font-semibold text-lg">Validation Failed</p>
+                  <div className="px-4 py-2 sm:px-6 sm:py-3 bg-red-500/20 border border-red-500/50 rounded-lg">
+                    <p className="text-red-400 font-semibold text-base sm:text-lg">Validation Failed</p>
                   </div>
-                  <p className="text-red-400 font-medium text-center max-w-md">
+                  <p className="text-red-400 font-medium text-sm sm:text-base text-center max-w-md">
                     {validationState.errorMessage || 'Validation failed. Please try again.'}
                   </p>
                   <button
@@ -1298,7 +1298,7 @@ export default function PasskeyWalkthrough() {
                       scrollToDemo();
                       handleVerifyPasskey();
                     }}
-                    className="px-6 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
+                    className="px-6 py-3 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
                   >
                     Try Again
                   </button>
@@ -1326,7 +1326,7 @@ export default function PasskeyWalkthrough() {
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Visual Simulation */}
-          <div id="demo-visual" className="bg-gray-900 rounded-2xl p-8 border border-gray-800 min-h-[300px] md:min-h-[400px] flex items-center justify-center scroll-mt-4">
+          <div id="demo-visual" className="bg-gray-900 rounded-2xl p-4 sm:p-8 border border-gray-800 min-h-[200px] md:min-h-[400px] flex items-center justify-center scroll-mt-4">
             <div className="w-full animate-fade-in">
               {renderVisual()}
             </div>
@@ -1341,7 +1341,7 @@ export default function PasskeyWalkthrough() {
                 </div>
                 <h3 className="text-2xl font-semibold text-white">{step.title}</h3>
               </div>
-              <p className="text-gray-300 text-lg leading-relaxed">
+              <p className="text-gray-300 text-base sm:text-lg leading-relaxed font-medium">
                 {step.explanation}
               </p>
             </div>
