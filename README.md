@@ -245,6 +245,10 @@ This project uses resources and information from:
 
 Created with [Cursor](https://cursor.sh/).
 
+## Recent Changes
+
+- **Mobile UI Optimization**: Condensed vertical spacing in PasskeyWalkthrough component to prevent button overlap on iPhone 15 Pro Max and similar mobile devices
+
 ## License
 
 This project is an educational demonstration and is not licensed for public use or redistribution.
