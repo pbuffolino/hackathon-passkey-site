@@ -3,6 +3,6 @@
 4:I[86194,["/hackathon-passkey-site/_next/static/chunks/639adb2a00cdeb4d.js"],"MetadataBoundary"]
 5:"$Sreact.suspense"
 7:I[10258,["/hackathon-passkey-site/_next/static/chunks/639adb2a00cdeb4d.js"],"IconMark"]
-0:{"buildId":"JFmt1hKwNbgReTeZ8PaYF","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"7WFq3zWCc4r7NJNIjS-7m","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
 3:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
 6:[["$","title","0",{"children":"The Passkey Pilot - Learn How Passkeys Work"}],["$","meta","1",{"name":"description","content":"An interactive educational guide to passkeys. Learn how biometric authentication replaces passwords with a secure, phishing-proof solution."}],["$","link","2",{"rel":"icon","href":"/hackathon-passkey-site/favicon.ico?favicon.0b3bf435.ico","sizes":"256x256","type":"image/x-icon"}],["$","$L7","3",{}]]
