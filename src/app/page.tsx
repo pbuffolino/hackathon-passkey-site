@@ -8,10 +8,11 @@ export default function Home() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8 leading-tight tracking-tight">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-8 leading-tight tracking-tight">
             One tap to sign in.
-            <br />
-            <span className="text-gradient-electric">No password to steal.</span>
+            <span className="block text-gradient-electric mt-2 sm:mt-0 lg:block lg:mt-2">
+              No password to steal.
+            </span>
           </h1>
           
           <p className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10">
