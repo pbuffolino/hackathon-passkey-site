@@ -102,7 +102,12 @@ export default function PasskeyWalkthrough() {
   const userId = new Uint8Array([0x70, 0x61, 0x73, 0x73, 0x6b, 0x65, 0x79, 0x2d, 0x64, 0x65, 0x6d, 0x6f, 0x2d, 0x75, 0x73, 0x65, 0x72]);
 
   const scrollToDemo = () => {
-    const demoElement = document.getElementById('demo-visual');
+    // On desktop (lg breakpoint), scroll to the main section to show context/title
+    // On mobile, scroll to the visual container to avoid scrolling fatigue
+    const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+    const targetId = isDesktop ? 'demo' : 'demo-visual';
+    
+    const demoElement = document.getElementById(targetId);
     if (demoElement) {
       demoElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
