@@ -1,4 +1,4 @@
-:HL["/hackathon-passkey-site/_next/static/chunks/f5a8355de8b4f17a.css","style"]
+:HL["/hackathon-passkey-site/_next/static/chunks/2353a7b0d944aee8.css","style"]
 :HL["/hackathon-passkey-site/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/hackathon-passkey-site/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"buildId":"3-7vWixGzxjSM_cMzOtiu","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"2uO3LwwWeG1Bs9nI9frRq","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
