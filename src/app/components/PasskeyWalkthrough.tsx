@@ -582,7 +582,7 @@ export default function PasskeyWalkthrough() {
         return (
           <div className="flex items-center justify-center h-full min-h-[300px]">
             <button
-              className="px-8 py-4 bg-[#00D9FF] text-black font-semibold rounded-lg text-lg transition-all hover:bg-[#00B8D4] hover:scale-105 shadow-lg shadow-[#00D9FF]/30"
+              className="px-8 py-4 min-h-[48px] bg-[#00D9FF] text-black font-semibold rounded-lg text-lg transition-all hover:bg-[#00B8D4] hover:scale-105 shadow-lg shadow-[#00D9FF]/30"
               onClick={handleNext}
             >
               Register Passkey
@@ -613,7 +613,7 @@ export default function PasskeyWalkthrough() {
                   <p className="text-white text-lg font-medium mb-4">Ready to create your passkey</p>
                   <button
                     onClick={handleCreatePasskey}
-                    className="px-6 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
+                    className="px-6 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
                   >
                     Create Real Passkey
                   </button>
@@ -670,35 +670,35 @@ export default function PasskeyWalkthrough() {
                   </div>
                 </div>
                 {webauthnState.technicalMetadata && (
-                  <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700 w-full">
-                    <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-white font-semibold text-xl">What Just Happened?</h3>
+                  <div className="bg-gray-800 rounded-2xl p-4 sm:p-8 shadow-2xl border border-gray-700 w-full">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+                      <h3 className="text-white font-semibold text-lg sm:text-xl">What Just Happened?</h3>
                       <button
                         onClick={() => setShowSimpleExplanation(!showSimpleExplanation)}
-                        className="px-4 py-2 text-sm bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors border border-gray-600 font-medium"
+                        className="px-4 py-2.5 text-sm bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors border border-gray-600 font-medium whitespace-nowrap"
                       >
                         {showSimpleExplanation ? 'Show Technical Details' : 'Show Simple Explanation'}
                       </button>
                     </div>
                     
                     {showSimpleExplanation ? (
-                      <div className="space-y-5">
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Credential ID</p>
-                          <p className="text-[#00D9FF] font-mono text-base break-all mb-3">
+                      <div className="space-y-3 sm:space-y-5">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Credential ID</p>
+                          <p className="text-[#00D9FF] font-mono text-sm sm:text-base break-all mb-2 sm:mb-3">
                             {webauthnState.technicalMetadata.credentialId}
                           </p>
-                          <p className="text-gray-300 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                             A unique ID for this passkey. Think of it like a serial number. The website uses this to remember which passkey belongs to you.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Hardware Type</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Hardware Type</p>
+                          <p className="text-white text-sm sm:text-base mb-2 sm:mb-3 font-medium">
                             {webauthnState.technicalMetadata.hardwareType}
                           </p>
-                          <p className="text-gray-300 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                             {webauthnState.technicalMetadata.hardwareType === 'Platform Biometrics' 
                               ? 'Your passkey is stored in your device\'s secure chip, the same technology that powers Touch ID or Face ID. It can only be used on this device, which makes it extra secure.'
                               : webauthnState.technicalMetadata.hardwareType === 'USB Security Key'
@@ -709,16 +709,16 @@ export default function PasskeyWalkthrough() {
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">User Verification</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">User Verification</p>
+                          <p className="text-white text-sm sm:text-base mb-2 sm:mb-3 font-medium">
                             {webauthnState.technicalMetadata.userVerification.includes('verified')
                               ? 'Biometric Required'
                               : webauthnState.technicalMetadata.userVerification.includes('presence')
                               ? 'Click to Confirm'
                               : 'Not Specified'}
                           </p>
-                          <p className="text-gray-300 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                             {webauthnState.technicalMetadata.userVerification.includes('verified')
                               ? 'This passkey requires your fingerprint, face, or device PIN every time you use it. This is the most secure option. Even if someone steals your device, they can\'t use your passkey without your biometric.'
                               : webauthnState.technicalMetadata.userVerification.includes('presence')
@@ -727,24 +727,24 @@ export default function PasskeyWalkthrough() {
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Attestation Format</p>
-                          <p className="text-white font-mono text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Attestation Format</p>
+                          <p className="text-white font-mono text-sm sm:text-base mb-2 sm:mb-3 font-medium">
                             {webauthnState.technicalMetadata.attestationFormat}
                           </p>
-                          <p className="text-gray-300 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                             This is the technical format your device uses to prove it&apos;s legitimate. Different device makers (Apple, Google, Microsoft, etc.) use different formats, but they all provide the same level of security.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Backup Status</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Backup Status</p>
+                          <p className="text-white text-sm sm:text-base mb-2 sm:mb-3 font-medium">
                             {webauthnState.technicalMetadata.backupEligible 
                               ? (webauthnState.technicalMetadata.backupState ? 'Synced to Cloud' : 'Can Sync (Not Yet Synced)')
                               : 'Device-Only (Not Syncable)'}
                           </p>
-                          <p className="text-gray-300 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                             {webauthnState.technicalMetadata.backupEligible 
                               ? (webauthnState.technicalMetadata.backupState 
                                 ? 'Your passkey is synced to your cloud account (like iCloud Keychain or Google Password Manager). If you lose this device, you can still access your passkey from another device signed into the same account.'
@@ -753,71 +753,71 @@ export default function PasskeyWalkthrough() {
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Origin</p>
-                          <p className="text-[#00D9FF] font-mono text-base mb-3 break-all">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Origin</p>
+                          <p className="text-[#00D9FF] font-mono text-sm sm:text-base mb-2 sm:mb-3 break-all">
                             {webauthnState.technicalMetadata.origin || 'Not available'}
                           </p>
-                          <p className="text-gray-300 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                             This is the website address where your passkey was created. Your passkey will only work on this exact website, protecting you from fake lookalike sites (phishing).
                           </p>
                         </div>
                       </div>
                     ) : (
-                      <div className="space-y-5">
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Credential ID</p>
-                          <p className="text-[#00D9FF] font-mono text-base break-all mb-3">
+                      <div className="space-y-3 sm:space-y-5">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Credential ID</p>
+                          <p className="text-[#00D9FF] font-mono text-sm sm:text-base break-all mb-3">
                             {webauthnState.technicalMetadata.credentialId}
                           </p>
                           <details className="mt-3">
-                            <summary className="text-gray-400 text-sm cursor-pointer hover:text-gray-300 font-medium">
+                            <summary className="text-gray-400 text-xs sm:text-sm cursor-pointer hover:text-gray-300 font-medium">
                               Show full ID
                             </summary>
-                            <p className="text-[#00D9FF] font-mono text-sm break-all mt-3 p-3 bg-gray-800 rounded">
+                            <p className="text-[#00D9FF] font-mono text-xs sm:text-sm break-all mt-3 p-2 sm:p-3 bg-gray-800 rounded">
                               {webauthnState.technicalMetadata.fullCredentialId}
                             </p>
                           </details>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Attestation Format</p>
-                          <p className="text-white font-mono text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Attestation Format</p>
+                          <p className="text-white font-mono text-sm sm:text-base mb-3 font-medium">
                             {webauthnState.technicalMetadata.attestationFormat}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             The format identifier from the CBOR-encoded attestationObject. Common values: "packed", "tpm", "android-key", "apple", "none".
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Hardware Type</p>
-                          <p className="text-white text-base mb-2 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Hardware Type</p>
+                          <p className="text-white text-sm sm:text-base mb-2 font-medium">
                             {webauthnState.technicalMetadata.hardwareType}
                           </p>
-                          <p className="text-gray-400 text-sm mb-3">
+                          <p className="text-gray-400 text-xs sm:text-sm mb-3">
                             Derived from transport mechanisms: {webauthnState.technicalMetadata.transports.join(', ')}
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Cryptographic Algorithm</p>
-                          <p className="text-white font-mono text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Cryptographic Algorithm</p>
+                          <p className="text-white font-mono text-sm sm:text-base mb-3 font-medium">
                             {webauthnState.technicalMetadata.algorithm}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             {webauthnState.technicalMetadata.algorithm.includes('ES256')
                               ? 'ES256 (Elliptic Curve Digital Signature Algorithm with P-256 and SHA-256). This is the standard algorithm used for WebAuthn credentials.'
                               : 'The cryptographic algorithm used for signing. Extracted from the COSE key in the attestation object.'}
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">User Verification</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">User Verification</p>
+                          <p className="text-white text-sm sm:text-base mb-3 font-medium">
                             {webauthnState.technicalMetadata.userVerification}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             {webauthnState.technicalMetadata.userVerification.includes('verified') 
                               ? 'Biometric authentication (fingerprint, face) or device PIN was required and verified during credential creation.'
                               : webauthnState.technicalMetadata.userVerification.includes('presence')
@@ -826,89 +826,89 @@ export default function PasskeyWalkthrough() {
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Authenticator Attachment</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Authenticator Attachment</p>
+                          <p className="text-white text-sm sm:text-base mb-3 font-medium">
                             {webauthnState.technicalMetadata.authenticatorAttachment}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             Platform authenticator means the passkey is bound to this device. Cross-platform would allow syncing across devices.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Attestation Conveyance</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Attestation Conveyance</p>
+                          <p className="text-white text-sm sm:text-base mb-3 font-medium">
                             {webauthnState.technicalMetadata.attestationConveyancePreference}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             &quot;Direct&quot; means the full attestation statement is included, providing maximum information about the authenticator.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Sign Count</p>
-                          <p className="text-white font-mono text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Sign Count</p>
+                          <p className="text-white font-mono text-sm sm:text-base mb-3 font-medium">
                             {webauthnState.technicalMetadata.signCount}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             A counter that increments each time the authenticator is used. Helps detect cloned authenticators - if the count goes backwards, it may indicate a security issue.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">AAGUID</p>
-                          <p className="text-white font-mono text-base mb-3 font-medium break-all">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">AAGUID</p>
+                          <p className="text-white font-mono text-sm sm:text-base mb-3 font-medium break-all">
                             {webauthnState.technicalMetadata.aaguid || 'Not available'}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             {webauthnState.technicalMetadata.aaguid === '00000000-0000-0000-0000-000000000000'
                               ? 'All zeros indicates a privacy-preserving authenticator that doesn\'t reveal its make/model. This is common for platform authenticators.'
                               : 'Authenticator Attestation Globally Unique Identifier - identifies the make and model of the authenticator. Can be used to look up device capabilities.'}
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Backup Eligible (BE Flag)</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Backup Eligible (BE Flag)</p>
+                          <p className="text-white text-sm sm:text-base mb-3 font-medium">
                             {webauthnState.technicalMetadata.backupEligible ? 'Yes' : 'No'}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             WebAuthn Level 3 flag indicating whether this credential can be backed up or synced to a cloud provider.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Backup State (BS Flag)</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Backup State (BS Flag)</p>
+                          <p className="text-white text-sm sm:text-base mb-3 font-medium">
                             {webauthnState.technicalMetadata.backupState ? 'Backed Up' : 'Not Backed Up'}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             WebAuthn Level 3 flag indicating whether this credential is currently backed up to a cloud provider.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">RP ID Hash</p>
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">RP ID Hash</p>
                           <details>
-                            <summary className="text-gray-400 text-sm cursor-pointer hover:text-gray-300 font-medium">
+                            <summary className="text-gray-400 text-xs sm:text-sm cursor-pointer hover:text-gray-300 font-medium">
                               Show hash (SHA-256)
                             </summary>
-                            <p className="text-[#00D9FF] font-mono text-sm break-all mt-3 p-3 bg-gray-800 rounded">
+                            <p className="text-[#00D9FF] font-mono text-xs sm:text-sm break-all mt-3 p-2 sm:p-3 bg-gray-800 rounded">
                               {webauthnState.technicalMetadata.rpIdHash || 'Not available'}
                             </p>
                           </details>
-                          <p className="text-gray-400 text-sm leading-relaxed mt-3">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mt-3">
                             SHA-256 hash of the Relying Party ID (the website&apos;s domain). This binds the credential to this specific origin, preventing phishing attacks.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Origin</p>
-                          <p className="text-[#00D9FF] font-mono text-base mb-3 break-all">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Origin</p>
+                          <p className="text-[#00D9FF] font-mono text-sm sm:text-base mb-3 break-all">
                             {webauthnState.technicalMetadata.origin || 'Not available'}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             The origin from clientDataJSON - confirms the credential was created for this exact origin.
                           </p>
                         </div>
@@ -942,7 +942,7 @@ export default function PasskeyWalkthrough() {
                   </p>
                   <button
                     onClick={handleCreatePasskey}
-                    className="px-6 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
+                    className="px-6 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
                   >
                     Try Again
                   </button>
@@ -988,11 +988,13 @@ export default function PasskeyWalkthrough() {
       case 'publickey':
         return (
           <div className="flex flex-col items-center justify-center h-full min-h-[300px] space-y-6">
-            <div className="flex items-center space-x-8">
+            {/* Responsive layout: vertical on mobile, horizontal on larger screens */}
+            <div className="flex flex-col sm:flex-row items-center space-y-6 sm:space-y-0 sm:space-x-8">
+              {/* Your Device */}
               <div className="flex flex-col items-center space-y-2">
-                <div className="w-24 h-24 rounded-lg bg-gray-800 border-2 border-[#00D9FF] flex items-center justify-center">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-gray-800 border-2 border-[#00D9FF] flex items-center justify-center">
                   <svg
-                    className="w-12 h-12 text-[#00D9FF]"
+                    className="w-10 h-10 sm:w-12 sm:h-12 text-[#00D9FF]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1007,7 +1009,29 @@ export default function PasskeyWalkthrough() {
                 </div>
                 <p className="text-gray-400 text-xs">Your Device</p>
               </div>
-              <div className="flex items-center space-x-2">
+
+              {/* Arrow connector - vertical on mobile, horizontal on desktop */}
+              {/* Mobile: vertical arrow */}
+              <div className="flex sm:hidden flex-col items-center space-y-2">
+                <div className="w-0.5 h-8 bg-[#00D9FF]"></div>
+                <svg
+                  className="w-6 h-6 text-[#00D9FF] animate-pulse-slow"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                  />
+                </svg>
+                <div className="w-0.5 h-8 bg-[#00D9FF]"></div>
+              </div>
+
+              {/* Desktop: horizontal arrow */}
+              <div className="hidden sm:flex items-center space-x-2">
                 <div className="w-12 h-0.5 bg-[#00D9FF]"></div>
                 <svg
                   className="w-6 h-6 text-[#00D9FF] animate-pulse-slow"
@@ -1024,10 +1048,12 @@ export default function PasskeyWalkthrough() {
                 </svg>
                 <div className="w-12 h-0.5 bg-[#00D9FF]"></div>
               </div>
+
+              {/* Website Server */}
               <div className="flex flex-col items-center space-y-2">
-                <div className="w-24 h-24 rounded-lg bg-gray-800 border-2 border-gray-600 flex items-center justify-center">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-gray-800 border-2 border-gray-600 flex items-center justify-center">
                   <svg
-                    className="w-12 h-12 text-gray-600"
+                    className="w-10 h-10 sm:w-12 sm:h-12 text-gray-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1043,7 +1069,7 @@ export default function PasskeyWalkthrough() {
                 <p className="text-gray-400 text-xs">Website Server</p>
               </div>
             </div>
-            <p className="text-gray-300 text-sm text-center">Only the "lock" (public key) is shared with the website. Your "key" (private key) stays on your device.</p>
+            <p className="text-gray-300 text-sm text-center px-4">Only the "lock" (public key) is shared with the website. Your "key" (private key) stays on your device.</p>
           </div>
         );
       case 'success':
@@ -1089,7 +1115,7 @@ export default function PasskeyWalkthrough() {
                   <p className="text-white text-lg font-medium mb-4">Ready to verify your passkey</p>
                   <button
                     onClick={handleVerifyPasskey}
-                    className="px-6 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
+                    className="px-6 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
                   >
                     Verify Passkey
                   </button>
@@ -1150,125 +1176,125 @@ export default function PasskeyWalkthrough() {
                 </div>
                 
                 {validationState.validationMetadata && (
-                  <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-700 w-full">
-                    <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-white font-semibold text-xl">What Just Happened?</h3>
+                  <div className="bg-gray-800 rounded-2xl p-4 sm:p-8 shadow-2xl border border-gray-700 w-full">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+                      <h3 className="text-white font-semibold text-lg sm:text-xl">What Just Happened?</h3>
                       <button
                         onClick={() => setShowValidationSimpleExplanation(!showValidationSimpleExplanation)}
-                        className="px-4 py-2 text-sm bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors border border-gray-600 font-medium"
+                        className="px-4 py-2.5 text-sm bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors border border-gray-600 font-medium whitespace-nowrap"
                       >
                         {showValidationSimpleExplanation ? 'Show Technical Details' : 'Show Simple Explanation'}
                       </button>
                     </div>
                     
                     {showValidationSimpleExplanation ? (
-                      <div className="space-y-5">
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Credential Matched</p>
-                          <div className="flex items-center space-x-2 mb-3">
+                      <div className="space-y-3 sm:space-y-5">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Credential Matched</p>
+                          <div className="flex items-center space-x-2 mb-2 sm:mb-3">
                             <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
                               <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
                             </div>
-                            <p className="text-green-400 font-medium">Yes, it&apos;s your passkey!</p>
+                            <p className="text-green-400 font-medium text-sm sm:text-base">Yes, it&apos;s your passkey!</p>
                           </div>
-                          <p className="text-gray-300 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                             The website checked that the passkey you used matches the one you registered earlier. This confirms you&apos;re the legitimate owner.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Biometric Verified</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Biometric Verified</p>
+                          <p className="text-white text-sm sm:text-base mb-2 sm:mb-3 font-medium">
                             {validationState.validationMetadata.userVerification.includes('verified')
                               ? 'Yes - Your identity was confirmed'
                               : validationState.validationMetadata.userVerification.includes('presence')
                               ? 'Click confirmation only'
                               : 'Not specified'}
                           </p>
-                          <p className="text-gray-300 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                             {validationState.validationMetadata.userVerification.includes('verified')
                               ? 'Your device confirmed it was really you using your fingerprint, face, or PIN. This prevents anyone else from using your passkey.'
                               : 'Your presence was confirmed, but no biometric was required for this login.'}
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Login Origin</p>
-                          <p className="text-[#00D9FF] font-mono text-base mb-3 break-all">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Login Origin</p>
+                          <p className="text-[#00D9FF] font-mono text-sm sm:text-base mb-2 sm:mb-3 break-all">
                             {validationState.validationMetadata.origin || 'Not available'}
                           </p>
-                          <p className="text-gray-300 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                             Your passkey confirmed you&apos;re on the real website, not a fake lookalike. This is one of the main ways passkeys protect you from phishing scams.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-3 font-semibold uppercase tracking-wide">Digital Signature</p>
-                          <div className="flex items-center space-x-2 mb-3">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 sm:mb-3 font-semibold uppercase tracking-wide">Digital Signature</p>
+                          <div className="flex items-center space-x-2 mb-2 sm:mb-3">
                             <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
                               <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                               </svg>
                             </div>
-                            <p className="text-green-400 font-medium">Signature created</p>
+                            <p className="text-green-400 font-medium text-sm sm:text-base">Signature created</p>
                           </div>
-                          <p className="text-gray-300 text-sm leading-relaxed">
+                          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                             Your device created a unique digital signature using your secret key. This proves you have the real passkey without ever revealing your secret.
                           </p>
                         </div>
                       </div>
                     ) : (
-                      <div className="space-y-5">
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Credential ID Match</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                      <div className="space-y-3 sm:space-y-5">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Credential ID Match</p>
+                          <p className="text-white text-sm sm:text-base mb-3 font-medium">
                             {validationState.validationMetadata.credentialIdMatch ? 'Yes - Matched' : 'No - Mismatch'}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             The assertion.id returned by the authenticator was compared against the stored credential ID from registration.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Sign Count</p>
-                          <p className="text-white font-mono text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Sign Count</p>
+                          <p className="text-white font-mono text-sm sm:text-base mb-3 font-medium">
                             {validationState.validationMetadata.signCount}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             The authenticator&apos;s signature counter from the assertion authenticatorData. Should increment with each use. A server would compare this against the stored value to detect cloned authenticators.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">User Verification (UV Flag)</p>
-                          <p className="text-white text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">User Verification (UV Flag)</p>
+                          <p className="text-white text-sm sm:text-base mb-3 font-medium">
                             {validationState.validationMetadata.userVerification}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             {validationState.validationMetadata.userVerification.includes('verified')
                               ? 'The UV flag (bit 2) was set in authenticatorData.flags, indicating biometric or PIN verification was performed.'
                               : 'The UV flag was not set - only user presence (UP) was verified.'}
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Origin</p>
-                          <p className="text-[#00D9FF] font-mono text-base mb-3 break-all">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Origin</p>
+                          <p className="text-[#00D9FF] font-mono text-sm sm:text-base mb-3 break-all">
                             {validationState.validationMetadata.origin || 'Not available'}
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             The origin from the assertion&apos;s clientDataJSON. A server would verify this matches the expected origin to prevent relay attacks.
                           </p>
                         </div>
                         
-                        <div className="p-5 bg-gray-900/50 rounded-lg border border-gray-700">
-                          <p className="text-gray-300 text-sm mb-2 font-semibold uppercase tracking-wide">Signature Length</p>
-                          <p className="text-white font-mono text-base mb-3 font-medium">
+                        <div className="p-3 sm:p-5 bg-gray-900/50 rounded-lg border border-gray-700">
+                          <p className="text-gray-300 text-xs sm:text-sm mb-2 font-semibold uppercase tracking-wide">Signature Length</p>
+                          <p className="text-white font-mono text-sm sm:text-base mb-3 font-medium">
                             {validationState.validationMetadata.signatureLength} bytes
                           </p>
-                          <p className="text-gray-400 text-sm leading-relaxed">
+                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                             The assertion includes a cryptographic signature over the authenticatorData and clientDataHash. For ES256 (P-256), signatures are typically 64-72 bytes in DER format. A real server would verify this signature against the stored public key.
                           </p>
                         </div>
@@ -1305,7 +1331,7 @@ export default function PasskeyWalkthrough() {
                   </p>
                   <button
                     onClick={handleVerifyPasskey}
-                    className="px-6 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
+                    className="px-6 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 mt-2"
                   >
                     Try Again
                   </button>
@@ -1354,24 +1380,24 @@ export default function PasskeyWalkthrough() {
             </div>
 
             {/* Navigation */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
               <button
                 onClick={handleStartOver}
-                className="px-6 py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700"
+                className="px-6 py-3.5 min-h-[44px] bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors border border-gray-700 text-sm sm:text-base"
               >
                 Start Over
               </button>
               {currentStep < steps.length - 1 ? (
                 <button
                   onClick={handleNext}
-                  className="px-8 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
+                  className="px-8 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 text-sm sm:text-base"
                 >
                   Next Step →
                 </button>
               ) : (
                 <button
                   onClick={handleStartOver}
-                  className="px-8 py-3 bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30"
+                  className="px-8 py-3.5 min-h-[44px] bg-[#00D9FF] text-black font-semibold rounded-lg hover:bg-[#00B8D4] transition-colors shadow-lg shadow-[#00D9FF]/30 text-sm sm:text-base"
                 >
                   Try Again
                 </button>

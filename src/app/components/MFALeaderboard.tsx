@@ -119,6 +119,103 @@ const getStrengthWidth = (strength: MFAMethod['strength']) => {
   }
 };
 
+// Mobile Card Component for responsive view
+function MobileMethodCard({ method }: { method: MFAMethod }) {
+  const renderPhishIcon = () => {
+    if (method.phishResistant) {
+      return (
+        <div className="flex items-center space-x-2.5">
+          <svg className="w-6 h-6 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          <span className="text-green-400 text-base">Phishing resistant</span>
+        </div>
+      );
+    }
+    return (
+      <div className="flex items-center space-x-2.5">
+        <svg className="w-6 h-6 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+        </svg>
+        <span className="text-red-400 text-base">Vulnerable to phishing</span>
+      </div>
+    );
+  };
+
+  const renderDeviceIcon = () => {
+    if (method.deviceBound === true) {
+      return (
+        <div className="flex items-center space-x-2.5">
+          <svg className="w-6 h-6 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          <span className="text-green-400 text-base">Device-bound</span>
+        </div>
+      );
+    }
+    if (method.deviceBound === 'Depends') {
+      return (
+        <div className="flex items-center space-x-2.5">
+          <svg className="w-6 h-6 text-yellow-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+          </svg>
+          <span className="text-yellow-400 text-base">Depends on setup</span>
+        </div>
+      );
+    }
+    return (
+      <div className="flex items-center space-x-2.5">
+        <svg className="w-6 h-6 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+        </svg>
+        <span className="text-red-400 text-base">Not device-bound</span>
+      </div>
+    );
+  };
+
+  return (
+    <div
+      className={`bg-gray-900/60 rounded-xl p-5 sm:p-6 border transition-all ${
+        method.highlighted
+          ? 'border-[#00D9FF] shadow-[0_0_20px_rgba(0,217,255,0.3)]'
+          : 'border-gray-800'
+      }`}
+    >
+      {/* Header: Name and Type */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
+        <h3 className="text-white font-semibold text-xl">{method.name}</h3>
+        <span className="inline-flex items-center self-start px-3 py-1.5 rounded-full text-sm font-medium bg-gray-800/70 text-gray-300">
+          {method.factorType}
+        </span>
+      </div>
+
+      {/* Strength Bar */}
+      <div className="mb-5">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-gray-400 text-base">Security Level</span>
+          <span className="text-gray-300 text-base font-medium">
+            {method.strength} <span className="text-gray-500">({method.aalLevel})</span>
+          </span>
+        </div>
+        <div className="w-full bg-gray-800 rounded-full h-3 overflow-hidden">
+          <div
+            className={`h-full ${getStrengthColor(method.strength)} ${getStrengthWidth(method.strength)} transition-all`}
+          />
+        </div>
+      </div>
+
+      {/* Security Indicators */}
+      <div className="flex flex-col gap-3 mb-5">
+        {renderPhishIcon()}
+        {renderDeviceIcon()}
+      </div>
+
+      {/* Description */}
+      <p className="text-gray-400 text-base leading-relaxed">{method.description}</p>
+    </div>
+  );
+}
+
 export default function MFALeaderboard() {
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8">
@@ -137,8 +234,15 @@ export default function MFALeaderboard() {
           </div>
         </div>
 
-        {/* Glassmorphism Table Container */}
-        <div className="relative">
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-4">
+          {methods.map((method, index) => (
+            <MobileMethodCard key={index} method={method} />
+          ))}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden md:block relative">
           <div className="backdrop-blur-xl bg-gray-900/40 rounded-2xl border border-gray-800/50 overflow-hidden shadow-2xl">
             {/* Responsive Table Wrapper */}
             <div className="overflow-x-auto">
@@ -313,7 +417,6 @@ export default function MFALeaderboard() {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

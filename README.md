@@ -322,6 +322,8 @@ Created with [Cursor](https://cursor.sh/).
 
 ## Recent Changes
 
+- **Mobile Responsiveness**: Implemented card-based mobile view for MFA Leaderboard table, added smooth CSS transitions, and optimized PasskeyWalkthrough layout for small screens.
+- **Accessibility**: Increased touch targets to minimum 44px for interactive elements and enhanced font weights and sizes for better readability.
 - **Content Update**: Updated "Quick Answer" text in MFA Leaderboard to be more accurate ("one of the most secure").
 - **UI Improvements**: Fixed padding and layout for the "Possession, Inherence, etc..." boxes in the MFA Leaderboard, specifically improving the FIDO2 Hardware Security Key display.
 

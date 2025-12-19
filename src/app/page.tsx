@@ -46,24 +46,24 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {/* Block A: What it is */}
-            <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 flex flex-col h-full">
+            <div className="bg-gray-900 rounded-2xl p-6 sm:p-8 border border-gray-800 flex flex-col h-full">
               <div className="w-12 h-12 rounded-lg bg-[#00D9FF]/20 flex items-center justify-center mb-6">
                 <span className="text-[#00D9FF] font-bold text-xl">1</span>
               </div>
               <h3 className="text-xl font-bold text-white mb-4">What it is</h3>
-              <div className="space-y-4 text-gray-300 flex-grow">
+              <div className="space-y-4 text-gray-300 text-base sm:text-lg flex-grow leading-relaxed">
                 <p>A passkey is a sign-in key your device creates for a specific site or app.</p>
                 <p>You unlock it with Face ID, Touch ID, fingerprint, or device PIN.</p>
               </div>
             </div>
 
             {/* Block B: Why it matters */}
-            <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 flex flex-col h-full">
+            <div className="bg-gray-900 rounded-2xl p-6 sm:p-8 border border-gray-800 flex flex-col h-full">
               <div className="w-12 h-12 rounded-lg bg-[#00D9FF]/20 flex items-center justify-center mb-6">
                 <span className="text-[#00D9FF] font-bold text-xl">2</span>
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Why it matters</h3>
-              <ul className="space-y-3 text-gray-300 flex-grow">
+              <ul className="space-y-3 text-gray-300 text-base sm:text-lg flex-grow leading-relaxed">
                 <li className="flex items-start space-x-2">
                   <span className="text-[#00D9FF] mt-1">✓</span>
                   <span>Stops fake login pages (phishing)</span>
@@ -80,25 +80,25 @@ export default function Home() {
             </div>
 
             {/* Block C: Where you'll see it */}
-            <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 flex flex-col h-full">
+            <div className="bg-gray-900 rounded-2xl p-6 sm:p-8 border border-gray-800 flex flex-col h-full">
                <div className="w-12 h-12 rounded-lg bg-[#00D9FF]/20 flex items-center justify-center mb-6">
                 <span className="text-[#00D9FF] font-bold text-xl">3</span>
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Where you'll see it</h3>
               <div className="flex flex-wrap gap-2 mb-6">
                 {['Email', 'Banking', 'Shopping', 'Social', 'Work apps', 'Developer tools'].map((tag) => (
-                  <span key={tag} className="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-full border border-gray-700">
+                  <span key={tag} className="px-3 py-1.5 bg-gray-800 text-gray-300 text-base rounded-full border border-gray-700">
                     {tag}
                   </span>
                 ))}
               </div>
-              <p className="text-gray-400 text-sm italic mt-auto">
+              <p className="text-gray-400 text-base italic mt-auto leading-relaxed">
                 Support varies by site and device, but adoption is growing.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm font-medium">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-base font-medium">
             <a href="#demo" className="text-[#00D9FF] hover:text-[#00B8D4] flex items-center space-x-2 hover:underline">
               <span>Jump to the demo</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>

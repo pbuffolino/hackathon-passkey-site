@@ -30,8 +30,23 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 450;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure gray text is readable with slightly heavier weight */
+.text-gray-300,
+.text-gray-400,
+.text-gray-500 {
+  font-weight: 450;
+}
+
+/* Status indicators need good weight for readability */
+.text-green-400,
+.text-red-400,
+.text-yellow-400 {
+  font-weight: 500;
 }
 
 /* Smooth animations */
@@ -93,4 +108,62 @@ body {
 /* Scroll behavior */
 html {
   scroll-behavior: smooth;
+}
+
+/* Smooth responsive transitions for layout changes */
+.transition-responsive {
+  transition: padding 0.2s ease, margin 0.2s ease, gap 0.2s ease, font-size 0.15s ease;
+}
+
+/* Apply smooth transitions to common layout elements */
+section,
+article,
+div[class*="grid"],
+div[class*="flex"] {
+  transition: gap 0.2s ease;
+}
+
+/* Smooth padding transitions for cards and containers */
+div[class*="rounded"],
+div[class*="border"] {
+  transition: padding 0.2s ease, gap 0.2s ease;
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  /* Improve touch targets on mobile */
+  button,
+  a,
+  [role="button"],
+  summary {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better touch feedback */
+  button:active,
+  a:active,
+  [role="button"]:active {
+    transform: scale(0.98);
+  }
+  
+  /* Disable hover states on touch devices to avoid sticky hovers */
+  .group:hover .group-hover\:block {
+    display: none;
+  }
+}
+
+/* Ensure interactive elements have good touch targets */
+button,
+a[href],
+summary {
+  touch-action: manipulation;
+}
+
+/* Smooth transitions for visibility changes */
+.md\:hidden,
+.hidden.md\:block,
+.sm\:hidden,
+.hidden.sm\:block {
+  transition: opacity 0.2s ease;
 }
