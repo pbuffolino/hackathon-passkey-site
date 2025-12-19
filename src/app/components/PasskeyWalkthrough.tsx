@@ -102,7 +102,7 @@ export default function PasskeyWalkthrough() {
   const userId = new Uint8Array([0x70, 0x61, 0x73, 0x73, 0x6b, 0x65, 0x79, 0x2d, 0x64, 0x65, 0x6d, 0x6f, 0x2d, 0x75, 0x73, 0x65, 0x72]);
 
   const scrollToDemo = () => {
-    const demoElement = document.getElementById('demo');
+    const demoElement = document.getElementById('demo-visual');
     if (demoElement) {
       demoElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -1321,7 +1321,7 @@ export default function PasskeyWalkthrough() {
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Visual Simulation */}
-          <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800 min-h-[300px] md:min-h-[400px] flex items-center justify-center">
+          <div id="demo-visual" className="bg-gray-900 rounded-2xl p-8 border border-gray-800 min-h-[300px] md:min-h-[400px] flex items-center justify-center scroll-mt-4">
             <div className="w-full animate-fade-in">
               {renderVisual()}
             </div>
