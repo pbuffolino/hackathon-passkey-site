@@ -22,7 +22,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'Are passkeys really more secure than passwords?',
-    answer: 'Yes. Passkeys are much more secure because they are built to ignore fake websites, they do not reuse passwords, and the secret part stays on your device.',
+    answer: 'Yes. Passkeys are much more secure because they are built to ignore fake websites, they do not reuse a password that can be phished, and the secret part stays on your device instead of being stored as a password on the website. If a website is hacked, attackers still do not get your passkey.',
   },
   {
     question: 'What websites support passkeys?',
@@ -34,7 +34,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'What if someone steals my phone?',
-    answer: 'Even if someone has your phone, they still need your fingerprint, face, or PIN to use your passkeys. You should lock or erase the device if it is lost and remove passkeys from your account if you can.',
+    answer: 'If someone steals your phone, they still need your fingerprint, face, or PIN to unlock it and use your passkeys. You should lock or erase the device if it is lost, and remove passkeys or sign out of important accounts from another device if you can.',
   },
   {
     question: 'Can I use passkeys on websites that don\'t support them yet?',
@@ -42,7 +42,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'Are passkeys free to use?',
-    answer: 'Yes! Passkeys are completely free. You don\'t need to buy anything special, and websites don\'t charge you to use them. They\'re built into your device and the websites you visit.',
+    answer: 'Yes. If your phone or computer supports passkeys, you can use them at no extra cost. You do not have to buy anything extra or pay a fee to use them on websites that support passkeys. Some people choose to buy a separate security key, but you do not need one to start using passkeys.',
   },
   {
     question: 'What\'s the difference between a passkey and Face ID or Touch ID?',
@@ -58,13 +58,13 @@ export default function FAQ() {
   };
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-900/30">
+    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-100/50 dark:bg-gray-900/30">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-600 dark:text-gray-300 max-w-2xl mx-auto">
             Got questions? We've got answers in plain English.
           </p>
         </div>
@@ -73,7 +73,7 @@ export default function FAQ() {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden transition-all hover:border-[#00D9FF]/50"
+              className="bg-white dark:bg-gray-900 rounded-xl border border-slate-200 dark:border-gray-800 overflow-hidden transition-all hover:border-[#00D9FF]/50 shadow-sm dark:shadow-none"
             >
               <button
                 onClick={() => toggleQuestion(index)}
@@ -82,7 +82,7 @@ export default function FAQ() {
                 }`}
                 aria-expanded={openIndex === index}
               >
-                <span className="text-lg font-semibold text-white pr-4">
+                <span className="text-lg font-semibold text-slate-900 dark:text-white pr-4">
                   {faq.question}
                 </span>
                 <svg
@@ -102,8 +102,8 @@ export default function FAQ() {
                 </svg>
               </button>
               {openIndex === index && (
-                <div className="px-6 pt-0 pb-5 border-t border-gray-800/50">
-                  <p className="text-gray-300 leading-relaxed text-lg pt-5">
+                <div className="px-6 pt-0 pb-5 border-t border-slate-200/50 dark:border-gray-800/50">
+                  <p className="text-slate-600 dark:text-gray-300 leading-relaxed text-lg pt-5">
                     {faq.answer}
                   </p>
                 </div>
@@ -115,4 +115,3 @@ export default function FAQ() {
     </section>
   );
 }
-

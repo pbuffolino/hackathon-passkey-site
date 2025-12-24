@@ -130,7 +130,7 @@ function MobileMethodCard({ method }: { method: MFAMethod }) {
           <svg className="w-6 h-6 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
-          <span className="text-green-400 text-base">Phishing resistant</span>
+          <span className="text-green-600 dark:text-green-400 text-base">Phishing resistant</span>
         </div>
       );
     }
@@ -139,7 +139,7 @@ function MobileMethodCard({ method }: { method: MFAMethod }) {
         <svg className="w-6 h-6 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
         </svg>
-        <span className="text-red-400 text-base">Vulnerable to phishing</span>
+        <span className="text-red-500 dark:text-red-400 text-base">Vulnerable to phishing</span>
       </div>
     );
   };
@@ -151,7 +151,7 @@ function MobileMethodCard({ method }: { method: MFAMethod }) {
           <svg className="w-6 h-6 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
-          <span className="text-green-400 text-base">Device-bound</span>
+          <span className="text-green-600 dark:text-green-400 text-base">Device-bound</span>
         </div>
       );
     }
@@ -161,7 +161,7 @@ function MobileMethodCard({ method }: { method: MFAMethod }) {
           <svg className="w-6 h-6 text-yellow-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
           </svg>
-          <span className="text-yellow-400 text-base">Depends on setup</span>
+          <span className="text-yellow-600 dark:text-yellow-400 text-base">Depends on setup</span>
         </div>
       );
     }
@@ -170,24 +170,24 @@ function MobileMethodCard({ method }: { method: MFAMethod }) {
         <svg className="w-6 h-6 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
         </svg>
-        <span className="text-red-400 text-base">Not device-bound</span>
+        <span className="text-red-500 dark:text-red-400 text-base">Not device-bound</span>
       </div>
     );
   };
 
   return (
     <div
-      className={`bg-gray-900/60 rounded-xl p-5 sm:p-6 border transition-all ${
+      className={`bg-white dark:bg-gray-900/60 rounded-xl p-5 sm:p-6 border transition-all shadow-sm dark:shadow-none ${
         method.highlighted
           ? 'border-[#00D9FF] shadow-[0_0_20px_rgba(0,217,255,0.3)]'
-          : 'border-gray-800'
+          : 'border-slate-200 dark:border-gray-800'
       }`}
     >
       {/* Header: Name and Type */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
-        <h3 className="text-white font-semibold text-xl">{method.name}</h3>
+        <h3 className="text-slate-900 dark:text-white font-semibold text-xl">{method.name}</h3>
         <div className="group/tooltip relative inline-block self-start">
-          <div className="inline-block px-2.5 py-1 rounded-md text-sm font-bold bg-gray-800/70 text-gray-200 text-center leading-tight border border-gray-700/50">
+          <div className="inline-block px-2.5 py-1 rounded-md text-sm font-bold bg-slate-100 dark:bg-gray-800/70 text-slate-700 dark:text-gray-200 text-center leading-tight border border-slate-200 dark:border-gray-700/50">
             {method.factorType.split(' ').map((word, idx) => (
               <div key={idx}>
                 {word}
@@ -195,14 +195,14 @@ function MobileMethodCard({ method }: { method: MFAMethod }) {
             ))}
             {method.factorOptional && (
               <div className="flex items-center justify-center mt-0.5">
-                <svg className="w-3.5 h-3.5 text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-3.5 h-3.5 text-slate-400 dark:text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
               </div>
             )}
           </div>
           {method.factorOptional && (
-            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg p-2 border border-slate-200 dark:border-gray-600 shadow-2xl z-50">
               Inherence factor (biometric or PIN) is optional
             </div>
           )}
@@ -212,20 +212,20 @@ function MobileMethodCard({ method }: { method: MFAMethod }) {
       {/* Strength Bar */}
       <div className="mb-5">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-gray-400 text-base">Security Level</span>
+          <span className="text-slate-500 dark:text-gray-400 text-base">Security Level</span>
           <div className="flex items-center gap-1.5 group/tooltip relative">
-            <span className="text-gray-300 text-base font-medium">
+            <span className="text-slate-600 dark:text-gray-300 text-base font-medium">
               {method.strength}
             </span>
-            <svg className="w-4 h-4 text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="w-4 h-4 text-slate-400 dark:text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
             </svg>
-            <div className="absolute bottom-full mb-2 right-0 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+            <div className="absolute bottom-full mb-2 right-0 hidden group-hover/tooltip:block w-max max-w-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg p-2 border border-slate-200 dark:border-gray-600 shadow-2xl z-50">
               Security level {method.aalLevel}
             </div>
           </div>
         </div>
-        <div className="w-full bg-gray-800 rounded-full h-3 overflow-hidden">
+        <div className="w-full bg-slate-200 dark:bg-gray-800 rounded-full h-3 overflow-hidden">
           <div
             className={`h-full ${getStrengthColor(method.strength)} ${getStrengthWidth(method.strength)} transition-all`}
           />
@@ -239,7 +239,7 @@ function MobileMethodCard({ method }: { method: MFAMethod }) {
       </div>
 
       {/* Description */}
-      <p className="text-gray-400 text-base leading-relaxed">{method.description}</p>
+      <p className="text-slate-500 dark:text-gray-400 text-base leading-relaxed">{method.description}</p>
     </div>
   );
 }
@@ -252,12 +252,12 @@ export default function MFALeaderboard() {
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
             How Do Passkeys Compare?
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-slate-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
             There are lots of ways to secure your accounts. Here's how passkeys stack up against other methods you might be familiar with.
           </p>
-          <div className="max-w-4xl mx-auto bg-gray-900/50 rounded-xl p-6 border border-gray-800 mb-8">
-            <p className="text-gray-300 text-lg leading-relaxed">
-              <span className="font-semibold text-white">Quick answer:</span> Passkeys are one of the most secure and easiest to use. They are built to ignore fake websites, and you don't have to remember anything or wait for text messages.
+          <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900/50 rounded-xl p-6 border border-slate-200 dark:border-gray-800 mb-8 shadow-sm dark:shadow-none">
+            <p className="text-slate-600 dark:text-gray-300 text-lg leading-relaxed">
+              <span className="font-semibold text-slate-900 dark:text-white">Quick answer:</span> Passkeys are one of the most secure and easiest to use. They are built to ignore fake websites, and you don't have to remember anything or wait for text messages.
             </p>
           </div>
         </div>
@@ -271,56 +271,56 @@ export default function MFALeaderboard() {
 
         {/* Desktop Table View */}
         <div className="hidden md:block relative">
-          <div className="backdrop-blur-xl bg-gray-900/40 rounded-2xl border border-gray-800/50 overflow-hidden shadow-2xl">
+          <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/40 rounded-2xl border border-slate-200 dark:border-gray-800/50 overflow-hidden shadow-lg dark:shadow-2xl">
             {/* Responsive Table Wrapper */}
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-800/50">
-                    <th className="px-6 py-4 text-left text-base font-bold text-white uppercase tracking-wider">
+                  <tr className="border-b border-slate-200 dark:border-gray-800/50">
+                    <th className="px-6 py-4 text-left text-base font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                       Method
-                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">Sign in method</span>
+                      <span className="block text-sm font-medium normal-case text-slate-600 dark:text-gray-300 mt-1">Sign in method</span>
                     </th>
-                    <th className="px-6 py-4 text-left text-base font-bold text-white uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-base font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                       Factor
-                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">What it uses</span>
+                      <span className="block text-sm font-medium normal-case text-slate-600 dark:text-gray-300 mt-1">What it uses</span>
                     </th>
-                    <th className="px-6 py-4 text-left text-base font-bold text-white uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-base font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                       Action
-                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">What you do</span>
+                      <span className="block text-sm font-medium normal-case text-slate-600 dark:text-gray-300 mt-1">What you do</span>
                     </th>
-                    <th className="px-6 py-4 text-left text-base font-bold text-white uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-base font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                       Strength
-                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">How secure</span>
+                      <span className="block text-sm font-medium normal-case text-slate-600 dark:text-gray-300 mt-1">How secure</span>
                     </th>
-                    <th className="px-6 py-4 text-center text-base font-bold text-white uppercase tracking-wider">
+                    <th className="px-6 py-4 text-center text-base font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                       Fake Sites
-                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">Fake site protection</span>
+                      <span className="block text-sm font-medium normal-case text-slate-600 dark:text-gray-300 mt-1">Fake site protection</span>
                     </th>
-                    <th className="px-6 py-4 text-center text-base font-bold text-white uppercase tracking-wider">
+                    <th className="px-6 py-4 text-center text-base font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                       Devices
-                      <span className="block text-sm font-medium normal-case text-gray-300 mt-1">Tied to device</span>
+                      <span className="block text-sm font-medium normal-case text-slate-600 dark:text-gray-300 mt-1">Tied to device</span>
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-800/30">
+                <tbody className="divide-y divide-slate-200 dark:divide-gray-800/30">
                   {methods.map((method, index) => (
                     <tr
                       key={index}
-                      className={`transition-all hover:bg-gray-800/20 ${
+                      className={`transition-all hover:bg-slate-50 dark:hover:bg-gray-800/20 ${
                         method.highlighted
                           ? 'border-l-4 border-[#00D9FF] shadow-[0_0_20px_rgba(0,217,255,0.3)]'
                           : ''
                       }`}
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-white font-medium text-lg">
+                        <div className="text-slate-900 dark:text-white font-medium text-lg">
                           {method.name}
                         </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="group/tooltip relative inline-block">
-                          <div className="inline-block px-2.5 py-1 rounded-md text-sm font-bold bg-gray-800/60 text-gray-200 text-center leading-tight border border-gray-700/50">
+                          <div className="inline-block px-2.5 py-1 rounded-md text-sm font-bold bg-slate-100 dark:bg-gray-800/60 text-slate-700 dark:text-gray-200 text-center leading-tight border border-slate-200 dark:border-gray-700/50">
                             {method.factorType.split(' ').map((word, idx) => (
                               <div key={idx}>
                                 {word}
@@ -328,27 +328,27 @@ export default function MFALeaderboard() {
                             ))}
                             {method.factorOptional && (
                               <div className="flex items-center justify-center mt-0.5">
-                                <svg className="w-3.5 h-3.5 text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                                <svg className="w-3.5 h-3.5 text-slate-400 dark:text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
                                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                                 </svg>
                               </div>
                             )}
                           </div>
                           {method.factorOptional && (
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg p-2 border border-slate-200 dark:border-gray-600 shadow-2xl z-50">
                               Inherence factor (biometric or PIN) is optional
                             </div>
                           )}
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-gray-400 text-base max-w-md">
+                        <div className="text-slate-500 dark:text-gray-400 text-base max-w-md">
                           {method.description}
                         </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-col space-y-2 min-w-[200px]">
-                          <div className="w-full bg-gray-800 rounded-full h-2.5 overflow-hidden">
+                          <div className="w-full bg-slate-200 dark:bg-gray-800 rounded-full h-2.5 overflow-hidden">
                             <div
                               className={`h-full ${getStrengthColor(
                                 method.strength
@@ -356,14 +356,14 @@ export default function MFALeaderboard() {
                             />
                           </div>
                           <div className="flex items-center space-x-2">
-                            <span className="text-gray-300 text-sm font-medium">
+                            <span className="text-slate-600 dark:text-gray-300 text-sm font-medium">
                               {method.strength}
                             </span>
                             <div className="group/tooltip relative inline-flex">
-                              <svg className="w-4 h-4 text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-slate-400 dark:text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                               </svg>
-                              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg p-2 border border-slate-200 dark:border-gray-600 shadow-2xl z-50">
                                 Security level {method.aalLevel}
                               </div>
                             </div>
@@ -384,7 +384,7 @@ export default function MFALeaderboard() {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg p-2 border border-slate-200 dark:border-gray-600 shadow-2xl z-50">
                               Resistant to phishing attacks
                             </div>
                           </div>
@@ -401,7 +401,7 @@ export default function MFALeaderboard() {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg p-2 border border-slate-200 dark:border-gray-600 shadow-2xl z-50">
                               Vulnerable to phishing attacks
                             </div>
                           </div>
@@ -421,12 +421,12 @@ export default function MFALeaderboard() {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg p-2 border border-slate-200 dark:border-gray-600 shadow-2xl z-50">
                               Tied to your specific device
                             </div>
                           </div>
                         ) : method.deviceBound === 'Partial' ? (
-                          <span className="text-yellow-400 text-sm font-medium cursor-help" title="Partially tied to device">Partial</span>
+                          <span className="text-yellow-600 dark:text-yellow-400 text-sm font-medium cursor-help" title="Partially tied to device">Partial</span>
                         ) : method.deviceBound === 'Depends' ? (
                           <div className="flex items-center justify-center group/tooltip relative">
                             <svg
@@ -440,7 +440,7 @@ export default function MFALeaderboard() {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg p-2 border border-slate-200 dark:border-gray-600 shadow-2xl z-50">
                               Depends on implementation
                             </div>
                           </div>
@@ -457,7 +457,7 @@ export default function MFALeaderboard() {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-gray-800 text-white text-sm font-medium rounded-lg p-2 border border-gray-600 shadow-2xl z-50">
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover/tooltip:block w-max max-w-xs bg-white dark:bg-gray-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg p-2 border border-slate-200 dark:border-gray-600 shadow-2xl z-50">
                               Not tied to your device
                             </div>
                           </div>
@@ -474,4 +474,3 @@ export default function MFALeaderboard() {
     </section>
   );
 }
-

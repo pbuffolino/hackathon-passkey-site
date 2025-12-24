@@ -4,7 +4,7 @@ import FAQ from './components/FAQ';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-white">
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center">
@@ -15,7 +15,7 @@ export default function Home() {
             </span>
           </h1>
           
-          <p className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10">
+          <p className="text-xl sm:text-2xl text-slate-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10">
             Passkeys use the same unlock you already trust on your phone or laptop, but for websites and apps.
           </p>
           
@@ -28,7 +28,7 @@ export default function Home() {
             </a>
             <a 
               href="#leaderboard"
-              className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-gray-700 text-white font-semibold text-lg rounded-full hover:border-[#00D9FF] hover:text-[#00D9FF] transition-all"
+              className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-slate-300 dark:border-gray-700 text-slate-700 dark:text-white font-semibold text-lg rounded-full hover:border-[#00D9FF] hover:text-[#00D9FF] transition-all"
             >
               Compare Security
             </a>
@@ -37,7 +37,7 @@ export default function Home() {
       </section>
 
       {/* Passkeys in 30 seconds - Consolidated Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/30 border-y border-gray-800/50">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-100/50 dark:bg-gray-900/30 border-y border-slate-200 dark:border-gray-800/50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
@@ -47,27 +47,27 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {/* Block A: What it is */}
-            <div className="bg-gray-900 rounded-2xl p-6 sm:p-8 border border-gray-800 flex flex-col h-full">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-gray-800 flex flex-col h-full shadow-sm dark:shadow-none">
               <div className="w-12 h-12 rounded-lg bg-[#00D9FF]/20 flex items-center justify-center mb-6">
                 <span className="text-[#00D9FF] font-bold text-xl">1</span>
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">What it is</h3>
-              <div className="space-y-4 text-gray-300 text-base sm:text-lg flex-grow leading-relaxed">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">What it is</h3>
+              <div className="space-y-4 text-slate-600 dark:text-gray-300 text-base sm:text-lg flex-grow leading-relaxed">
                 <p>A passkey is a sign-in key your device creates for a specific site or app.</p>
                 <p>You unlock it with Face ID, Touch ID, fingerprint, or device PIN.</p>
               </div>
             </div>
 
             {/* Block B: Why it matters */}
-            <div className="bg-gray-900 rounded-2xl p-6 sm:p-8 border border-gray-800 flex flex-col h-full">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-gray-800 flex flex-col h-full shadow-sm dark:shadow-none">
               <div className="w-12 h-12 rounded-lg bg-[#00D9FF]/20 flex items-center justify-center mb-6">
                 <span className="text-[#00D9FF] font-bold text-xl">2</span>
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Why it matters</h3>
-              <ul className="space-y-3 text-gray-300 text-base sm:text-lg flex-grow leading-relaxed">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Why it matters</h3>
+              <ul className="space-y-3 text-slate-600 dark:text-gray-300 text-base sm:text-lg flex-grow leading-relaxed">
                 <li className="flex items-start space-x-2">
                   <span className="text-[#00D9FF] mt-1">✓</span>
-                  <span>Helps stop fake login pages (phishing — fake sites or messages that try to steal your password)</span>
+                  <span>Helps stop phishing, which means fake sites or messages that try to steal your password.</span>
                 </li>
                 <li className="flex items-start space-x-2">
                   <span className="text-[#00D9FF] mt-1">✓</span>
@@ -81,19 +81,19 @@ export default function Home() {
             </div>
 
             {/* Block C: Where you'll see it */}
-            <div className="bg-gray-900 rounded-2xl p-6 sm:p-8 border border-gray-800 flex flex-col h-full">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-gray-800 flex flex-col h-full shadow-sm dark:shadow-none">
                <div className="w-12 h-12 rounded-lg bg-[#00D9FF]/20 flex items-center justify-center mb-6">
                 <span className="text-[#00D9FF] font-bold text-xl">3</span>
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Where you'll see it</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Where you'll see it</h3>
               <div className="flex flex-wrap gap-2 mb-6">
                 {['Email', 'Banking', 'Shopping', 'Social', 'Work apps', 'Developer tools'].map((tag) => (
-                  <span key={tag} className="px-3 py-1.5 bg-gray-800 text-gray-300 text-base rounded-full border border-gray-700">
+                  <span key={tag} className="px-3 py-1.5 bg-slate-100 dark:bg-gray-800 text-slate-600 dark:text-gray-300 text-base rounded-full border border-slate-200 dark:border-gray-700">
                     {tag}
                   </span>
                 ))}
               </div>
-              <p className="text-gray-400 text-base italic mt-auto leading-relaxed">
+              <p className="text-slate-500 dark:text-gray-400 text-base italic mt-auto leading-relaxed">
                 Support varies by site and device, but adoption is growing.
               </p>
             </div>
@@ -104,7 +104,7 @@ export default function Home() {
               <span>Jump to the demo</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
             </a>
-            <a href="#leaderboard" className="text-gray-400 hover:text-white flex items-center space-x-2 transition-colors">
+            <a href="#leaderboard" className="text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white flex items-center space-x-2 transition-colors">
               <span>See the comparison</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
             </a>
@@ -118,7 +118,7 @@ export default function Home() {
       </div>
 
       {/* MFA Leaderboard Comparison */}
-      <div id="leaderboard" className="scroll-mt-24">
+      <div id="leaderboard" className="-scroll-mt-16">
         <MFALeaderboard />
       </div>
 
@@ -126,16 +126,12 @@ export default function Home() {
       {/* FAQ Section */}
       <FAQ />
 
-      {/* Still Have Questions Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900/30">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-block bg-gray-900 rounded-xl p-6 border border-gray-800">
-            <p className="text-gray-300 text-lg mb-4">
-              Still have questions?{' '}
-              <span className="text-[#00D9FF]">Passkeys are still new, so it's normal to have questions!</span> The best way to learn is to try creating one yourself using the interactive demo above.
-            </p>
-            <p className="text-gray-400 text-base">
-              For more information, check out{' '}
+      {/* Footer */}
+      <footer className="py-16 px-4 sm:px-6 lg:px-8 border-t border-slate-200 dark:border-gray-800">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="space-y-4">
+            <p className="text-slate-600 dark:text-gray-300 text-lg">
+              Still have questions? Check out{' '}
               <a
                 href="https://passkeys.dev/"
                 target="_blank"
@@ -156,47 +152,19 @@ export default function Home() {
               .
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto text-center space-y-4">
-          <p className="text-gray-400">
-            The Passkey Pilot - Learn how passkeys work
-          </p>
-          <div className="text-gray-500 text-sm space-y-2">
-            <p>
-              Built with{' '}
+          
+          <div className="pt-6 border-t border-slate-200/50 dark:border-gray-800/50 space-y-3">
+            <p className="text-slate-500 dark:text-gray-400 text-sm">
+              Designed by{' '}
               <a
-                href="https://www.w3.org/TR/webauthn-2/"
+                href="https://www.linkedin.com/in/pasqualebuffolino/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors"
+                className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors font-medium"
               >
-                WebAuthn API
+                Pat Buffolino
               </a>
-              {' '}and resources from{' '}
-              <a
-                href="https://passkeys.dev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors"
-              >
-                passkeys.dev
-              </a>
-              {' '}and the{' '}
-              <a
-                href="https://fidoalliance.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors"
-              >
-                FIDO Alliance
-              </a>
-            </p>
-            <p className="text-gray-600">
-              Created with{' '}
+              {' '}· Built with{' '}
               <a
                 href="https://cursor.sh/"
                 target="_blank"
@@ -204,6 +172,17 @@ export default function Home() {
                 className="text-[#00D9FF] hover:text-[#00D9FF]/80 underline transition-colors"
               >
                 Cursor
+              </a>
+            </p>
+            <p className="text-slate-400 dark:text-gray-500 text-xs">
+              Powered by the{' '}
+              <a
+                href="https://www.w3.org/TR/webauthn-2/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-500 dark:text-gray-400 hover:text-[#00D9FF]/80 underline transition-colors"
+              >
+                WebAuthn API
               </a>
             </p>
           </div>
